@@ -72,6 +72,7 @@ public class Test {
     DBF = DocumentBuilderFactory.newInstance();
     DBF.setNamespaceAware(true);
     DB = DBF.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     TF = TransformerFactory.newInstance();
     TF.setAttribute(FeatureKeys.LINE_NUMBERING, Boolean.TRUE);
     TF.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);

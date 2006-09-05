@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+  targetNamespace="http://www.opengis.net/cite/gmlsf" 
+  xmlns:gml="http://www.opengis.net/gml" 
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns:sf="http://www.opengis.net/cite/gmlsf" 
+  elementFormDefault="qualified" 
+  version="2006.07">
+
+  <xsd:annotation>
+    <xsd:appinfo xmlns:gmlsf="http://www.opengis.net/gmlsf" 
+      source="http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsfLevels.xsd">
+      <gmlsf:ComplianceLevel>2</gmlsf:ComplianceLevel>
+      <gmlsf:GMLProfileSchema>
+      http://schemas.opengis.net/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf2.xsd
+      </gmlsf:GMLProfileSchema>
+    </xsd:appinfo>
+    <xsd:documentation xml:lang="en">
+    GML application schema used to assess compliance with the WFS 1.1 specification.
+    This schema conforms to level SF-2 of the Simple Features Profile (OGC 06-049).
+    No restrictions on non-spatial properties; geometry properties may have XLink 
+    attributes; adds the featureMembers property to constitute slightly more compact 
+    representations.
+    </xsd:documentation>
+  </xsd:annotation>
+  
+  <xsd:import namespace="http://www.opengis.net/gml" schemaLocation="gmlsf2.xsd"/>
+
+  <xsd:element name="L2FeatureCollection" type="sf:L2FeatureCollectionType" 
+    substitutionGroup="gml:_GML">
+    <xsd:annotation>
+    <xsd:documentation xml:lang="en">
+    Complex feature collection that may be used as the root element in an 
+    instance document. 
+    </xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="L2FeatureCollectionType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+      <xsd:sequence maxOccurs="unbounded">
+        <xsd:element name="featureMember" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="gml:_Feature"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="featureMembers" minOccurs="0">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element ref="gml:_Feature" maxOccurs="unbounded"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:element name="L2Feature" type="sf:L2FeatureType" 
+    substitutionGroup="gml:_Feature">
+  </xsd:element>
+  <xsd:complexType name="L2FeatureType">
+    <xsd:complexContent>
+      <xsd:extension base="gml:AbstractFeatureType">
+        <xsd:sequence>
+          <xsd:element name="duration" type="xsd:duration" />
+          <xsd:element name="geoProperty" type="gml:GeometryPropertyType" minOccurs="0" />
+          <xsd:element ref="sf:childObjects"  minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:element name="childObjects" type="sf:ChildObjectsType" />
+  <xsd:complexType name="ChildObjectsType">
+    <xsd:sequence>
+      <xsd:element name="Object" type="sf:ObjectType" maxOccurs="4"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="ObjectType">
+    <xsd:sequence>
+      <xsd:element name="byteList" type="sf:ByteListType" />
+      <xsd:element ref="sf:childObjects"  minOccurs="0" />
+    </xsd:sequence>
+    <xsd:attribute name="children"  type="xsd:nonNegativeInteger" use="required"/>
+  </xsd:complexType>
+  
+  <xsd:simpleType name="ByteListType">
+    <xsd:list itemType="xsd:byte"/>
+  </xsd:simpleType>
+
+</xsd:schema>

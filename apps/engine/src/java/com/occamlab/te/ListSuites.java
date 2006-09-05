@@ -19,6 +19,7 @@ public class ListSuites {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     dbf.setNamespaceAware(true);
     DocumentBuilder db = dbf.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     Iterator it = sources.iterator();
     while (it.hasNext()) {
       File f = (File)it.next();

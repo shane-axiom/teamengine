@@ -55,6 +55,7 @@ public class TECore {
   public TECore(PrintStream out, boolean web) throws Exception {
     DBF = DocumentBuilderFactory.newInstance();
     DB = DBF.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     TF = TransformerFactory.newInstance();
     TF.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
     Out = out;
@@ -92,6 +93,7 @@ public class TECore {
   public static Document read_log(String logdir, String callpath) throws Exception {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     Document doc = db.newDocument();
     File dir = new File(logdir, callpath);
     File f = new File(dir, "log.xml");
@@ -260,6 +262,7 @@ public class TECore {
   public Document serialize_and_parse(Node parse_instruction) throws Throwable {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     TransformerFactory tf = TransformerFactory.newInstance();
     Transformer t = null;
     Node content = null;
@@ -358,6 +361,7 @@ public class TECore {
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     dbf.setNamespaceAware(true);
     DocumentBuilder db = dbf.newDocumentBuilder();
+    System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
     Document response_doc = db.newDocument();
     Element response_e = response_doc.createElement("response");
     if (response_id != null) {
