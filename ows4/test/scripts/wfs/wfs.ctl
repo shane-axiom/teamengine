@@ -38,7 +38,6 @@
 			<ctl:param name="phase"/>
 			<ctl:assertion>Validating with SchematronValidatingParser.</ctl:assertion>
 			<ctl:code>
-				<ctl:message>Calling ctl:CallSchematronValidatingParser:</ctl:message>
 				<xsl:variable name="return-value">
 					<ctl:call-function name="ctl:CallSchematronValidatingParser">
 						<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
@@ -67,6 +66,16 @@
 	<ctl:parser name="myparsers:SchematronValidatingParser">
 		<ctl:param name="schema_link"/>
 		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true"/>
+	</ctl:parser>	
+	
+	<ctl:parser name="myparsers:XMLValidatingParser.WFSCapabilities">
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
+			<ctl:with-param name="schemas_links">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
+				</parsers:schemas>
+			</ctl:with-param>
+		</ctl:java>
 	</ctl:parser>	
 	
 	<ctl:parser name="myparsers:SchematronValidatingParser.WFSCapabilities">
