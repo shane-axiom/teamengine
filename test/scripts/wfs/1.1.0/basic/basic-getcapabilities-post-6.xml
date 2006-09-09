@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><package xmlns="http://www.occamlab.com/ctl" xmlns:ccf="http://www.opengis.net/cite/complex" xmlns:cdf="http://www.opengis.net/cite/data" xmlns:cgf="http://www.opengis.net/cite/geometry" xmlns:citef="http://www.opengis.net/cite/functions" xmlns:ctl="http://www.occamlab.com/ctl" xmlns:example="http://www.somehost.com/example" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc" xmlns:parsers="http://www.occamlab.com/te/parsers" xmlns:saxon="http://saxon.sf.net/" xmlns:wfs="http://www.opengis.net/wfs" xmlns:wms="http://www.opengis.net/wms" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema"><suite name="ctl:wfs:test1.0.0-basic-getcapabilities-post-6.suite"><title>test1.0.0-basic-getcapabilities-post-6</title><description>wfs:test1.0.0-basic-getcapabilities-post-6</description><starting-test>wfs:test1.0.0-basic-getcapabilities-post-6</starting-test></suite><test xmlns:xsl="http://www.w3.org/1999/XSL/Transform" name="wfs:test1.0.0-basic-getcapabilities-post-6">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+      <assertion>When a wfs:GetCapabilities request is made, the result document must contain a schema description language of XMLSCHEMA for DescribeFeatureType.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test.The response document will be tested to check that the DescribeFeatureType request has a SchemaDescriptionLanguage of XMLSCHEMA.</comment>
+      <link>wfs1.1.1#.test1.0.0.basic.getcapabilities.post.6</link>
+      <code>
+         <xsl:variable name="request1">
+            <request>
+               <url>
+                  <xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+               </url>
+               <method>post</method>
+               <body>&lt;wfs:GetCapabilities
+  service="WFS"
+  version="1.0.0"
+  xmlns:wfs="http://www.opengis.net/wfs"
+/&gt;
+</body>
+               <wfs:GMLValidatingParser/>
+            </request>
+         </xsl:variable>
+         <xsl:for-each select="$request1">
+            <xsl:variable name="expression">not(boolean(/wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:DescribeFeatureType/wfs:SchemaDescriptionLanguage/wfs:XMLSCHEMA))</xsl:variable>
+            <xsl:if test="saxon:evaluate($expression)">
+               <fail/>
+            </xsl:if>
+            <xsl:if test="not(*)">
+               <fail/>
+            </xsl:if>
+         </xsl:for-each>
+      </code>
+   </test></package>

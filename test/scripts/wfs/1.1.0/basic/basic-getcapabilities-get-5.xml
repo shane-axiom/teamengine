@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="wfs:basic-getcapabilities-get-5">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <assertion>When a GetCapabilities request is made against basic WFS, the reponse cabilities document must define capabilities entries for the request GetCapabilities for HTTP GET, DescribeFeatureType for HTTP GET or POST and GetFeature for HTTP GET or POST.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The response document will be tested to check that the capabilities document defines the capabilities requests GetCapabilities for HTTP GET, DescribeFeature for HTTP GET or POST and GetFeature for HTTP GET or POST. This test does not test that the capabilities advertised actually work, this is done in other tests.</comment>
+      <link>wfs-1.1.0#basic.getcapabilities.get.5</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+					</url>
+					<method>get</method>
+					<param name="service">WFS</param>
+					<param name="version">1.1.0</param>
+					<param name="request">GetCapabilities</param>
+					<myparsers:XMLValidatingParser.WFSCapabilities/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:GetCapabilities/wfs:DCPType/wfs:HTTP/wfs:Get)
+and (
+  boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:DescribeFeatureType/wfs:DCPType/wfs:HTTP/wfs:Get)
+  or
+  boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:DescribeFeatureType/wfs:DCPType/wfs:HTTP/wfs:Post)
+)
+and (
+  boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:GetFeature/wfs:DCPType/wfs:HTTP/wfs:Get)
+  or
+  boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:GetFeature/wfs:DCPType/wfs:HTTP/wfs:Post)</xsl:variable>
+			<ctl:call-test name="ctl:assert-xpath">
+				<ctl:with-param name="expr" select="$expression"/>
+				<ctl:with-param name="doc" select="$request1"/>
+			</ctl:call-test>
+			
+		</code>
+	</test>
+</ctl:package>

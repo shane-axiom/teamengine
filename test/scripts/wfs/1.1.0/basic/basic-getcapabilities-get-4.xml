@@ -12,11 +12,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-get-3">
+	<test name="wfs:basic-getcapabilities-get-4">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>When a wfs:GetCapabilities request is made for a version number that is less than the version the server supports, the result document must be a wfs:WFS_Capabilities with the version number equal to the lowest version number that the server supports which is greater than the requested version number.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 0.0.0 The response document will be tested to check that the version number returned in the capabilities document is greater than 0.0.0.</comment>
-      <link>wfs-1.1.0#basic.getcapabilities.get.3</link>
+      <assertion>When a wfs:GetCapabilities request is made without specifying a version number, the result document must be a wfs:WFS_Capabilities with the version number equal to the highest version number that it supports.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will not define a version number. The response document will be tested to check that the version number returned in the capabilities document is greater than 0.0.0 (i.e. a version number was specified).</comment>
+      <link>wfs-1.1.0#basic.getcapabilities.get.4</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +26,6 @@
 					</url>
 					<method>get</method>
 					<param name="service">WFS</param>
-					<param name="version">0.0.0</param>
 					<param name="request">GetCapabilities</param>
 					<myparsers:XMLValidatingParser.WFSCapabilities/>
 				</request>
