@@ -36,12 +36,14 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:variable name="expression">number(/*/@version) &lt; number('99.99.99')</xsl:variable>
-			<ctl:call-test name="ctl:assert-xpath">
-				<ctl:with-param name="expr" select="$expression"/>
-				<ctl:with-param name="doc" select="$request1"/>
-			</ctl:call-test>
-			
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">number(/*/@version) &lt; number('99.99.99')</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
 		</code>
 	</test>
 </ctl:package>

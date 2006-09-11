@@ -7,6 +7,7 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -36,12 +37,14 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/wfs:Capability/wfs:Request/wfs:GetFeature/wfs:ResultFormat/wfs:GML2)</xsl:variable>
-			<ctl:call-test name="ctl:assert-xpath">
-				<ctl:with-param name="expr" select="$expression"/>
-				<ctl:with-param name="doc" select="$request1"/>
-			</ctl:call-test>
-			
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetFeature']/ows:Parameter[@name='ResultFormat']/ows:Value='GML2')</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
 		</code>
 	</test>
 </ctl:package>

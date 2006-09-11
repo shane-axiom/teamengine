@@ -24,14 +24,14 @@
 	<xi:include href="basic/basic-getcapabilities-get-7.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-get-8.xml"/>
 			
-	<!--<xi:include href="basic/basic-getcapabilities-post-1.xml"/>	
+	<xi:include href="basic/basic-getcapabilities-post-1.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-2.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-3.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-4.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-5.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-6.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-7.xml"/>	
-	<xi:include href="basic/basic-getcapabilities-post-8.xml"/>-->	
+	<xi:include href="basic/basic-getcapabilities-post-8.xml"/>
 		
 	<!--=================-->
 	<!-- MAIN TEST DRIVER -->
@@ -70,7 +70,7 @@
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
 						
-			<!--<ctl:call-test name="wfs:basic-getcapabilities-post-1">
+			<ctl:call-test name="wfs:basic-getcapabilities-post-1">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
 			<ctl:call-test name="wfs:basic-getcapabilities-post-2">
@@ -93,7 +93,7 @@
 			</ctl:call-test>
 			<ctl:call-test name="wfs:basic-getcapabilities-post-8">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>-->
+			</ctl:call-test>
 					
 		</ctl:code>
 	</ctl:test>	
