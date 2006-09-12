@@ -33,6 +33,10 @@
 	<xi:include href="basic/basic-getcapabilities-post-7.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-post-8.xml"/>
 		
+	<xi:include href="basic/basic-general-get-1.1.1.xml"/>	
+	<xi:include href="basic/basic-general-get-1.1.2A.xml"/>	
+	<xi:include href="basic/basic-general-get-1.1.2B.xml"/>			
+		
 	<!--=================-->
 	<!-- MAIN TEST DRIVER -->
 	<!--=================-->		
@@ -43,6 +47,16 @@
 			<!-- Declare variables to be used in tests -->
 			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
 			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
+			
+			<ctl:call-test name="wfs:basic-general-get-1.1.1">
+				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-general-get-1.1.2A">
+				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-general-get-1.1.2B">
+				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>			
 			
 			<!-- Run the tests -->
 			<ctl:call-test name="wfs:basic-getcapabilities-get-1">
