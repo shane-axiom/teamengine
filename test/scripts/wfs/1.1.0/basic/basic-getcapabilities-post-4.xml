@@ -30,7 +30,7 @@
   xmlns:wfs="http://www.opengis.net/wfs"
 /&gt;
 					</body>
-					<myparsers:XMLValidatingParser.WFSCapabilities/>
+					<myparsers:XMLValidatingParser.WFS/>
 				</request>
 			</xsl:variable>
 			

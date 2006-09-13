@@ -12,38 +12,40 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-general-post-1.1.14A">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-      <assertion>The following attributes are required for all XML request entities: @version (default '1.1.0'); @service (fixed 'WFS').</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. There is a version ('1.1.0') and service attribute ('WFS').  The server should process the request as usual.</comment>
-      <link>wfs-1.1.0#basic.general.post.1.1.14</link>
+	<test name="wfs:basic-getfeature-post-1.4.1.1">
+      <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+      <assertion>The default output format is XML that complies with GML 3.1.1.</assertion>
+      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The response should be valid against the GML 3.1.1 schema.</comment>
+      <link>wfs-1.1.0#basic.getfeature.post.1.4.1.1</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
-				   <method>post</method>
-				   <body><![CDATA[
-				   <wfs:GetCapabilities xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS"/>
-				   ]]>
+					<method>post</method>
+				    <body><![CDATA[
+				    <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS" resultTypes="hits">
+					    <wfs:Query xmlns:sf="http://www.opengis.net/cite/gmlsf" typeName="sf:SimplePointFeature" />
+				    </wfs:GetFeature>
+				    ]]>
 					</body>
-					<!--<myparsers:XMLValidatingParser.WFS/>-->
+					<!--<myparsers:XMLValidatingParser.GML3.1.1/>-->
 				</request>
 			</xsl:variable>
 			
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-				
+
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
+				<xsl:variable name="expression">//wfs:FeatureCollection</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>					
+			</xsl:if>
 				
 		</code>
 	</test>
