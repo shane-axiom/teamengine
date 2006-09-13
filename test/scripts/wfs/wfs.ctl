@@ -6,6 +6,7 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -77,6 +78,26 @@
 			</ctl:with-param>
 		</ctl:java>
 	</ctl:parser>	
+
+	<ctl:parser name="myparsers:XMLValidatingParser.ServiceException">
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
+			<ctl:with-param name="schemas_links">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/filter-1.1.0-composite.xsd</parsers:schema>
+				</parsers:schemas>
+			</ctl:with-param>
+		</ctl:java>
+	</ctl:parser>	
+	
+	<ctl:parser name="myparsers:XMLValidatingParser.DescribeFeatureType">
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
+			<ctl:with-param name="schemas_links">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/xmlschema-1.0.xsd</parsers:schema>
+				</parsers:schemas>
+			</ctl:with-param>
+		</ctl:java>
+	</ctl:parser>		
 	
 	<ctl:parser name="myparsers:SchematronValidatingParser.WFSCapabilities">
 		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true">

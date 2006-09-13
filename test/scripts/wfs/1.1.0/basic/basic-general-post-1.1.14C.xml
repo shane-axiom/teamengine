@@ -7,27 +7,29 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-general-get-1.1.1">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>Version number specified in a given request must correspond to a version supported by the service.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 1.1.0. The response document will be tested to check that the version number returned in the capabilities document is the same as the requested version.</comment>
-      <link>wfs-1.1.0#basic.general.get.1.1.1</link>
+	<test name="wfs:basic-general-post-1.1.14C">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+      <assertion>The following attributes are required for all XML request entities: @version (default '1.1.0'); @service (fixed 'WFS').</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. There is a service ('WFS') and no version attribute.  The server should process the request as usual (for the default version of '1.1.0').</comment>
+      <link>wfs-1.1.0#basic.general.post.1.1.14</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">WFS</param>
-					<param name="version">1.1.0</param>
-					<param name="request">GetCapabilities</param>
+				   <method>post</method>
+				   <body><![CDATA[
+				   <wfs:GetCapabilities xmlns:wfs="http://www.opengis.net/wfs" service="WFS"/>
+				   ]]>
+					</body>
 					<!--<myparsers:XMLValidatingParser.WFSCapabilities/>-->
 				</request>
 			</xsl:variable>
