@@ -16,6 +16,12 @@
 	<!-- TEST FUNCTIONS -->
 	<!--================-->
 
+	<!-- General XPath evaluator (uses Saxon 8.0), i.e.: -->
+	<!--<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
+		<ctl:call-test name="ctl:assert-xpath">
+		<ctl:with-param name="expr" select="$expression"/>
+		<ctl:with-param name="doc" select="$cap-doc"/>
+	</ctl:call-test>-->
 	<ctl:test name="ctl:assert-xpath">
 		<ctl:param name="expr">An XPath expression.</ctl:param>
 		<ctl:param name="doc">An XML document.</ctl:param>
@@ -33,6 +39,12 @@
 		</ctl:code>
 	</ctl:test>
 	
+	<!-- Used to call the schematron validator outside the request element, i.e.: -->
+	<!--<ctl:call-test name="ctl:SchematronValidatingParser">
+		<ctl:with-param name="doc" select="$cap-doc"/>
+		<ctl:with-param name="schematronFile">sch/wfs/1.1.0/WFSCapabilities.sch</ctl:with-param>
+		<ctl:with-param name="phase">Default</ctl:with-param>
+	</ctl:call-test>-->
 	<ctl:test name="ctl:SchematronValidatingParser">
 			<ctl:param name="doc"/>
 			<ctl:param name="schematronFile"/>
@@ -51,7 +63,6 @@
 				</xsl:if>	
 			</ctl:code>
 	</ctl:test>	
-
 	<ctl:function name="ctl:CallSchematronValidatingParser">
 		<ctl:param name="doc"/>
 		<ctl:param name="schematronFile"/>
@@ -64,16 +75,23 @@
 	<!-- CUSTOM PARSERS -->
 	<!--=================-->		
 	
-	<ctl:parser name="myparsers:SchematronValidatingParser">
-		<ctl:param name="schema_link"/>
-		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true"/>
-	</ctl:parser>	
-	
-	<ctl:parser name="myparsers:XMLValidatingParser.WFSCapabilities">
+	<!-- XML validating parsers, defined for various response types to be reused by multiple tests -->
+	<ctl:parser name="myparsers:XMLValidatingParser.WFS">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
 					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
+				</parsers:schemas>
+			</ctl:with-param>
+		</ctl:java>
+	</ctl:parser>	
+
+	<ctl:parser name="myparsers:XMLValidatingParser.GML3.1.1">
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
+			<ctl:with-param name="schemas_links">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/gml-3.1.1.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
@@ -89,7 +107,7 @@
 		</ctl:java>
 	</ctl:parser>	
 	
-	<ctl:parser name="myparsers:XMLValidatingParser.DescribeFeatureType">
+	<ctl:parser name="myparsers:XMLValidatingParser.XMLSchema">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
@@ -99,6 +117,19 @@
 		</ctl:java>
 	</ctl:parser>		
 	
+	<!-- Schematron vlaidator used in request element, pass in information for schematron schema to use, i.e.: -->
+	<!--<myparsers:SchematronValidatingParser>
+			<parsers:schemas>
+				<parsers:schema type="resource" phase="Default">sch/wfs/1.1.0/WFSCapabilities.sch</parsers:schema>
+			</parsers:schemas>
+		</myparsers:SchematronValidatingParser>-->
+	<ctl:parser name="myparsers:SchematronValidatingParser">
+		<ctl:param name="schema_link"/>
+		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true"/>
+	</ctl:parser>		
+	
+	<!-- Schematron validator used in request element, uses the given schema, i.e.: -->
+	<!--<myparsers:SchematronValidatingParser.WFSCapabilities/>-->
 	<ctl:parser name="myparsers:SchematronValidatingParser.WFSCapabilities">
 		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schema_link">

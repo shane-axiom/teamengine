@@ -31,7 +31,7 @@
 </wfs:GetCapabilities>
 				   ]]>
 					</body>
-					<!--<myparsers:XMLValidatingParser.WFSCapabilities/>-->
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

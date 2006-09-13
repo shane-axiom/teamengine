@@ -18,6 +18,7 @@
 	<xi:include href="basic/basic-general-get-1.1.1.xml"/>	
 	<xi:include href="basic/basic-general-get-1.1.2A.xml"/>	
 	<xi:include href="basic/basic-general-get-1.1.2B.xml"/>			
+	<xi:include href="basic/basic-general-post-1.1.11.xml"/>
 	<xi:include href="basic/basic-general-post-1.1.12A.xml"/>	
 	<xi:include href="basic/basic-general-post-1.1.12B.xml"/>	
 	<xi:include href="basic/basic-general-post-1.1.14A.xml"/>	
@@ -27,7 +28,6 @@
 	<xi:include href="basic/basic-general-get-1.1.17.xml"/>
 	<xi:include href="basic/basic-general-get-1.1.18.xml"/>
 	<xi:include href="basic/basic-general-get-1.1.19.xml"/>
-
 	
 	<!--=====================-->
 	<!-- GETCAPABILITIES TESTS -->
@@ -36,6 +36,22 @@
 	<xi:include href="basic/basic-getcapabilities-get-1.2.1.xml"/>
 	<xi:include href="basic/basic-getcapabilities-post-1.2.2A.xml"/>
 	<xi:include href="basic/basic-getcapabilities-post-1.2.2B.xml"/>
+
+	<!--==================-->
+	<!-- GETFEATURE TESTS -->
+	<!--==================-->		
+	
+	<xi:include href="basic/basic-getfeature-post-1.4.1.1.xml"/>	
+	<xi:include href="basic/basic-getfeature-post-1.4.1.2.xml"/>		
+	<xi:include href="basic/basic-getfeature-post-1.4.1.3.xml"/>	
+	<xi:include href="basic/basic-getfeature-post-1.4.1.4.xml"/>
+	<xi:include href="basic/basic-getfeature-post-1.4.1.5.xml"/>		
+	<xi:include href="basic/basic-getfeature-post-1.4.1.6.xml"/>
+	<xi:include href="basic/basic-getfeature-post-1.4.2.2.xml"/>
+	
+	<!--===============-->
+	<!-- WFS 1.0.0 TESTS -->
+	<!--===============-->			
 		
 	<xi:include href="basic/basic-getcapabilities-get-1.xml"/>	
 	<xi:include href="basic/basic-getcapabilities-get-2.xml"/>	
@@ -58,6 +74,8 @@
 	<!-- MAIN TEST DRIVER -->
 	<!--=================-->		
 	
+	<xi:include href="sanity-check.xml"/>		
+	
 	<ctl:test name="ctl:basic-main">
 		<ctl:assertion>Tests the WFS 1.1.0 basic capabilities and operations.</ctl:assertion>
 		<ctl:code>
@@ -72,7 +90,14 @@
 						
 			<!-- Run the tests -->
 			
+			<!-- SANITY-CHECK -->			
+			<ctl:call-test name="wfs:sanity-check">
+				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			
 			<!-- MANDATORY -->
+			<ctl:message>Mandatory Tests:</ctl:message>
 			<ctl:call-test name="wfs:basic-general-get-1.1.1">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
@@ -82,6 +107,9 @@
 			<ctl:call-test name="wfs:basic-general-get-1.1.2B">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>			
+			<ctl:call-test name="wfs:basic-general-post-1.1.11">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
 			<ctl:call-test name="wfs:basic-general-post-1.1.12A">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 			</ctl:call-test>
@@ -112,8 +140,30 @@
 			<ctl:call-test name="wfs:basic-getcapabilities-get-1.2.1">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
-
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.1">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.2">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.3">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.4">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.5">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.6">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="wfs:basic-getfeature-post-1.4.2.2">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+			</ctl:call-test>
+									
 			<!-- OPTIONAL -->
+			<ctl:message>Optional Tests:</ctl:message>
 			<ctl:call-test name="wfs:basic-getcapabilities-post-1.2.2A">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 			</ctl:call-test>
@@ -121,9 +171,9 @@
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 			</ctl:call-test>
 								
-			<!-- WFS 1.0.0 tests converted to WFS 1.1.0 (not all working) -->
-																				
-			<!--<ctl:call-test name="wfs:basic-getcapabilities-get-1">
+			<!-- WFS 1.0.0 tests converted to WFS 1.1.0 (not all working) -->																
+			<!--<ctl:message>WFS 1.0.0 Tests:</ctl:message>
+			<ctl:call-test name="wfs:basic-getcapabilities-get-1">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
 			<ctl:call-test name="wfs:basic-getcapabilities-get-2">
