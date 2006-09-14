@@ -7,17 +7,16 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
- xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-get-6">
+	<test name="wfs:basic-commons-metadata-get-2.2A">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>When a wfs:GetCapabilities request is made, the result document must contain a schema description language of XMLSCHEMA for DescribeFeatureType.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test.The response document will be tested to check that the DescribeFeatureType request has a SchemaDescriptionLanguage of XMLSCHEMA.</comment>
-      <link>wfs-1.1.0#basic.getcapabilities.get.6</link>
+      <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. There is a version ('1.1.0') and service attribute ('WFS').  The server should process the request as usual.</comment>
+      <link>wfs-1.1.0#basic.commons.metadata.get.2.2</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -25,25 +24,25 @@
 					<url>
 						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">WFS</param>
+				   <method>get</method>
+					<param name="request">GetCapabilities</param>				   
+				   	<param name="service">WFS</param>
 					<param name="version">1.1.0</param>
-					<param name="request">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-
+				
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='DescribeFeatureType']/ows:Parameter[@name='SchemaDescriptionLanguage']/ows:Value='XMLSCHEMA')</xsl:variable>
+				<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>
+			</xsl:if>					
 				
 		</code>
 	</test>

@@ -53,7 +53,7 @@
 		</java>
 	</target>
 	
-	<!--Usage: ant listsuites -Dquery="-source=../../test/scripts/demo.xml" -->
+	<!--Usage: ant listsuites -Dquery="-source=../../test/scripts/temp/demo.xml" -->
 	<target name="listsuites" if="query" description="Lists the suites in a ctl test file">
 		<java classname="com.occamlab.te.ListSuites" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
