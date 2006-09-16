@@ -36,6 +36,7 @@
 	<xi:include href="basic/basic-commons-constraints-get-1.2A.xml"/>	
 	<xi:include href="basic/basic-commons-constraints-get-1.2B.xml"/>	
 	<xi:include href="basic/basic-commons-constraints-get-1.2C.xml"/>			
+	<xi:include href="basic/basic-commons-constraints-get-1.8.xml"/>
 	<xi:include href="basic/basic-commons-metadata-get-2.2A.xml"/>	
 	<xi:include href="basic/basic-commons-metadata-get-2.2B.xml"/>	
 	<xi:include href="basic/basic-commons-metadata-get-2.2C.xml"/>	
@@ -170,6 +171,9 @@
 			<ctl:call-test name="wfs:basic-commons-constraints-get-1.2C">
 				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
 			</ctl:call-test>	
+			<ctl:call-test name="wfs:basic-commons-constraints-get-1.8">
+				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+			</ctl:call-test>
 			<ctl:call-test name="wfs:basic-commons-metadata-get-2.2A">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>			
