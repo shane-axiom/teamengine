@@ -28,8 +28,8 @@
 					<param name="request">DescribeRecord</param>				   
 				   	<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
-					<param name="typename">sf:SimplePointFeature,sf:SimpleGeoFeature</param>
-					<param name="namespace">xmlns(sf=http://www.opengis.net/cite/gmlsf)</param>
+					<param name="typename">csw:Record</param>
+					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
 					<!--<myparsers:XMLValidatingParser.XMLSchema/>-->
 				</request>
 			</xsl:variable>
