@@ -12,22 +12,25 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-getcapabilities-get-2.1.2">
-      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>Service parameter value must be “CSW” or profile-specific identifier.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The service is set as 'CSW' and a valid capabilities document is expected.</comment>
-      <link>csw-2.0.1#discovery.getcapabilities.get.2.1.2</link>
+	<test name="csw:discovery-commons-constraints-post-1.3A">
+      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+      <assertion>All XML request entities must include the following attributes on the document element: service, version (acceptable values depend on the service type).</assertion>
+      <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. There is a version ('2.0.1') and service attribute ('CSW').  The server should process the request as usual.</comment>
+      <link>csw-2.0.1#discovery-commons-constraints-post-1.3</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">CSW</param>
-					<param name="version">2.0.1</param>
-					<param name="request">GetCapabilities</param>
+				   <method>post</method>
+				   <body><![CDATA[
+					<csw:DescribeRecord version="2.0.1" service="CSW">
+						<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
+					</csw:DescribeRecord>
+				   ]]>
+					</body>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
@@ -35,14 +38,14 @@
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-
+				
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
+				<xsl:variable name="expression">//csw:DescribeRecordResponse</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>
+			</xsl:if>					
 				
 		</code>
 	</test>
