@@ -13,23 +13,23 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-commons-constraints-get-1.2B">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
-      <assertion>The following query parameters are required for all KVP-encoded service requests except GetCapabilities: service, request, version.</assertion>
-      <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. There is a version ('2.0.1') and no service attribute.  The server should give a service exception.</comment>
-      <link>csw-2.0.1#discovery.commons.constraints.get.1.2</link>
+	<test name="csw:discovery-commons-metadata-get-2.5B">
+      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <assertion>Version negotiation using AcceptVersions parameter (preference ordering): Return service metadata corresponding to the most preferred version that is supported. If none of the requested versions are supported, the server must generate an exception with code 'VersionNegotiationFailed'.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with bogus version numbers, resulting in a service exception.</comment>
+      <link>csw-2.0.1#discovery-commons-metadata-get-2.5</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
-				   <method>get</method>
-					<param name="request">DescribeRecord</param>
+					<method>get</method>
+					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
-					<param name="typename">csw:Record</param>
-					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
+					<param name="request">GetCapabilities</param>
+					<param name="acceptversions">99.99.99,99.98.98</param>
 					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
@@ -37,7 +37,7 @@
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-				
+
 			<xsl:if test="$request1/*">
 				<xsl:variable name="expression">//ogc:ServiceExceptionReport</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
