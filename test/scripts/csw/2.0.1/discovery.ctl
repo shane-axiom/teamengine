@@ -14,7 +14,23 @@
 	<!--===============-->
 	<!-- GENERAL TESTS -->
 	<!--===============-->	
-				
+
+	<xi:include href="discovery/discovery-commons-constraints-get-1.1A.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-get-1.1B.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-get-1.1C.xml"/>				
+	<xi:include href="discovery/discovery-commons-constraints-get-1.2A.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-get-1.2B.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-get-1.2C.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-post-1.3A.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-post-1.3B.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-post-1.3C.xml"/>	
+	<xi:include href="discovery/discovery-commons-constraints-post-1.3D.xml"/>
+	<xi:include href="discovery/discovery-commons-constraints-get-1.8.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.1.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.2A.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.2B.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.2C.xml"/>	
+					
 	<!--=====================-->
 	<!-- GETCAPABILITIES TESTS -->
 	<!--=====================-->		
@@ -38,6 +54,8 @@
 			<!-- Declare variables to be used in tests -->
 			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
+			<xsl:variable name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
+			<xsl:variable name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 			<xsl:variable name="VAR_CSW_GET_RECORD_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 			<xsl:variable name="VAR_CSW_GET_RECORD_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 									
@@ -51,6 +69,51 @@
 			
 			<!-- MANDATORY -->
 			<ctl:message>Mandatory Tests:</ctl:message>
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.1A">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.1B">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.1C">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.2A">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.2B">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.2C">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+			</ctl:call-test>				
+			<ctl:call-test name="csw:discovery-commons-constraints-post-1.3A">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+			</ctl:call-test>			
+			<ctl:call-test name="csw:discovery-commons-constraints-post-1.3B">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+			</ctl:call-test>			
+			<ctl:call-test name="csw:discovery-commons-constraints-post-1.3C">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+			</ctl:call-test>			
+			<ctl:call-test name="csw:discovery-commons-constraints-post-1.3D">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+			</ctl:call-test>					
+			<ctl:call-test name="csw:discovery-commons-constraints-get-1.8">
+				<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.1">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.2A">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.2B">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.2C">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>											
 			<ctl:call-test name="csw:discovery-getcapabilities-get-2.1.2">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>
