@@ -7,17 +7,16 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
- xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-commons-metadata-get-2.12C">
+	<test name="csw:discovery-general-get-1.4">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>In the event that a GetCapabilities request cannot be processed for any reason, the response entity shall include an exception report. The exception code must be one of those listed in Table 5.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The exception VersionNegotiationFailed is raised when the the AcceptVersions values do not match a valid version and should result in a service exception. No 'locator' is needed.</comment>
-      <link>csw-2.0.1#discovery-commons-metadata-get-2.12</link>
+      <assertion>Must implement HTTP-GET KVP GetCapabilities, POST XML DescribeRecord, POST XML GetDomain, POST XML GetRecords, HTTP-GET KVP GetRecordById, HTTP-POST XML Harvest, and HTTP-POST XML Transaction.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory operation constraints.</comment>
+      <link>csw-2.0.1#discovery-general-get-1.4</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -29,8 +28,7 @@
 					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<param name="acceptversions">99.99.99</param>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
@@ -39,18 +37,18 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//ogc:ServiceExceptionReport</xsl:variable>
+				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>	
-			
+			</xsl:if>
+				
 		    <xsl:if test="$request1/*">
 				<ctl:call-test name="ctl:SchematronValidatingParser">
 					<ctl:with-param name="doc" select="$request1"/>
-					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWServiceExceptionReport.sch</ctl:with-param>
-					<ctl:with-param name="phase">VersionNegotiationFailed</ctl:with-param>
+					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
+					<ctl:with-param name="phase">csw.1.4</ctl:with-param>
 				</ctl:call-test>				
 			</xsl:if>						
 				
