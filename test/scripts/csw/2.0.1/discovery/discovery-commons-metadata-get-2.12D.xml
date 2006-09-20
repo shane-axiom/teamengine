@@ -7,16 +7,17 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-commons-metadata-get-2.8D">
+	<test name="csw:discovery-commons-metadata-get-2.12D">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>If the the server recognizes the UpdateSequence parameter, the response entity shall include the revision matching the applicable case in Table 4. The value must be incremented whenever the service metadata is changed.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The UpdateSequence parameter has the value 'Higher' and should result in the most recent capabilities document.</comment>
-      <link>csw-2.0.1#discovery-commons-metadata-get-2.8</link>
+      <assertion>In the event that a GetCapabilities request cannot be processed for any reason, the response entity shall include an exception report. The exception code must be one of those listed in Table 5.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The exception InvalidUpdateSequence is raised when the the UpdateSequence value is higher than the current UpdateSequence value, and should result in a service exception. No 'locator' is needed.</comment>
+      <link>csw-2.0.1#discovery-commons-metadata-get-2.12</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -29,7 +30,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="updatesequence">10000.00</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			
@@ -38,12 +39,12 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:Capabilities/@version='1.0'</xsl:variable>
+				<xsl:variable name="expression">//ogc:ServiceExceptionReport</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>
+			</xsl:if>	
 				
 		</code>
 	</test>
