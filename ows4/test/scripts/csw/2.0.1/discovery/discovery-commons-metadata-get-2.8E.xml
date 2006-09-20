@@ -29,7 +29,7 @@
 					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<param name="updatesequence">Lower</param>
+					<param name="updatesequence">00.01</param>
 					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>

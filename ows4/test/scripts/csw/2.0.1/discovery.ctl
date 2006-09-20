@@ -50,6 +50,10 @@
 	<xi:include href="discovery/discovery-commons-metadata-get-2.10B.xml"/>
 	<xi:include href="discovery/discovery-commons-metadata-get-2.11A.xml"/>
 	<xi:include href="discovery/discovery-commons-metadata-get-2.11B.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.12A.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.12B.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.12C.xml"/>
+	<xi:include href="discovery/discovery-commons-metadata-get-2.12D.xml"/>
 	<xi:include href="discovery/discovery-commons-metadata-get-2.13.xml"/>
 	<xi:include href="discovery/discovery-commons-metadata-get-2.14.xml"/>
 								
@@ -166,6 +170,18 @@
 			<ctl:call-test name="csw:discovery-commons-metadata-get-2.11B">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>	
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.12A">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>	
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.12B">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>				
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.12C">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>	
+			<ctl:call-test name="csw:discovery-commons-metadata-get-2.12D">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>							
 			<ctl:call-test name="csw:discovery-commons-metadata-get-2.13">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>	

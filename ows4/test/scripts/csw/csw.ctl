@@ -129,8 +129,8 @@
 	</ctl:parser>		
 	
 	<!-- Schematron validator used in request element, uses the given schema, i.e.: -->
-	<!--<myparsers:SchematronValidatingParser.WFSCapabilities/>-->
-	<ctl:parser name="myparsers:SchematronValidatingParser.WFSCapabilities">
+	<!--<myparsers:SchematronValidatingParser.CSWCapabilities/>-->
+	<ctl:parser name="myparsers:SchematronValidatingParser.CSWCapabilities">
 		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schema_link">
 					<parsers:schemas>
