@@ -15,7 +15,7 @@
 	<test name="csw:discovery-commons-metadata-get-2.7B">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>If Sections does not appear in the request OR if the service does not support this parameter, the service must respond with a complete capabilities document.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The Sections element has a value of 'All', but if the service does not support sections the capabilities is excepted to have all sections.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The Sections element has a value of 'Filter_Capabilities', but if the service does not support the sections parameter the capabilities is excepted to have all sections.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.7</link>
 		<code>
 		
@@ -29,7 +29,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="sections">Filter_Capabilities</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
@@ -44,6 +44,14 @@
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 			</xsl:if>
+	
+		    <xsl:if test="$request1/*">
+				<ctl:call-test name="ctl:SchematronValidatingParser">
+					<ctl:with-param name="doc" select="$request1"/>
+					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
+					<ctl:with-param name="phase">AllTopLevelElements</ctl:with-param>
+				</ctl:call-test>				
+			</xsl:if>	
 				
 		</code>
 	</test>

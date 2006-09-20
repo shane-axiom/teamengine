@@ -16,7 +16,7 @@
 	<test name="csw:discovery-commons-metadata-get-2.5B">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>Version negotiation using AcceptVersions parameter (preference ordering): Return service metadata corresponding to the most preferred version that is supported. If none of the requested versions are supported, the server must generate an exception with code 'VersionNegotiationFailed'.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with bogus version numbers, resulting in a service exception.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with bogus version numbers that do not exist, resulting in a service exception.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.5</link>
 		<code>
 		
@@ -30,7 +30,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="acceptversions">99.99.99,99.98.98</param>
-					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
+					<myparsers:XMLValidatingParser.ServiceException/>
 				</request>
 			</xsl:variable>
 			

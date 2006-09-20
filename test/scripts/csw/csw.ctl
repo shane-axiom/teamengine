@@ -20,7 +20,7 @@
 	<!--<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
 		<ctl:call-test name="ctl:assert-xpath">
 		<ctl:with-param name="expr" select="$expression"/>
-		<ctl:with-param name="doc" select="$cap-doc"/>
+		<ctl:with-param name="doc" select="$request1"/>
 	</ctl:call-test>-->
 	<ctl:test name="ctl:assert-xpath">
 		<ctl:param name="expr">An XPath expression.</ctl:param>
@@ -41,7 +41,7 @@
 	
 	<!-- Used to call the schematron validator outside the request element, i.e.: -->
 	<!--<ctl:call-test name="ctl:SchematronValidatingParser">
-		<ctl:with-param name="doc" select="$cap-doc"/>
+		<ctl:with-param name="doc" select="$request1"/>
 		<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
 		<ctl:with-param name="phase">Default</ctl:with-param>
 	</ctl:call-test>-->

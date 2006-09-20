@@ -29,7 +29,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="sections">All</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
@@ -43,6 +43,14 @@
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
+			</xsl:if>
+				
+		    <xsl:if test="$request1/*">
+				<ctl:call-test name="ctl:SchematronValidatingParser">
+					<ctl:with-param name="doc" select="$request1"/>
+					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
+					<ctl:with-param name="phase">AllTopLevelElements</ctl:with-param>
+				</ctl:call-test>				
 			</xsl:if>
 				
 		</code>

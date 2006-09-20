@@ -14,7 +14,7 @@
 
 	<test name="csw:discovery-commons-metadata-get-2.2C">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type.</assertion>
+      <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type. See Table 2 for definitions of optional query parameters.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. TThere is a service ('CSW') and no version attribute.  The server should process the request as usual (for the default version of '2.0.1').</comment>
       <link>csw-2.0.1#discovery.commons.metadata.get.2.2</link>
 		<code>
@@ -27,7 +27,7 @@
 				   <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service">CSW</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			

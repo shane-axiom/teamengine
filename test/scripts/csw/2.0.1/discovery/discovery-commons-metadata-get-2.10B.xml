@@ -29,7 +29,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="acceptformats">asdf/asdf</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
