@@ -28,7 +28,7 @@
 					<param name="SeRvIcE">CSW</param>
 					<param name="vErSiOn">2.0.1</param>
 					<param name="RequesT">GetCapabilities</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			

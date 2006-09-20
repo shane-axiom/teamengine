@@ -30,7 +30,7 @@
 				   	<param name="service">CSW</param>
 					<param name="typename">csw:Record</param>
 					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
-					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
+					<myparsers:XMLValidatingParser.ServiceException/>
 				</request>
 			</xsl:variable>
 			

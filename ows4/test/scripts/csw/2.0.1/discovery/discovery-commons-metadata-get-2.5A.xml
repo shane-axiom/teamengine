@@ -15,7 +15,7 @@
 	<test name="csw:discovery-commons-metadata-get-2.5A">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>Version negotiation using AcceptVersions parameter (preference ordering): Return service metadata corresponding to the most preferred version that is supported. If none of the requested versions are supported, the server must generate an exception with code 'VersionNegotiationFailed'.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with a number of versions, one is expected to return.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with a number of versions, one is expected to return ('1.0.0').</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.5</link>
 		<code>
 		
@@ -29,7 +29,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="acceptversions">1.0.0,2.0.0,2.0.1</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
@@ -38,7 +38,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
+				<xsl:variable name="expression">//csw:Capabilities/@version='1.0.0'</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
