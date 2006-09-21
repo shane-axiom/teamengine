@@ -93,12 +93,12 @@
 		<ctl:code>
 		
 			<!-- Declare variables to be used in tests -->
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
 						
 			<!-- Run the tests -->
 			

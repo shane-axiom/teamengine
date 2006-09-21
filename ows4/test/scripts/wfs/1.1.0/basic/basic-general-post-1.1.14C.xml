@@ -7,7 +7,6 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
- xmlns:ogc="http://www.opengis.net/ogc"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

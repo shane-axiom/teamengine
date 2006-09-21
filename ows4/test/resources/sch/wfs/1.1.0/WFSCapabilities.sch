@@ -11,7 +11,7 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 	<sch:title>Patterns for WFS-1.1.0 capabilities documents</sch:title>
 	
 	<sch:ns prefix="wfs" uri="http://www.opengis.net/wfs"/>
-	<sch:ns prefix="ows" uri="http://www.opengeospatial.net/ows"/>
+	<sch:ns prefix="ows" uri="http://www.opengis.net/ows"/>
 	<sch:ns prefix="ogc" uri="http://www.opengis.net/ogc"/>
 	
 	<sch:p xml:lang="en">

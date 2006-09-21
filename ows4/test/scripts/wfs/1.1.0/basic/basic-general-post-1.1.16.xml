@@ -7,7 +7,7 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
- xmlns:ogc="http://www.opengis.net/ogc"
+ xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -41,7 +41,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//ogc:ServiceExceptionReport</xsl:variable>
+				<xsl:variable name="expression">//ows:ExceptionReport</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
