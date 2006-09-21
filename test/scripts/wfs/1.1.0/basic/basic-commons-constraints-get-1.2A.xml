@@ -30,7 +30,7 @@
 					<param name="version">1.1.0</param>
 					<param name="typename">sf:SimplePointFeature,sf:SimpleGeoFeature</param>
 					<param name="namespace">xmlns(sf=http://www.opengis.net/cite/gmlsf)</param>
-					<!--<myparsers:XMLValidatingParser.XMLSchema/>-->
+					<myparsers:XMLValidatingParser.XMLSchema/>
 				</request>
 			</xsl:variable>
 			

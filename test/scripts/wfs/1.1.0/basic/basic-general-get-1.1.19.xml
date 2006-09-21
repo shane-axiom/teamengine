@@ -32,7 +32,7 @@
 					<param name="typename">sf:SimplePointFeature</param>
 					<param name="namespace">xmlns(sf=http://www.opengis.net/cite/gmlsf)</param>
 					<!--<param name="namespace">xmlns(sf=http%3A%2F%2Fwww.opengis.net%2Fcite%2Fgmlsf)</param>-->
-					<!--<myparsers:XMLValidatingParser.XMLSchema/>-->
+					<myparsers:XMLValidatingParser.XMLSchema/>
 				</request>
 			</xsl:variable>		
 			

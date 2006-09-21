@@ -32,7 +32,7 @@
 				   </wfs:GetFeature>
 				   ]]>
 					</body>
-					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
+					<myparsers:XMLValidatingParser.ServiceException/>
 				</request>
 			</xsl:variable>
 			
