@@ -28,7 +28,7 @@
 					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			
@@ -55,7 +55,7 @@
 				    <!--TODO-->
 				    ]]>
 					</body>
-					<!--<myparsers:XMLValidatingParser.CSW/>-->
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			

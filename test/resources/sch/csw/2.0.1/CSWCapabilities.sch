@@ -11,7 +11,7 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 	<sch:title>Patterns for CSW-2.0.1 capabilities documents</sch:title>
 	
 	<sch:ns prefix="csw" uri="http://www.opengis.net/cat/csw"/>
-	<sch:ns prefix="ows" uri="http://www.opengeospatial.net/ows"/>
+	<sch:ns prefix="ows" uri="http://www.opengis.net/ows"/>
 	<sch:ns prefix="ogc" uri="http://www.opengis.net/ogc"/>
 	
     <sch:p xml:lang="en">

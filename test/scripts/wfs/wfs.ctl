@@ -6,7 +6,7 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
- xmlns:ogc="http://www.opengis.net/ogc"
+ xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -101,7 +101,7 @@
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/filter-1.1.0-composite.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ows-common-1.0.1.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
