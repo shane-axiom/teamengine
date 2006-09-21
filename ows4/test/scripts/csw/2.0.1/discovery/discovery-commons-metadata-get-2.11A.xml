@@ -28,7 +28,7 @@
 					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<parsers:HTTPParser/>
 				</request>
 			</xsl:variable>
 			
@@ -42,6 +42,11 @@
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
+				
+				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
+				<xsl:if test="not($content-type = 'txt/xml')">
+					<ctl:fail/>
+				</xsl:if>
 			</xsl:if>
 				
 		</code>

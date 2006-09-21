@@ -39,7 +39,7 @@
 				    </wfs:GetFeature>
 				   ]]>
 					</body>
-					<!--<myparsers:XMLValidatingParser.WFS/>-->
+					<myparsers:XMLValidatingParser.WFS/>
 				</request>
 			</xsl:variable>
 			
