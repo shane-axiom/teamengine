@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery-getrecords-post-2.4.14">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <assertion>GetRecords response must be schema valid according to CSW 2.0.1.</assertion>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The result is simply tested against the CSW 2.0.1 schema for validity.</comment>
+      <link>csw-2.0.1#discovery.getrecords.post.2.4.14</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body><![CDATA[
+<csw:GetRecords version="2.0.1"
+outputFormat="application/xml"
+outputSchema="csw:Record">
+	<csw:Query typeName="csw:Record"/>
+</csw:GetRecords>
+					]]></body>
+					<myparsers:XMLValidatingParser.CSW/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//csw:GetRecordsResponse</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>

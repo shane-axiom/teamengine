@@ -14,7 +14,7 @@
 
 	<test name="csw:sanity-check">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <param name="VAR_CSW_GET_RECORD_HTTP_POST_URL"/>
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>CSW sanity check - to determine if the service is running and has the test data loaded.</assertion>
       <comment>This test first issues a GetCapabilities request using HTTP GET to the CSW server under test to ensure the service is running.  It then performs a GetRecord request for one of the data members that must be loaded to the server.</comment>
 		<code>
@@ -47,7 +47,7 @@
 			<xsl:variable name="request2">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORD_HTTP_POST_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 					</url>
 					<method>post</method>
 				    <body><![CDATA[
