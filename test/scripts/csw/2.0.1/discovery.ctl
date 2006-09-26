@@ -70,6 +70,8 @@
 	<!--=================-->		
 		
 	<xi:include href="discovery/discovery-getrecords-post-2.4.1.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.2.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.3.xml"/>	
 	<xi:include href="discovery/discovery-getrecords-post-2.4.14.xml"/>		
 	
 	<!--=================-->
@@ -205,6 +207,12 @@
 			<ctl:call-test name="csw:discovery-getrecords-post-2.4.1">
 				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 			</ctl:call-test>					
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.2">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.3">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>		
 			<ctl:call-test name="csw:discovery-getrecords-post-2.4.14">
 				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 			</ctl:call-test>		
