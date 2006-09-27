@@ -86,7 +86,8 @@
 		
 		<txsl:template name="{@name}">
 			<xsl:call-template name="loc"/>
-			<xsl:copy-of select="namespace::*[name()=$prefix]"/>
+			<xsl:copy-of select="namespace::*"/>
+<!--			<xsl:copy-of select="namespace::*[name()=$prefix]"/> -->
 			<xsl:for-each select="ctl:param">
 				<txsl:param name="{@name}">
 					<xsl:call-template name="loc"/>
@@ -548,10 +549,16 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:variable name="prefix" select="substring-before(@name, ':')"/>
+<!--
 		<txsl:value-of select="{@name}({substring($te:param-list,2)})">
 			<xsl:call-template name="loc"/>
 			<xsl:copy-of select="namespace::*[name()=$prefix]"/>
 		</txsl:value-of>
+-->
+		<txsl:copy-of select="{@name}({substring($te:param-list,2)})">
+			<xsl:call-template name="loc"/>
+			<xsl:copy-of select="namespace::*[name()=$prefix]"/>
+		</txsl:copy-of>
 	</xsl:template>
 
  	<xsl:template name="make-var-params">
@@ -579,7 +586,8 @@
 		<xsl:variable name="namespace-uri" select="namespace::*[name()=$prefix]"/>
 		<txsl:function name="{@name}">
 			<xsl:call-template name="loc"/>
-			<xsl:copy-of select="namespace::*[name()=$prefix]"/>
+			<xsl:copy-of select="namespace::*"/>
+<!--			<xsl:copy-of select="namespace::*[name()=$prefix]"/> -->
 			<xsl:variable name="parameters">
 				<xsl:for-each select="ctl:param">
 					<xsl:variable name="param-name" select="@name"/>
@@ -664,6 +672,13 @@
 	</xsl:template>
 
  	<xsl:template match="node()">
+		<xsl:copy>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+
+ 	<xsl:template match="node()" mode="fn-code">
 		<xsl:copy>
 			<xsl:apply-templates select="@*"/>
 			<xsl:apply-templates/>
