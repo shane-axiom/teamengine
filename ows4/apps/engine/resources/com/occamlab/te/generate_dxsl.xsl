@@ -32,6 +32,7 @@
 	<xsl:namespace-alias stylesheet-prefix="txsl" result-prefix="xsl"/>
 	
 	<xsl:param name="filename"/>
+	<xsl:param name="txsl_filename" select="'memory:txsl'"/>
 
 	<xsl:variable name="apos">'</xsl:variable>
 
@@ -49,7 +50,8 @@
 		<xsl:variable name="prefix" select="substring-before(@name, ':')"/>
 		<xsl:variable name="namespace-uri" select="namespace::*[name()=$prefix]"/>
 		<txsl:template name="{@name}">
-			<xsl:copy-of select="namespace::*[name()=$prefix]"/>
+<!--			<xsl:copy-of select="namespace::*[name()=$prefix]"/> -->
+			<xsl:copy-of select="namespace::*"/>
 			<xsl:for-each select="ctl:param">
 				<txsl:param name="{@name}" select="string(.)"/>
 			</xsl:for-each>
@@ -81,7 +83,7 @@
 					</xsl:for-each>
 				</starttest>
 			</txsl:variable>
-			<txsl:value-of select="te:message($te:call-depth, concat('{$local-name}: ', $te:start-test/starttest/assertion))"/>
+			<txsl:value-of select="te:message($te:core, $te:call-depth, concat('{$local-name}: ', $te:start-test/starttest/assertion))"/>
 			<xsl:apply-templates select="ctl:code/*"/>
 		</txsl:template>
 	</xsl:template>
@@ -176,9 +178,21 @@
  	<xsl:template match="ctl:*">
 		<xsl:apply-templates/>
 	</xsl:template>
-
+<!--
 	<xsl:template match="/">
 		<txsl:transform version="1.0" exclude-result-prefixes="ctl saxon">
+			<xsl:apply-templates/>
+		</txsl:transform>
+	</xsl:template>
+-->
+	<xsl:template match="/">
+		<txsl:transform version="1.0" exclude-result-prefixes="ctl saxon">
+			<txsl:template name="file:te-initialize">
+				<xsl:call-template name="namespace-attribute">
+					<xsl:with-param name="prefix" select="'file'"/>
+					<xsl:with-param name="uri" select="$txsl_filename"/>
+				</xsl:call-template>
+			</txsl:template>
 			<xsl:apply-templates/>
 		</txsl:transform>
 	</xsl:template>
