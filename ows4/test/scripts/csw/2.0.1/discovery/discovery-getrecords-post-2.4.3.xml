@@ -14,7 +14,7 @@
 
 	<test name="csw:discovery-getrecords-post-2.4.3">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-      <assertion>If resultType is "results" then must return any matching records, up to the max number of hits number in the SearchResults element.</assertion>
+      <assertion>If resultType is 'results' then must return any matching records, up to the max number of hits number in the SearchResults element.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The resultType is 'validate' and should respond with a csw:Acknowledgement response to inidicate it will process the request.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.3</link>
 		<code>
@@ -26,10 +26,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords version="2.0.1"
-outputFormat="application/xml"
-resultType="validate"
-outputSchema="csw:Record">
+<csw:GetRecords resultType="validate">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>

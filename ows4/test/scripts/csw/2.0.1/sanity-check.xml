@@ -25,8 +25,8 @@
 						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
-					<param name="service">CSW</param>
-					<param name="version">2.0.1</param>
+					<param name="service">WFS</param>
+					<param name="version">1.1.0</param>
 					<param name="request">GetCapabilities</param>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
@@ -52,7 +52,7 @@
 					<method>post</method>
 				    <body><![CDATA[
 				    <csw:GetRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1" service="CSW"/>
-				    <!--TODO-->
+				    <!--TODO: get record that is in data set-->
 				    ]]>
 					</body>
 					<myparsers:XMLValidatingParser.CSW/>
