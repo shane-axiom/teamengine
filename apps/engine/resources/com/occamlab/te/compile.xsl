@@ -38,10 +38,12 @@
 	<xsl:template name="namespace-attribute">
 		<xsl:param name="prefix"/>
 		<xsl:param name="uri"/>
-		<xsl:variable name="element">
-			<xsl:element name="{$prefix}:x" namespace="{$uri}"/>
-		</xsl:variable>
-		<xsl:copy-of select="$element/*/namespace::*[name()=$prefix]"/>
+		<xsl:if test="$uri != ''">
+			<xsl:variable name="element">
+				<xsl:element name="{$prefix}:x" namespace="{$uri}"/>
+			</xsl:variable>
+			<xsl:copy-of select="$element/*/namespace::*[name()=$prefix]"/>
+                </xsl:if>
 	</xsl:template>
 
 	<xsl:template name="loc">
