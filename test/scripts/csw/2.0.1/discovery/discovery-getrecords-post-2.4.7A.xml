@@ -12,22 +12,24 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-getcapabilities-get-2.1.2">
-      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>Service parameter value must be 'CSW' or profile-specific identifier.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The service is set as 'CSW' and a valid capabilities document is expected.</comment>
-      <link>csw-2.0.1#discovery.getcapabilities.get.2.1.2</link>
+	<test name="csw:discovery-getrecords-post-2.4.7A">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <assertion>The maxRecords parameter has a default value of 10. If the value is 0 then the server should react as if the 'resultType=HITS' (see 10.8.4.2).</assertion>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The maxRecords is set to '0' and should respond like the resultType was 'hits', with an empty SearchResults element with the number of hits for the request.</comment>
+      <link>csw-2.0.1#discovery.getrecords.post.2.4.7</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">CSW</param>
-					<param name="version">2.0.1</param>
-					<param name="request">GetCapabilities</param>
+					<method>post</method>
+					<body><![CDATA[
+<csw:GetRecords maxRecords="0">
+	<csw:Query typeName="csw:Record"/>
+</csw:GetRecords>
+					]]></body>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
@@ -37,7 +39,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
+				<xsl:variable name="expression">count(//csw:GetRecordsResponse/csw:SearchResults/*) = 0</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

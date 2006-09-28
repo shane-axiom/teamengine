@@ -70,6 +70,38 @@
 		<ctl:description>Afunction to call the schematon validator.</ctl:description>
 		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="checkSchematronRules" initialized="true"/>
 	</ctl:function>		
+
+	<!-- Used to call the xml validator outside the request element (after using parsers:HTTPParser in this case), i.e.: -->
+	<!--<ctl:call-test name="ctl:XMLValidatingParser">
+			<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
+			<ctl:with-param name="instruction">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/csw-2.0.1-composite.xsd</parsers:schema>
+				</parsers:schemas>
+			</ctl:with-param>
+	</ctl:call-test>-->
+	<ctl:test name="ctl:XMLValidatingParser">
+			<ctl:param name="doc"/>
+			<ctl:param name="instruction"/>
+			<ctl:assertion>Validating with XMLValidatingParser.</ctl:assertion>
+			<ctl:code>
+				<xsl:variable name="return-value">
+					<ctl:call-function name="ctl:CallXMLValidatingParser">
+						<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
+						<ctl:with-param name="instruction"><xsl:copy-of select="$instruction"/></ctl:with-param>
+					</ctl:call-function>
+				</xsl:variable>
+				<xsl:if test="$return-value='false'">
+					<ctl:fail/>
+				</xsl:if>	
+			</ctl:code>
+	</ctl:test>	
+	<ctl:function name="ctl:CallXMLValidatingParser">
+		<ctl:param name="doc"/>
+		<ctl:param name="instruction"/>
+		<ctl:description>Afunction to call the XML validator.</ctl:description>
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="checkXMLRules" initialized="true"/>
+	</ctl:function>	
 	
 	<!--=================-->
 	<!-- CUSTOM PARSERS -->

@@ -14,7 +14,7 @@
 
 	<test name="csw:discovery-getrecords-post-2.4.1">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-      <assertion>If resultType is “hits” then must return a GetRecordsResponse element containing an empty 'SearchResults' element that indicates the estimated size of the result set. Other optional atrbiutes may also be set.</assertion>
+      <assertion>If resultType is 'hits' then must return a GetRecordsResponse element containing an empty 'SearchResults' element that indicates the estimated size of the result set. Other optional atrbiutes may also be set.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The resultType is 'hits' and should respond with an empty SearchResults element with the number of hits for the request.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.1</link>
 		<code>
@@ -26,10 +26,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords version="2.0.1"
-outputFormat="application/xml"
-resultType="hits"
-outputSchema="csw:Record">
+<csw:GetRecords resultType="hits">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
