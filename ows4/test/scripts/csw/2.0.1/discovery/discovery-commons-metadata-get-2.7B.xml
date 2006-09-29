@@ -19,6 +19,8 @@
       <link>csw-2.0.1#discovery-commons-metadata-get-2.7</link>
 		<code>
 		
+			<!--Assume: The service does not support the sections paramter.-->
+		
 			<xsl:variable name="request1">
 				<request>
 					<url>

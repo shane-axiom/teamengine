@@ -14,9 +14,10 @@
 
 	<test name="csw:discovery-getrecords-post-2.4.3">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-      <assertion>If resultType is 'results' then must return any matching records, up to the max number of hits number in the SearchResults element.</assertion>
+      <assertion>If resultType is 'validate' then must return an Acknowledgement element (with a RequestId element if asnyc processing is supported) if the validation succeeded, or a ServiceException if it failed.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The resultType is 'validate' and should respond with a csw:Acknowledgement response to inidicate it will process the request.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.3</link>
+      <link>OGC 04-021r3, 10.8.4.2, p. 135</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords resultType="validate">
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" resultType="validate">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
@@ -44,6 +45,9 @@
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
+				
+				<!--TODO: Check RequestId?-->
+				
 			</xsl:if>
 				
 		</code>

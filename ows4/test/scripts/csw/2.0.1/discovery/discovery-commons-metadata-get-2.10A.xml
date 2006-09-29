@@ -15,7 +15,7 @@
 	<test name="csw:discovery-commons-metadata-get-2.10A">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>If the the server recognizes the AcceptFormats parameter, the response entity shall correspond to the most preferred format that the service supports. If none of the content types is supported, the XML representation must be provided instead.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter has the value 'txt/plain' and should result in the latest version capabilities document in the 'txt/plain' format.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter has the value 'text/plain' and should result in the latest version capabilities document in the 'text/plain' format.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.10</link>
 		<code>
 		
@@ -28,7 +28,7 @@
 					<param name="service">CSW</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<param name="acceptformats">txt/plain</param>
+					<param name="acceptformats">text/plain</param>
 					<parsers:HTTPParser/>
 				</request>
 			</xsl:variable>
@@ -45,7 +45,7 @@
 				</ctl:call-test>
 				
 				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
-				<xsl:if test="not($content-type = 'txt/plain')">
+				<xsl:if test="not($content-type = 'text/plain')">
 					<ctl:fail/>
 				</xsl:if>
 			</xsl:if>
