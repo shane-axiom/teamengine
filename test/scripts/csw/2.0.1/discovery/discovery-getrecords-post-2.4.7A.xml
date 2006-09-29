@@ -14,9 +14,10 @@
 
 	<test name="csw:discovery-getrecords-post-2.4.7A">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-      <assertion>The maxRecords parameter has a default value of 10. If the value is 0 then the server should react as if the 'resultType=HITS' (see 10.8.4.2).</assertion>
+      <assertion>The maxRecords parameter has a default value of 10. If the value is 0 then the server should react as if the 'resultType=hits' (see 10.8.4.2).</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The maxRecords is set to '0' and should respond like the resultType was 'hits', with an empty SearchResults element with the number of hits for the request.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.7</link>
+      <link>OGC 04-021r3, 10.8.4.6, p. 136</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords maxRecords="0">
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" maxRecords="0">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>

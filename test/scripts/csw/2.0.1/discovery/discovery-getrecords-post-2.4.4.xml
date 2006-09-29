@@ -17,6 +17,7 @@
       <assertion>The outputFormat must be a valid MIME type, and must at least support 'application/xml'.  When it is 'application/xml' it must validate against the schemas in the xsi:schemaLocation element.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The outputFormat is set to 'application/xml' and the result should be of this output type and valid.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.4</link>
+      <link>OGC 04-021r3, 10.8.4.3, p. 135</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords outputFormat="application/xml">
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" outputFormat="application/xml">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
@@ -60,7 +61,7 @@
 				</xsl:if>								
 			</xsl:if>
 				
-	
+			<!--TODO: Another test(s) for "plain/txt" and others?-->
 				
 		</code>
 	</test>

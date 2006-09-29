@@ -45,6 +45,8 @@
 				</ctl:call-test>
 			</xsl:if>
 				
+			<!--TODO: Modify capabiltiies document to accept more than one version for this test.-->
+			
 		</code>
 	</test>
 </ctl:package>

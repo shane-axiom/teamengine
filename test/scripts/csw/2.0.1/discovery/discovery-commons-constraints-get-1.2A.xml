@@ -45,6 +45,8 @@
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 			</xsl:if>					
+			
+			<!--TODO: Similar requests for all mandatory operations, or just DescribeFeatureType OK?-->
 				
 		</code>
 	</test>

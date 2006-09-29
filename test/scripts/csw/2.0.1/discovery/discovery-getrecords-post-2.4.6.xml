@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery-getrecords-post-2.4.6">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <assertion>The startPosition parameter has a default value of 1 and starts at first record in result set.</assertion>
+      <comment>This test issues two GetRecords requests using HTTP POST to the CSW server under test. The first request has no startPosition stated and should return the first record in the set, the second has the value of '2' and should return the next record, copmparing the first record in each set should be different.</comment>
+      <link>csw-2.0.1#discovery.getrecords.post.2.4.6</link>
+      <link>OGC 04-021r3, 10.8.4.5, p. 136</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body><![CDATA[
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw">
+	<csw:Query typeName="csw:Record"/>
+</csw:GetRecords>
+					]]></body>
+					<myparsers:XMLValidatingParser.CSW/>
+				</request>
+			</xsl:variable>
+		
+			<xsl:variable name="request2">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body><![CDATA[
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" startPosition='2'>
+	<csw:Query typeName="csw:Record"/>
+</csw:GetRecords>
+					]]></body>
+					<myparsers:XMLValidatingParser.CSW/>
+				</request>
+			</xsl:variable>		
+			
+			<xsl:if test="not($request1/*) or not($request2/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/* and $request2/*">
+				<xsl:variable name="r1" select="$request1//csw:GetRecordsResponse/csw:SearchResults/csw:Record[1]"/>
+				<xsl:variable name="r2" select="$request2//csw:GetRecordsResponse/csw:SearchResults/csw:Record[1]"/>
+				<xsl:variable name="expression">not($r1 = $r2)</xsl:variable>
+				<xsl:if test="$r1 = $r2">
+					<ctl:fail/>
+				</xsl:if>						
+				
+				<!--TODO: Check for a specific record for both the first and second request?-->						
+				
+			</xsl:if>		
+				
+		</code>
+	</test>
+</ctl:package>

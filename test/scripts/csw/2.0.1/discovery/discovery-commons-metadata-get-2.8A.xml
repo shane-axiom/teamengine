@@ -44,6 +44,8 @@
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 			</xsl:if>
+
+			<!--TODO: Set update sequence numbers on the capabilities document for theses tests to use.-->
 				
 		</code>
 	</test>

@@ -15,8 +15,9 @@
 	<test name="csw:discovery-getrecords-post-2.4.5">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>The outputSchema default value to be supported is OGCCORE (see clause 6.3.3). Addional values can be implemented as defined in the profile.</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The outputSchema is set to 'OGCCORE' (default) and the result should be and valid.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The outputSchema is set to 'OGCCORE' (default) and the result should be valid.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.5</link>
+      <link>OGC 04-021r3, 10.8.4.4, p. 135</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords outputSchema="OGCCOREl">
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" outputSchema="OGCCOREl">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
@@ -46,7 +47,7 @@
 				</ctl:call-test>								
 			</xsl:if>
 				
-	
+			<!--TODO: Check additional outputSchema values?-->
 				
 		</code>
 	</test>

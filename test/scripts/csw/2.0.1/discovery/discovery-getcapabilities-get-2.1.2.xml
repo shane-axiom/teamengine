@@ -17,6 +17,7 @@
       <assertion>Service parameter value must be 'CSW' or profile-specific identifier.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The service is set as 'CSW' and a valid capabilities document is expected.</comment>
       <link>csw-2.0.1#discovery.getcapabilities.get.2.1.2</link>
+      <link>OGC 04-021r3, 10.5.2, p. 121</link>
 		<code>
 		
 			<xsl:variable name="request1">

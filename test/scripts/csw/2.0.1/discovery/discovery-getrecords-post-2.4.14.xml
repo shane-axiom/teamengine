@@ -17,6 +17,7 @@
       <assertion>GetRecords response must be schema valid according to CSW 2.0.1.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The result is simply tested against the CSW 2.0.1 schema for validity.</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.14</link>
+      <link>OGC 04-021r3, 10.8.5, p. 138</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords>
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>

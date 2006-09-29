@@ -10,11 +10,11 @@
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
-	
-	<!--===============-->
-	<!-- GENERAL TESTS -->
-	<!--===============-->	
 
+	<!--====================-->
+	<!-- OWS COMMONS TESTS -->
+	<!--====================-->	
+	
 	<xi:include href="discovery/discovery-commons-constraints-get-1.1A.xml"/>
 	<xi:include href="discovery/discovery-commons-constraints-get-1.1B.xml"/>
 	<xi:include href="discovery/discovery-commons-constraints-get-1.1C.xml"/>				
@@ -57,6 +57,11 @@
 	<xi:include href="discovery/discovery-commons-metadata-get-2.13.xml"/>
 	<xi:include href="discovery/discovery-commons-metadata-get-2.14.xml"/>
 	
+	<!--===============-->
+	<!-- GENERAL TESTS -->
+	<!--===============-->	
+
+	<xi:include href="discovery/discovery-general-get-1.3.1.xml"/>	
 	<xi:include href="discovery/discovery-general-get-1.4.xml"/>	
 	
 	<!--=====================-->
@@ -74,8 +79,27 @@
 	<xi:include href="discovery/discovery-getrecords-post-2.4.3.xml"/>	
 	<xi:include href="discovery/discovery-getrecords-post-2.4.4.xml"/>	
 	<xi:include href="discovery/discovery-getrecords-post-2.4.5.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.6.xml"/>
 	<xi:include href="discovery/discovery-getrecords-post-2.4.7A.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.7B.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.7C.xml"/>			
+	<xi:include href="discovery/discovery-getrecords-post-2.4.10A.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-post-2.4.10B.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-get-2.4.10A.xml"/>	
+	<xi:include href="discovery/discovery-getrecords-get-2.4.10B.xml"/>			
+	<xi:include href="discovery/discovery-getrecords-post-2.4.11.xml"/>
+	<xi:include href="discovery/discovery-getrecords-post-2.4.13.xml"/>			
 	<xi:include href="discovery/discovery-getrecords-post-2.4.14.xml"/>		
+	
+	<!--=====================-->
+	<!-- GETRECORDBYID TESTS -->
+	<!--=====================-->	
+	
+	<xi:include href="discovery/discovery-getrecordbyid-post-2.5.1A.xml"/>	
+	<xi:include href="discovery/discovery-getrecordbyid-post-2.5.1B.xml"/>	
+	<xi:include href="discovery/discovery-getrecordbyid-post-2.5.1C.xml"/>			
+	<xi:include href="discovery/discovery-getrecordbyid-post-2.5.2.xml"/>	
+	<xi:include href="discovery/discovery-getrecordbyid-post-2.5.3.xml"/>	
 	
 	<!--=================-->
 	<!-- MAIN TEST DRIVER -->
@@ -93,8 +117,10 @@
 			<xsl:variable name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 			<xsl:variable name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
 			<xsl:variable name="VAR_CSW_GET_RECORDS_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
-			<xsl:variable name="VAR_CSW_GET_RECORDS_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
-			
+			<xsl:variable name="VAR_CSW_GET_RECORDS_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>
+			<xsl:variable name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
+			<xsl:variable name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL">http://vancouver1.demo.galdosinc.com/csw/http</xsl:variable>	
+							
 			<!-- Run the tests -->
 			
 			<!-- SANITY-CHECK -->			
@@ -199,6 +225,9 @@
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>	
 
+			<ctl:call-test name="csw:discovery-general-get-1.3.1">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>				
 			<ctl:call-test name="csw:discovery-general-get-1.4">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>	
@@ -222,13 +251,56 @@
 			<ctl:call-test name="csw:discovery-getrecords-post-2.4.5">
 				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 			</ctl:call-test>				
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.6">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>					
 			<ctl:call-test name="csw:discovery-getrecords-post-2.4.7A">
 				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.7B">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>	
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.7C">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>			
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.10A">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.10B">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>								
+			<ctl:call-test name="csw:discovery-getrecords-get-2.4.10A">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+			</ctl:call-test>		
+			<ctl:call-test name="csw:discovery-getrecords-get-2.4.10B">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+			</ctl:call-test>					
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.11">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="csw:discovery-getrecords-post-2.4.13">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+			</ctl:call-test>
 			<ctl:call-test name="csw:discovery-getrecords-post-2.4.14">
 				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 			</ctl:call-test>
-			
+
+			<ctl:call-test name="csw:discovery-getrecordbyid-post-2.5.1A">
+				<ctl:with-param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL" select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="csw:discovery-getrecordbyid-post-2.5.1B">
+				<ctl:with-param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL" select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="csw:discovery-getrecordbyid-post-2.5.1C">
+				<ctl:with-param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL" select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+			</ctl:call-test>						
+			<ctl:call-test name="csw:discovery-getrecordbyid-post-2.5.2">
+				<ctl:with-param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL" select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+			</ctl:call-test>
+			<ctl:call-test name="csw:discovery-getrecordbyid-post-2.5.3">
+				<ctl:with-param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL" select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+			</ctl:call-test>
+						
 			<!-- OPTIONAL -->
 			
 			<ctl:call-test name="csw:discovery-commons-metadata-get-2.6A">

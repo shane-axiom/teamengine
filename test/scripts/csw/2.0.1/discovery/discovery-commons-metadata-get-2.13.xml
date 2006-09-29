@@ -37,7 +37,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:Capabilities/@version='2.0.1'</xsl:variable>
+				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

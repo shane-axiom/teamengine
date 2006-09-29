@@ -17,7 +17,10 @@
       <assertion>If resultType is 'results' then must return any matching records, up to the max number of hits number in the SearchResults element.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The resultType is 'results' and should respond with the usual SearchResults, with no more results than the specified hits number (3).</comment>
       <link>csw-2.0.1#discovery.getrecords.post.2.4.2</link>
+      <link>OGC 04-021r3, 10.8.4.2, p. 135</link>
 		<code>
+		
+			<!--TODO: Are there 3 records for sure?-->
 		
 			<xsl:variable name="request1">
 				<request>
@@ -26,7 +29,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords resultType="results" maxRecords="3">
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" resultType="results" maxRecords="3">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
