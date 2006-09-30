@@ -32,7 +32,8 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetRecords</param>
 					<param name="sortby">gml:description:D</param>
-					<param name="namespace">xmlns(gml=http://www.opengis.net/gml)</param>
+					<param name="typenames">csw:Record</param>
+					<param name="namespace">xmlns(gml=http://www.opengis.net/gml),xmlns(csw=http://www.opengis.net/cat/csw)</param>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>	

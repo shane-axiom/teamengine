@@ -12,27 +12,26 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-getrecordbyid-post-2.5.3">
-      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
-      <assertion>GetRecordById response must be schema valid according to CSW 2.0.1.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP POST to the CSW server under test. The response should be valid for the CSW schema for the operation.</comment>
-      <link>csw-2.0.1#discovery.getrecordbyid.post.2.5.3</link>
-      <link>OGC 04-021r3, 10.9.5, p. 143</link>
+	<test name="csw:discovery-general-post-1.4.3A">
+      <param name="VAR_CSW_GET_DOMAIN_HTTP_POST_URL"/>
+      <assertion>Must implement HTTP-POST XML GetDomain and may implement HTTP-GET KVP version.</assertion>
+      <comment>This test issues a GetDomain request using HTTP POST to the CSW server under test. This is a mandatory operation and a valid response is expected.</comment>
+      <link>csw-2.0.1#discovery-general-post-1.4.3</link>
+      <link>OGC 04-021r3, 10.3.1, p.113</link>
 		<code>
-		
-			<!--TODO: Ensure the correct record IDs exist for this test.-->
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_DOMAIN_HTTP_POST_URL"/>
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecordById xmlns:csw="http://www.opengis.net/cat/csw">
-	<csw:Id>REC-001</csw:Id>
-</csw:GetRecords>
-					]]></body>
+<csw:GetDomain xmlns:csw="http://www.opengis.net/cat/csw" service="CSW" version="2.0.1">
+	<csw:ParameterName>GetRecords.outputFormat</csw:ParameterName>
+</csw:GetDomain>
+					]]>
+					</body>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
@@ -42,7 +41,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:GetRecordByIdResponse</xsl:variable>
+				<xsl:variable name="expression">//csw:GetDomainResponse</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

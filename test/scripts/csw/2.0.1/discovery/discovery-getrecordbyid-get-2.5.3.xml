@@ -12,28 +12,26 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-getrecordbyid-post-2.5.1A">
-      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
-      <assertion>ElementSetName can be enumerated as brief, summary or full, where full is the full set of metadata to be returned. Other enumerations are specified in the profile.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP POST to the CSW server under test. The ElementSetName is set to 'brief' so the response is expected to have a brief amount of information, as set in the profile.</comment>
-      <link>csw-2.0.1#discovery.getrecordbyid.post.2.5.1</link>
-      <link>OGC 04-021r3, 10.9.4.1, p. 142</link>
+	<test name="csw:discovery-getrecordbyid-get-2.5.3">
+      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
+      <assertion>GetRecordById response must be schema valid according to CSW 2.0.1.</assertion>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The response should be valid for the CSW schema for the operation.</comment>
+      <link>csw-2.0.1#discovery.getrecordbyid.get.2.5.3</link>
+      <link>OGC 04-021r3, 10.9.5, p. 143</link>
 		<code>
 		
-			<!--TODO: Ensure the correct record IDs exist for this test.  How to test?-->
+			<!--TODO: Ensure the correct record IDs exist for this test.-->
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
 					</url>
-					<method>post</method>
-					<body><![CDATA[
-<csw:GetRecordById xmlns:csw="http://www.opengis.net/cat/csw">
-	<csw:Id>REC-001</csw:Id>
-	<csw:ElementSetName>brief</csw:ElementSetName>
-</csw:GetRecords>
-					]]></body>
+					<method>get</method>
+					<param name="request">GetRecordById</param>
+					<param name="service">CSW</param>
+					<param name="version">2.0.1</param>
+					<param name="id">REC-001</param>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
