@@ -12,15 +12,15 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery-getrecordbyid-post-2.5.1B">
+	<test name="csw:discovery-general-post-1.4.5B">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
-      <assertion>ElementSetName can be enumerated as brief, summary or full, where full is the full set of metadata to be returned. Other enumerations are specified in the profile.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP POST to the CSW server under test. The ElementSetName is set to 'summary' so the response is expected to have a summary amount of information, as set in the profile.</comment>
-      <link>csw-2.0.1#discovery.getrecordbyid.post.2.5.1</link>
-      <link>OGC 04-021r3, 10.9.4.1, p. 142</link>
+      <assertion>Must implement HTTP-GET KVP GetRecordById and may implement HTTP-POST XML version.</assertion>
+      <comment>This test issues a GetRecordById request using HTTP POST to the CSW server under test. This is an optional operation and a valid response is expected if it is supported.</comment>
+      <link>csw-2.0.1#discovery-general-post-1.4.5</link>
+      <link>OGC 04-021r3, 10.3.1, p.113</link>
 		<code>
 		
-			<!--TODO: Ensure the correct record IDs exist for this test.  How to test?-->
+			<!--Assume: The server supports the POST XML GetRecordById operation.-->
 		
 			<xsl:variable name="request1">
 				<request>
@@ -29,11 +29,11 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecordById xmlns:csw="http://www.opengis.net/cat/csw">
-	<csw:Id>REC-001</csw:Id>
-	<csw:ElementSetName>summary</csw:ElementSetName>
-</csw:GetRecords>
-					]]></body>
+					<csw:GetRecordById xmlns:csw="http://www.opengis.net/cat/csw" service="CSW" version="2.0.1">
+						<csw:Id>REC-001</csw:Id>
+					</csw:GetRecordById>
+					]]>
+					</body>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
