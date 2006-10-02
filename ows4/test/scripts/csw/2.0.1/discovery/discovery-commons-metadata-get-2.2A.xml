@@ -17,6 +17,7 @@
       <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type. See Table 2 for definitions of optional query parameters.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. There is a version ('2.0.1') and service attribute ('CSW').  The server should process the request as usual.</comment>
       <link>csw-2.0.1#discovery.commons.metadata.get.2.2</link>
+      <link>OGC 05-008c1, 7.2.2, p.12 (Table 2)</link>
 		<code>
 		
 			<xsl:variable name="request1">

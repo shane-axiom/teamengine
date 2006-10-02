@@ -81,6 +81,7 @@
 	<!--=====================-->		
 
 	<xi:include href="discovery/discovery-getcapabilities-get-2.1.2.xml"/>
+	<xi:include href="discovery/discovery-getcapabilities-get-2.1.4.xml"/>
 
 	<!--==================-->
 	<!-- GETRECORDS TESTS -->
@@ -296,6 +297,9 @@
 			</ctl:call-test>	
 									
 			<ctl:call-test name="csw:discovery-getcapabilities-get-2.1.2">
+				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>	
+			<ctl:call-test name="csw:discovery-getcapabilities-get-2.1.4">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>	
 			

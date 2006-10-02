@@ -15,8 +15,9 @@
 	<test name="csw:discovery-commons-metadata-get-2.11A">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>If AcceptFormats does not appear in the request OR if the service does not support alternative formats, the service must respond with the XML metadata representation.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter is not included and should result in the default 'txt/xml' format.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter is not included and should result in the default 'text/xml' format.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.11</link>
+      <link>OGC 05-008c1, 7.3.5, p.18</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -44,7 +45,7 @@
 				</ctl:call-test>
 				
 				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
-				<xsl:if test="not($content-type = 'txt/xml')">
+				<xsl:if test="not($content-type = 'text/xml')">
 					<ctl:fail/>
 				</xsl:if>
 			</xsl:if>

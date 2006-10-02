@@ -17,6 +17,7 @@
       <assertion>If Sections does not appear in the request OR if the service does not support this parameter, the service must respond with a complete capabilities document.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The Sections element has a value of 'Filter_Capabilities', but if the service does not support the sections parameter the capabilities is excepted to have all sections.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.7</link>
+      <link>OGC 05-008c1, 7.3.3, p.17</link>
 		<code>
 		
 			<!--Assume: The service does not support the sections paramter.-->

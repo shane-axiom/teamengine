@@ -17,6 +17,7 @@
       <assertion>A complete service metadata document must include mandatory parameters and constraints in the OperationsMetadata section.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory OperationsMetadata section parameters and constraints.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.14</link>
+      <link>OGC 05-008c1, 7.4.6, p.26</link>
 		<code>
 		
 			<xsl:variable name="request1">

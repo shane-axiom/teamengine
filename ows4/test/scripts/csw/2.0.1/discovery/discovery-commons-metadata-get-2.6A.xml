@@ -17,6 +17,7 @@
       <assertion>If the the server recognizes the Sections parameter, the response entity shall include only the requested top-level elements. The following common sections (see Table 3) must be recognized: ServiceIdentification, ServiceProvider, OperationsMetadata, All. Additional service-specific values may be defined.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The Sections element is used with a value of 'All', the capabilities document is expected to have all sections.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.6</link>
+      <link>OGC 05-008c1, 7.3.3, p.17</link>
 		<code>
 		
 			<xsl:variable name="request1">

@@ -18,6 +18,7 @@
       <assertion>Version negotiation using AcceptVersions parameter (preference ordering): Return service metadata corresponding to the most preferred version that is supported. If none of the requested versions are supported, the server must generate an exception with code 'VersionNegotiationFailed'.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is used with bogus version numbers that do not exist, resulting in a service exception.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.5</link>
+      <link>OGC 05-008c1, 7.3.2, p.16</link>
 		<code>
 		
 			<xsl:variable name="request1">

@@ -17,6 +17,7 @@
       <assertion>All XML request entities must include the following attributes on the document element: service, version (acceptable values depend on the service type).</assertion>
       <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. There is a version ('2.0.1') and no service attribute.  he server should process the request as usual (for the default service of 'CSW').</comment>
       <link>csw-2.0.1#discovery-commons-constraints-post-1.3</link>
+      <link>OGC 05-008c1, 9.2.3, p.37</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +27,7 @@
 					</url>
 				   <method>post</method>
 				   <body><![CDATA[
-					<csw:DescribeRecord version="2.0.1">
+					<csw:DescribeRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1">
 						<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
 					</csw:DescribeRecord>
 				   ]]>

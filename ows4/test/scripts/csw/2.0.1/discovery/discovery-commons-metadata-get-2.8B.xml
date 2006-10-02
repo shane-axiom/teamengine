@@ -17,6 +17,7 @@
       <assertion>If the the server recognizes the UpdateSequence parameter, the response entity shall include the revision matching the applicable case in Table 4. The value must be incremented whenever the service metadata is changed.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The UpdateSequence parameter has the value 'None' and should result in the latest version capabilities document.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.8</link>
+      <link>OGC 05-008c1, 7.3.4, p.18</link>
 		<code>
 		
 			<xsl:variable name="request1">
