@@ -17,6 +17,7 @@
       <assertion>Parameter names in KVP strings shall be handled in a case-insensitive manner.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The KVP keys are in mixed case.  The respose will be tested to ensure a correct capabilities document was returned.</comment>
       <link>csw-2.0.1#discovery.commons.constraints.get.1.1</link>
+      <link>OGC 05-008c1, 11.5.2, p.56</link>
 		<code>		
 		
 			<xsl:variable name="request1">

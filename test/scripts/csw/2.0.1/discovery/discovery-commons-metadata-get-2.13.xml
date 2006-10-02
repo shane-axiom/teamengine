@@ -17,6 +17,7 @@
       <assertion>A valid service metadata document must conform to a content model based on the ows:CapabilitiesBaseType definition. Additional service-specific elements may be defined as needed.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all the additional CSW-related schema elements.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.13</link>
+      <link>OGC 05-008c1, 7.4.8, p.29</link>
 		<code>
 		
 			<xsl:variable name="request1">

@@ -17,8 +17,11 @@
       <assertion>If AcceptVersion is not specified, the service must respond with highest supported version.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptVersion element is not used and the latest version ('2.0.1') is expected.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.4</link>
+      <link>OGC 05-008c1, 7.3.2, p.16</link>
 		<code>
 		
+			<!--TODO: Is this test correct?-->
+			
 			<xsl:variable name="request1">
 				<request>
 					<url>

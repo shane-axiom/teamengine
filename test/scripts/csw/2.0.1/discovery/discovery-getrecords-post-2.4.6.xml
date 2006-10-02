@@ -62,7 +62,7 @@
 					<ctl:fail/>
 				</xsl:if>						
 				
-				<!--TODO: Check for a specific record for both the first and second request?-->						
+				<!--TODO: Check for a specific record for both the first and second request, or just have a base of 2 to pick from?-->						
 				
 			</xsl:if>		
 				

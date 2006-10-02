@@ -17,6 +17,7 @@
       <assertion>A valid XML request entity submitted using the POST method must conform to the declaration of the ows:GetCapabilities element.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP POST to the CSW server under test. A capabilities document is expected.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-post-2.3</link>
+      <link>OGC 05-008c1, 7.2.3, p.12</link>
 		<code>
 		
 			<xsl:variable name="request1">

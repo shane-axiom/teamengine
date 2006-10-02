@@ -18,6 +18,7 @@
       <assertion>The following query parameters are required for all KVP-encoded service requests except GetCapabilities: service, request, version.</assertion>
       <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. There is a version ('2.0.1') and no service attribute.  The server should give a service exception.</comment>
       <link>csw-2.0.1#discovery.commons.constraints.get.1.2</link>
+      <link>OGC 05-008c1, 9.2.1, p.36 (Table 20)</link>
 		<code>
 		
 			<xsl:variable name="request1">

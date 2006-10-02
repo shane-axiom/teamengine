@@ -18,6 +18,7 @@
       <assertion>In the event that a GetCapabilities request cannot be processed for any reason, the response entity shall include an exception report. The exception code must be one of those listed in Table 5.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The exception InvalidParameterValue is raised when the operation request includes an invalid parameter ('service=ASDF') value and should result in a service exception. The 'locator' shall have the name of the invalid parameter.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.12</link>
+      <link>OGC 05-008c1, 7.4.1, p.19</link>
 		<code>
 		
 			<xsl:variable name="request1">

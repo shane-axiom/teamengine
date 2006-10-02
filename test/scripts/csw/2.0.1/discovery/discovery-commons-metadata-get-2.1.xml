@@ -17,6 +17,7 @@
       <assertion>All OGC web services must implement the GetCapabilities request to provide an XML representation of service metadata.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected.</comment>
       <link>csw-2.0.1#discovery-commons-metadata-get-2.1</link>
+      <link>OGC 05-008c1, 7.1, p.10</link>
 		<code>
 		
 			<xsl:variable name="request1">
