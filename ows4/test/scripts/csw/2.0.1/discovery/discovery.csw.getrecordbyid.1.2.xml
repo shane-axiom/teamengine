@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery.csw.getrecordbyid.1.2">
+      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+      <assertion>Must implement HTTP-GET KVP GetRecordById and may implement HTTP-POST XML version.</assertion>
+      <comment>This test issues a GetRecordById request using HTTP POST to the CSW server under test. This is an optional operation and a valid response is expected if it is supported.</comment>
+      <link>OGC 04-021r3, 10.3.1, p.113</link>
+		<code>
+		
+			<!--Assume: The server supports the POST XML GetRecordById operation.-->
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body><![CDATA[
+					<csw:GetRecordById xmlns:csw="http://www.opengis.net/cat/csw" service="CSW" version="2.0.1">
+						<csw:Id>REC-001</csw:Id>
+					</csw:GetRecordById>
+					]]>
+					</body>
+					<myparsers:XMLValidatingParser.CSW/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//csw:GetRecordByIdResponse</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>

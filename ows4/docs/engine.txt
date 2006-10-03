@@ -1,0 +1,19 @@
+Running the team engine (command line).
+
+1) Install Java JRE 1.5.0 or greater (or use the JRE included with the JDK).
+
+2) Include the java JRE location in a build.properties file. For example, 
+'java.dir C:/Program Files/java/jre1.5.0_07'.
+
+3) Compile the teamengine jar file, at the prompt type 'ant jar'.
+
+4) Run any of the team engine commands via ant (see teamengine.html in the 
+docs/ directory for more info on command parameters).  To run a CTL test suite, use:
+ant test -Dquery="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" or 
+ant test -Dquery="-mode=test -source=../../test/scripts/csw/csw.ctl -logdir=logs"
+
+5) View the logs after a test is run, using: ant viewlog -Dquery="-logdir=logs -session=s0001"
+
+
+* Additional or alternative commands are contained in the engine build file 
+(use 'ant -p' or manually examine the file for more details).

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery.csw.getcapabilities.1">
+      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <assertion>Response/request entities' encoding must conform to a registered Internet media type (see RFC 2045 and RFC 2046).</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The response should be a valid MIME type, the default 'application/xml' in this case.</comment>
+      <link>OGC 04-021r3, 10.2.5, p. 112</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+					</url>
+					<method>get</method>
+					<param name="request">GetCapabilities</param>
+					<param name="service">CSW</param>
+					<param name="version">2.0.1</param>
+					<parsers:HTTPParser/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1//content/*"/>
+				</ctl:call-test>
+
+				<ctl:call-test name="ctl:XMLValidatingParser">
+						<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
+						<ctl:with-param name="instruction">
+							<parsers:schemas>
+								<parsers:schema type="resource">xsd/csw-2.0.1-composite.xsd</parsers:schema>
+							</parsers:schemas>
+						</ctl:with-param>
+				</ctl:call-test>			
+			
+				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
+				<xsl:if test="not($content-type = 'application/xml')">
+					<ctl:fail/>
+				</xsl:if>								
+			</xsl:if>
+				
+			<!--TODO: Another test(s) for "plain/txt" and other valid MIME types?-->
+				
+		</code>
+	</test>
+</ctl:package>
