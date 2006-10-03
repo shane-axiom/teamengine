@@ -6,60 +6,56 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:ows="http://www.opengis.net/ows"
+ xmlns:xlink="http://www.w3.org/1999/xlink" 
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 	
-	<!--===============-->
-	<!-- GENERAL TESTS -->
-	<!--===============-->	
+	<!--================-->
+	<!-- COMMONS TESTS -->
+	<!--================-->	
 		
-	<xi:include href="basic/basic-general-get-1.1.1.xml"/>	
-	<xi:include href="basic/basic-general-get-1.1.2A.xml"/>	
-	<xi:include href="basic/basic-general-get-1.1.2B.xml"/>			
-	<xi:include href="basic/basic-general-get-1.1.2C.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.11.xml"/>
-	<xi:include href="basic/basic-general-post-1.1.12A.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.12B.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.14A.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.14B.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.14C.xml"/>	
-	<xi:include href="basic/basic-general-post-1.1.16.xml"/>
-	<xi:include href="basic/basic-general-get-1.1.17.xml"/>
-	<xi:include href="basic/basic-general-get-1.1.18.xml"/>
-	<xi:include href="basic/basic-general-get-1.1.19.xml"/>
-	
-	<xi:include href="basic/basic-commons-constraints-get-1.1A.xml"/>	
-	<xi:include href="basic/basic-commons-constraints-get-1.1B.xml"/>
-	<xi:include href="basic/basic-commons-constraints-get-1.1C.xml"/>	
-	<xi:include href="basic/basic-commons-constraints-get-1.2A.xml"/>	
-	<xi:include href="basic/basic-commons-constraints-get-1.2B.xml"/>	
-	<xi:include href="basic/basic-commons-constraints-get-1.2C.xml"/>			
-	<xi:include href="basic/basic-commons-constraints-get-1.8.xml"/>
-	<xi:include href="basic/basic-commons-metadata-get-2.2A.xml"/>	
-	<xi:include href="basic/basic-commons-metadata-get-2.2B.xml"/>	
-	<xi:include href="basic/basic-commons-metadata-get-2.2C.xml"/>	
+	<xi:include href="basic/basic.commons.describefeaturetype.1.1.xml"/>
+	<xi:include href="basic/basic.commons.describefeaturetype.1.2.xml"/>
+	<xi:include href="basic/basic.commons.describefeaturetype.1.3.xml"/>
+	<xi:include href="basic/basic.commons.describefeaturetype.2.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.1.1.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.1.2.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.1.3.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.2.1.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.2.2.xml"/>
+	<xi:include href="basic/basic.commons.getcapabilities.2.3.xml"/>
 				
-	<!--=====================-->
-	<!-- GETCAPABILITIES TESTS -->
-	<!--=====================-->		
+	<!--===========-->
+	<!-- WFS TESTS -->
+	<!--===========-->		
 
-	<xi:include href="basic/basic-getcapabilities-get-1.2.1.xml"/>
-	<xi:include href="basic/basic-getcapabilities-post-1.2.2A.xml"/>
-	<xi:include href="basic/basic-getcapabilities-post-1.2.2B.xml"/>
-
-	<!--==================-->
-	<!-- GETFEATURE TESTS -->
-	<!--==================-->		
-	
-	<xi:include href="basic/basic-getfeature-post-1.4.1.1.xml"/>	
-	<xi:include href="basic/basic-getfeature-post-1.4.1.2.xml"/>		
-	<xi:include href="basic/basic-getfeature-post-1.4.1.3.xml"/>	
-	<xi:include href="basic/basic-getfeature-post-1.4.1.4.xml"/>
-	<xi:include href="basic/basic-getfeature-post-1.4.1.5.xml"/>		
-	<xi:include href="basic/basic-getfeature-post-1.4.1.6.xml"/>
-	<xi:include href="basic/basic-getfeature-post-1.4.2.2.xml"/>
+	<xi:include href="basic/basic.wfs.describefeaturetype.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.2.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.2.2.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.3.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.4.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.4.2.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.4.3.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.5.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.5.2.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.6.1.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.6.2.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.6.3.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.7.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.8.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.1.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.2.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.3.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.4.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.5.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.6.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.7.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.8.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.9.xml"/>
 	
 	<!--===============-->
 	<!-- WFS 1.0.0 TESTS -->
@@ -92,13 +88,41 @@
 		<ctl:assertion>Tests the WFS 1.1.0 basic capabilities and operations.</ctl:assertion>
 		<ctl:code>
 		
+			<!-- GetCapabilities to determine the proper URLs for the other operations-->
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://nautilus.baruch.sc.edu/wms/in_situ</xsl:variable>
+			<xsl:variable name="getCapabilitiesDocument">
+				<ctl:request>
+					<ctl:url>
+						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+					</ctl:url>
+					<ctl:method>get</ctl:method>
+					<ctl:param name="service">WFS</ctl:param>
+					<ctl:param name="version">1.1.0</ctl:param>
+					<ctl:param name="request">GetCapabilities</ctl:param>
+				</ctl:request>
+			</xsl:variable>		
+			
+			<xsl:if test="not($getCapabilitiesDocument//wfs:WFS_Capabilities)">
+				<ctl:message>GetCapabilities using HTTP-GET not working!</ctl:message>	
+				<ctl:fail/>
+			</xsl:if>				
+			
 			<!-- Declare variables to be used in tests -->
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_POST_URL">http://localhost:8080/wfs/http</xsl:variable>	
-			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL">
+				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
+			</xsl:variable>	
+			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL">
+				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='DescribeFeatureType']/ows:DCP/ows:HTTP/ows:Get/@xlink:href"/>
+			</xsl:variable>	
+			<xsl:variable name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_POST_URL">
+				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='DescribeFeatureType']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
+			</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_GET_URL">
+				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetFeature']/ows:DCP/ows:HTTP/ows:Get/@xlink:href"/>
+			</xsl:variable>	
+			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_POST_URL">
+				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetFeature']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
+			</xsl:variable>
 						
 			<!-- Run the tests -->
 			
@@ -109,167 +133,125 @@
 			</ctl:call-test>
 			
 			<!-- MANDATORY -->
-			<ctl:message>Mandatory Tests:</ctl:message>
-			<ctl:call-test name="wfs:basic-general-get-1.1.1">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-get-1.1.2A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-get-1.1.2B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>			
-			<ctl:call-test name="wfs:basic-general-get-1.1.2C">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>			
-			<ctl:call-test name="wfs:basic-general-post-1.1.11">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-post-1.1.12A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-post-1.1.12B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>		
-			<ctl:call-test name="wfs:basic-general-post-1.1.14A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-post-1.1.14B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>		
-			<ctl:call-test name="wfs:basic-general-post-1.1.14C">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-post-1.1.16">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-get-1.1.17">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-get-1.1.18">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-general-get-1.1.19">
-				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
-			</ctl:call-test>
 			
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.1A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>			
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.1B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>	
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.1C">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>	
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.2A">
-				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
-			</ctl:call-test>			
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.2B">
-				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
-			</ctl:call-test>	
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.2C">
-				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
-			</ctl:call-test>	
-			<ctl:call-test name="wfs:basic-commons-constraints-get-1.8">
-				<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-commons-metadata-get-2.2A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>			
-			<ctl:call-test name="wfs:basic-commons-metadata-get-2.2B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>	
-			<ctl:call-test name="wfs:basic-commons-metadata-get-2.2C">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>	
-												
-			<ctl:call-test name="wfs:basic-getcapabilities-get-1.2.1">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
+			<xsl:if test="not($VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL = '')">
+				<ctl:call-test name="wfs:basic.commons.describefeaturetype.1.1">
+					<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.describefeaturetype.1.2">
+					<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.describefeaturetype.1.3">
+					<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.describefeaturetype.2">
+					<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.describefeaturetype.1">
+					<ctl:with-param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL" select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+				</ctl:call-test>
+			</xsl:if>
 			
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.1">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.2">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.3">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.4">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.5">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.1.6">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getfeature-post-1.4.2.2">
-				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-			</ctl:call-test>
-									
+			<xsl:if test="not($VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL = '')">			
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.1.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.1.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.1.3">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.2.3">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.2.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.2.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.3">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.4.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.4.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.4.3">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.7">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.8">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>
+			</xsl:if>
+			
+			<xsl:if test="not($VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL = '')">							
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.2.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.commons.getcapabilities.2.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>			
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.5.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.5.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.6.1">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.6.2">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.6.3">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				</ctl:call-test>			
+			</xsl:if>
+			
+			<xsl:if test="not($VAR_WFS_GET_FEATURE_HTTP_POST_URL = '')">							
+				<ctl:call-test name="wfs:basic.wfs.getfeature.1">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.2">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.3">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.4">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.5">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.6">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.7">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.8">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getfeature.9">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+				</ctl:call-test>
+			</xsl:if>
+						
 			<!-- OPTIONAL -->
-			<ctl:message>Optional Tests:</ctl:message>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-1.2.2A">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-1.2.2B">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-								
-			<!-- WFS 1.0.0 tests converted to WFS 1.1.0 (not all working) -->																
-			<!--<ctl:message>WFS 1.0.0 Tests:</ctl:message>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-1">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-2">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-3">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-4">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-5">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-6">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-7">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-get-8">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-1">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-2">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-3">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-4">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-5">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-6">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-7">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>
-			<ctl:call-test name="wfs:basic-getcapabilities-post-8">
-				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-			</ctl:call-test>-->
-					
+			
+			<!-- CONDITIONAL -->
+			
 		</ctl:code>
 	</ctl:test>	
 	

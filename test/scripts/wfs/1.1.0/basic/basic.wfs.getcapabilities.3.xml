@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="wfs:basic.wfs.getcapabilities.3">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <assertion>Version number specified in a given request must correspond to a version supported by the service.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 1.1.0. The response document will be tested to check that the version number returned in the capabilities document is the same as the requested version.</comment>
+      <link>OGC 04-094, 6.2.3, p.9</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+					</url>
+					<method>get</method>
+					<param name="service">WFS</param>
+					<param name="version">1.1.0</param>
+					<param name="request">GetCapabilities</param>
+					<myparsers:XMLValidatingParser.WFS/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//wfs:WFS_Capabilities[@version='1.1.0']</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>
