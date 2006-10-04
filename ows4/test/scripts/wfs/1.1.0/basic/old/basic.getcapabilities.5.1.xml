@@ -13,7 +13,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-get-5">
+	<test name="wfs:basic.getcapabilities.5.1">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>When a GetCapabilities request is made against basic WFS, the reponse cabilities document must define capabilities entries for the request GetCapabilities for HTTP GET, DescribeFeatureType for HTTP GET or POST and GetFeature for HTTP GET or POST.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The response document will be tested to check that the capabilities document defines the capabilities requests GetCapabilities for HTTP GET, DescribeFeature for HTTP GET or POST and GetFeature for HTTP GET or POST. This test does not test that the capabilities advertised actually work, this is done in other tests.</comment>

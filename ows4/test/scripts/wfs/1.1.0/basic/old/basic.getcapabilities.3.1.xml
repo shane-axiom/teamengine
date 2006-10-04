@@ -12,11 +12,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-get-2">
+	<test name="wfs:basic.getcapabilities.3.1">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>When a wfs:GetCapabilities request is made for a version number that is greater than the version the server supports, the result document must be a wfs:WFS_Capabilities with the version number equal to the highest version number that the server supports which is less than the requested version number.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 99.99.99. The response document will be tested to check that the version number returned in the capabilities document is less than 99.99.99.</comment>
-      <link>wfs-1.1.0#basic.getcapabilities.get.2</link>
+      <assertion>When a wfs:GetCapabilities request is made for a version number that is less than the version the server supports, the result document must be a wfs:WFS_Capabilities with the version number equal to the lowest version number that the server supports which is greater than the requested version number.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 0.0.0 The response document will be tested to check that the version number returned in the capabilities document is greater than 0.0.0.</comment>
+      <link>wfs-1.1.0#basic.getcapabilities.get.3</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +26,7 @@
 					</url>
 					<method>get</method>
 					<param name="service">WFS</param>
-					<param name="version">99.99.99</param>
+					<param name="version">0.0.0</param>
 					<param name="request">GetCapabilities</param>
 					<myparsers:XMLValidatingParser.WFS/>
 				</request>
@@ -37,7 +37,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">number(/*/@version) &lt; number('99.99.99')</xsl:variable>
+				<xsl:variable name="expression">number(/*/@version) &gt; number('0.0.0')</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

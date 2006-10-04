@@ -13,11 +13,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-post-7">
+	<test name="wfs:basic.getcapabilities.6.2">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-      <assertion>When a wfs:GetCapabilities request is made, the result document must contain a result format of GML2 for GetFeature.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test.The response document will be tested to check that the GetFeature request has a ResultFormat of GML2.</comment>
-      <link>wfs-1.1.0#basic.getcapabilities.post.7</link>
+      <assertion>When a wfs:GetCapabilities request is made, the result document must contain a schema description language of XMLSCHEMA for DescribeFeatureType.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test.The response document will be tested to check that the DescribeFeatureType request has a SchemaDescriptionLanguage of XMLSCHEMA.</comment>
+      <link>wfs-1.1.0#basic.getcapabilities.post.6</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -41,13 +41,13 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetFeature']/ows:Parameter[@name='ResultFormat']/ows:Value='GML2')</xsl:variable>
+				<xsl:variable name="expression">boolean(//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='DescribeFeatureType']/ows:Parameter[@name='SchemaDescriptionLanguage']/ows:Value='XMLSCHEMA')</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 			</xsl:if>
-			
+				
 		</code>
 	</test>
 </ctl:package>

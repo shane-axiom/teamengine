@@ -12,21 +12,24 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic-getcapabilities-get-4">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+	<test name="wfs:basic.getcapabilities.4.2">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
       <assertion>When a wfs:GetCapabilities request is made without specifying a version number, the result document must be a wfs:WFS_Capabilities with the version number equal to the highest version number that it supports.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will not define a version number. The response document will be tested to check that the version number returned in the capabilities document is greater than 0.0.0 (i.e. a version number was specified).</comment>
-      <link>wfs-1.1.0#basic.getcapabilities.get.4</link>
+      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. The request will noy define a version number. The response document will be tested to check that the version number returned in the capabilities document is greater than 0.0.0 (i.e. a version number was specified).</comment>
+      <link>wfs-1.1.0#basic.getcapabilities.post.4</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
-					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-					</url>
-					<method>get</method>
-					<param name="service">WFS</param>
-					<param name="request">GetCapabilities</param>
+				   <url>
+					  <xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+				   </url>
+				   <method>post</method>
+				   <body>&lt;wfs:GetCapabilities
+  service="WFS"
+  xmlns:wfs="http://www.opengis.net/wfs"
+/&gt;
+					</body>
 					<myparsers:XMLValidatingParser.WFS/>
 				</request>
 			</xsl:variable>
@@ -35,7 +38,7 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:if test="$request1/*">	
+			<xsl:if test="$request1/*">
 				<xsl:variable name="expression">number(/*/@version) &gt; number('0.0.0')</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
