@@ -61,22 +61,22 @@
 	<!-- WFS 1.0.0 TESTS -->
 	<!--===============-->			
 		
-	<xi:include href="basic/old/basic-getcapabilities-get-1.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-2.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-3.xml"/>
-	<xi:include href="basic/old/basic-getcapabilities-get-4.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-5.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-6.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-7.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-get-8.xml"/>
-	<xi:include href="basic/old/basic-getcapabilities-post-1.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-2.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-3.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-4.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-5.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-6.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-7.xml"/>	
-	<xi:include href="basic/old/basic-getcapabilities-post-8.xml"/>		
+	<xi:include href="basic/old/basic.getcapabilities.1.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.2.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.3.1.xml"/>
+	<xi:include href="basic/old/basic.getcapabilities.4.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.5.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.6.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.7.1.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.8.1.xml"/>
+	<xi:include href="basic/old/basic.getcapabilities.1.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.2.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.3.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.4.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.5.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.6.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.7.2.xml"/>	
+	<xi:include href="basic/old/basic.getcapabilities.8.2.xml"/>		
 		
 	<!--=================-->
 	<!-- MAIN TEST DRIVER -->
