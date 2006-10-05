@@ -28,10 +28,10 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-					<csw:GetCapabilities xmlns:csw="http://www.opengis.net/cat/csw" service="CSW" version="2.0.1"/>
+					<csw:GetCapabilities xmlns:csw="http://www.opengis.net/cat/csw" service="http://www.opengis.net/cat/csw" version="2.0.1"/>
 					]]>
 					</body>
-					<myparsers:XMLValidatingParser.CSW/>
+					<myparsers:XMLValidatingParser.CSWGML/>
 				</request>
 			</xsl:variable>
 			

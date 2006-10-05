@@ -25,10 +25,10 @@
 						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
-					<param name="service">CSW</param>
+					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<myparsers:XMLValidatingParser.CSWGML/>
 				</request>
 			</xsl:variable>
 			
@@ -51,7 +51,7 @@
 					</url>
 					<method>post</method>
 				    <body><![CDATA[
-				    <csw:GetRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1" service="CSW"/>
+				    <csw:GetRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1" service="http://www.opengis.net/cat/csw"/>
 				    <!--TODO: get record that is in data set-->
 				    ]]>
 					</body>

@@ -15,7 +15,7 @@
 	<test name="csw:discovery.commons.getcapabilities.2.2">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type. See Table 2 for definitions of optional query parameters.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. There is a version ('2.0.1') and service attribute ('CSW').  The server should process the request as usual.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. There is a version ('2.0.1') and service attribute ('http://www.opengis.net/cat/csw').  The server should process the request as usual.</comment>
       <link>OGC 05-008c1, 7.2.2, p.12 (Table 2)</link>
 		<code>
 		
@@ -26,9 +26,9 @@
 					</url>
 				   <method>get</method>
 					<param name="request">GetCapabilities</param>				   
-				   	<param name="service">CSW</param>
+				   	<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<myparsers:XMLValidatingParser.CSWGML/>
 				</request>
 			</xsl:variable>
 			

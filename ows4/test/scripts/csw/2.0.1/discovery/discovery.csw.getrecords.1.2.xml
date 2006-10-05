@@ -27,7 +27,7 @@
 						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
-					<param name="service">CSW</param>
+					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetRecords</param>
 					<param name="typenames">csw:Record</param>

@@ -15,7 +15,7 @@
 	<test name="csw:discovery.csw.getcapabilities.3">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>Service parameter value must be 'CSW' or profile-specific identifier.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The service is set as 'CSW' and a valid capabilities document is expected.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The service is set as 'http://www.opengis.net/cat/csw' and a valid capabilities document is expected.</comment>
       <link>OGC 04-021r3, 10.5.2, p. 121</link>
 		<code>
 		
@@ -25,10 +25,10 @@
 						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
-					<param name="service">CSW</param>
+					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<myparsers:XMLValidatingParser.CSWGML/>
 				</request>
 			</xsl:variable>
 			

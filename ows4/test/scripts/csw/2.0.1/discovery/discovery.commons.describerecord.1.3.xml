@@ -16,7 +16,7 @@
 	<test name="csw:discovery.commons.describerecord.1.3">
       <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
       <assertion>The following query parameters are required for all KVP-encoded service requests except GetCapabilities: service, request, version.</assertion>
-      <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. There is no version attribute and service attribute ('CSW').  The server should give a service exception.</comment>
+      <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. There is no version attribute and service attribute ('http://www.opengis.net/cat/csw').  The server should give a service exception.</comment>
       <link>OGC 05-008c1, 9.2.1, p.36 (Table 20)</link>
 		<code>
 		
@@ -27,7 +27,7 @@
 					</url>
 				   <method>get</method>
 					<param name="request">DescribeRecord</param>				   
-				   	<param name="service">CSW</param>
+				   	<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="typename">csw:Record</param>
 					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
 					<myparsers:XMLValidatingParser.ServiceException/>
