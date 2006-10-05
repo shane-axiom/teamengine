@@ -28,7 +28,7 @@
 					</url>
 					<method>get</method>
 					<param name="request">GetRecordById</param>
-					<param name="service">CSW</param>
+					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="id">REC-001</param>
 					<param name="elementsetname">full</param>

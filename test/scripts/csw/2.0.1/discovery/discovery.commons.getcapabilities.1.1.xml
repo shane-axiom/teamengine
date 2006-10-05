@@ -25,10 +25,10 @@
 						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
-					<param name="SERVICE">CSW</param>
+					<param name="SERVICE">http://www.opengis.net/cat/csw</param>
 					<param name="VERSION">2.0.1</param>
 					<param name="REQUEST">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<myparsers:XMLValidatingParser.CSWGML/>
 				</request>
 			</xsl:variable>
 			

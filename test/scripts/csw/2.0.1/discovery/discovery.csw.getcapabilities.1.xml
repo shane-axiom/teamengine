@@ -26,7 +26,7 @@
 					</url>
 					<method>get</method>
 					<param name="request">GetCapabilities</param>
-					<param name="service">CSW</param>
+					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<parsers:HTTPParser/>
 				</request>
@@ -48,6 +48,7 @@
 						<ctl:with-param name="instruction">
 							<parsers:schemas>
 								<parsers:schema type="resource">xsd/csw-2.0.1-composite.xsd</parsers:schema>
+								<parsers:schema type="resource">xsd/gml-3.1.1.xsd</parsers:schema>
 							</parsers:schemas>
 						</ctl:with-param>
 				</ctl:call-test>			

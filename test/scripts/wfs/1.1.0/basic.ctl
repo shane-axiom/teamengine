@@ -89,7 +89,8 @@
 		<ctl:code>
 		
 			<!-- GetCapabilities to determine the proper URLs for the other operations-->
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://nautilus.baruch.sc.edu/wms/in_situ</xsl:variable>
+			<!--<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://nautilus.baruch.sc.edu/wms/in_situ</xsl:variable>-->
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://geo.openplans.org:8080/geoserver/wfs/GetCapabilities</xsl:variable>
 			<xsl:variable name="getCapabilitiesDocument">
 				<ctl:request>
 					<ctl:url>

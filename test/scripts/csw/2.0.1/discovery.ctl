@@ -122,15 +122,15 @@
 		<ctl:code>
 		
 			<!-- GetCapabilities to determine the proper URLs for the other operations-->
-			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geobrain.laits.gmu.edu:8099/LAITSCSW2/discovery</xsl:variable>
-			<!--<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://laits.gmu.edu:8099/csw/CSW_Service</xsl:variable>-->
+			<!--<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geobrain.laits.gmu.edu:8099/LAITSCSW2/discovery</xsl:variable>-->
+			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geonetwork.mysdi.org:8081/geonetwork/srv/en/csw</xsl:variable>
 			<xsl:variable name="getCapabilitiesDocument">
 				<ctl:request>
 					<ctl:url>
 						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</ctl:url>
 					<ctl:method>get</ctl:method>
-					<ctl:param name="service">CSW</ctl:param>
+					<ctl:param name="service">http://www.opengis.net/cat/csw</ctl:param>
 					<ctl:param name="version">2.0.1</ctl:param>
 					<ctl:param name="request">GetCapabilities</ctl:param>
 				</ctl:request>
@@ -168,7 +168,7 @@
 			</xsl:variable>	
 			<xsl:variable name="VAR_CSW_GET_DOMAIN_HTTP_POST_URL">
 				<xsl:value-of select="$getCapabilitiesDocument//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetDomain']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
-			</xsl:variable>						
+			</xsl:variable>								
 				
 			<!-- Run the tests -->
 			

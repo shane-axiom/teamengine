@@ -118,6 +118,17 @@
 		</ctl:java>
 	</ctl:parser>	
 
+	<ctl:parser name="myparsers:XMLValidatingParser.CSWGML">
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
+			<ctl:with-param name="schemas_links">
+				<parsers:schemas>
+					<parsers:schema type="resource">xsd/csw-2.0.1-composite.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/gml-3.1.1.xsd</parsers:schema>					
+				</parsers:schemas>
+			</ctl:with-param>
+		</ctl:java>
+	</ctl:parser>	
+
 	<ctl:parser name="myparsers:XMLValidatingParser.GML3.1.1">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
