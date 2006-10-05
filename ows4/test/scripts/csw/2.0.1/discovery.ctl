@@ -98,7 +98,19 @@
 	<xi:include href="discovery/discovery.csw.getrecords.7.4.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.8.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.9.xml"/>
-	
+	<xi:include href="discovery/discovery.filter.getrecords.1.1.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.1.2.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.2.1.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.2.2.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.3.1.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.3.2.xml"/>		
+	<xi:include href="discovery/discovery.filter.getrecords.4.1.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.4.2.xml"/>	
+	<xi:include href="discovery/discovery.filter.getrecords.5.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.6.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.7.1.xml"/>
+	<xi:include href="discovery/discovery.filter.getrecords.7.2.xml"/>
+		
 	<!--=================-->
 	<!-- MAIN TEST DRIVER -->
 	<!--=================-->		
@@ -411,7 +423,43 @@
 				</ctl:call-test>	
 				<ctl:call-test name="csw:discovery.csw.getrecords.10">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-				</ctl:call-test>				
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.1.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.1.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.2.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.2.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.3.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.3.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.4.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.4.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.5">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.6">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.filter.getrecords.7.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.filter.getrecords.7.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>						
 			</xsl:if>
 
 			<xsl:if test="not($VAR_CSW_GET_RECORDS_HTTP_GET_URL = '')">

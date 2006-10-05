@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:dc="http://purl.org/dc/elements/1.1/" 
+ xmlns:dct="http://purl.org/dc/terms/"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery.filter.getrecords.7.2">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <assertion>Correctly evaluate the PropertyIsLike predicate expressed by a valid ogc:PropertyIsLike element.</assertion>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsLike is used for the dct:modified property for a value of %2099%.  If the response returns with no records  then the test is valid, otherwise it fails.</comment>
+      <link>OGC 04-095, 9.2, p.12</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body><![CDATA[
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" xmlns:dc="http://purl.org/dc/elements/1.1/" 
+ xmlns:dct="http://purl.org/dc/terms/" xmlns:ogc="http://http://www.opengis.net/ogc" service="CSW" version="2.0.1">
+	<csw:Query typeName="csw:Record">
+		<ogc:Filter>
+			<ogc:PropertyIsLike wildCard="%" singleChar="_" escape="\">
+				<ogc:PropertyName>dct:modified</ogc:PropertyName>
+				<ogc:Literal>%2099%</ogc:Literal>
+			</ogc:PropertyIsLike>
+		</ogc:Filter>
+	</csw:Query>
+</csw:GetRecords>
+					]]>
+					</body>
+					<myparsers:XMLValidatingParser.CSW/>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">count(//csw:GetRecordsResponse/csw:SearchResults/csw:Record) = 0</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>
