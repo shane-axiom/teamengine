@@ -52,7 +52,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">not(//csw:GetRecordsResponse/csw:SearchResults/csw:Record/dct:modified = '2006-10-04')</xsl:variable> <!-- Can use '<' here? -->
+				<xsl:variable name="expression">not(//csw:GetRecordsResponse/csw:SearchResults/csw:Record[dct:modified = '2006-10-04'])</xsl:variable> <!-- Can use '<' here? -->
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

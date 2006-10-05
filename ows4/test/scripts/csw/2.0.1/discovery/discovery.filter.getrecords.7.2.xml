@@ -17,7 +17,7 @@
 	<test name="csw:discovery.filter.getrecords.7.2">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>Correctly evaluate the PropertyIsLike predicate expressed by a valid ogc:PropertyIsLike element.</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsLike is used for the dct:modified property for a value of %2099%.  If the response returns with no records  then the test is valid, otherwise it fails.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsLike is used for the dct:modified property for a value of '*2099*'.  If the response returns with no records  then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-095, 9.2, p.12</link>
 		<code>
 		
@@ -32,9 +32,9 @@
  xmlns:dct="http://purl.org/dc/terms/" xmlns:ogc="http://http://www.opengis.net/ogc" service="http://www.opengis.net/cat/csw" version="2.0.1">
 	<csw:Query typeName="csw:Record">
 		<ogc:Filter>
-			<ogc:PropertyIsLike wildCard="%" singleChar="_" escape="\">
+			<ogc:PropertyIsLike wildCard="*" singleChar="." escape="!">
 				<ogc:PropertyName>dct:modified</ogc:PropertyName>
-				<ogc:Literal>%2099%</ogc:Literal>
+				<ogc:Literal>*2099*</ogc:Literal>
 			</ogc:PropertyIsLike>
 		</ogc:Filter>
 	</csw:Query>
