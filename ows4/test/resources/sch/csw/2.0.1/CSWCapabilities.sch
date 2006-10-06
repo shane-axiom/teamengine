@@ -27,19 +27,24 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 		<sch:active pattern="topLevelElements"/>
 	</sch:phase>
 
-	<sch:phase id="ows.2.6C">
+	<sch:phase id="OnlyServiceProviderAndFilterCapabilities">
 		<sch:active pattern="latestVersion"/>
-		<sch:active pattern="ows.2.6C.Pattern"/>
+		<sch:active pattern="onlyServiceProviderAndFilterCapabilitiesPattern"/>
 	</sch:phase>
 
-	<sch:phase id="ows.2.14">
+	<sch:phase id="FullOperationsMetadata">
 		<sch:active pattern="latestVersion"/>
-		<sch:active pattern="ows.2.14.Pattern"/>
+		<sch:active pattern="fullOperationsMetadataPattern"/>
 	</sch:phase>
 
-	<sch:phase id="csw.1.4">
+	<sch:phase id="RequiredOperations">
 		<sch:active pattern="latestVersion"/>
-		<sch:active pattern="csw.1.4.Pattern"/>
+		<sch:active pattern="requiredOperationsPattern"/>
+	</sch:phase>
+
+	<sch:phase id="AllCSWRequiredElements">
+		<sch:active pattern="latestVersion"/>
+		<sch:active pattern="allCSWRequiredElementsPattern"/>
 	</sch:phase>
 
 	<sch:pattern id="latestVersion" name="latestVersion">
@@ -78,9 +83,9 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 		</sch:rule>
 	</sch:pattern>
 	
-	<sch:pattern id="ows.2.6C.Pattern" name="ows.2.6C.Pattern">
+	<sch:pattern id="onlyServiceProviderAndFilterCapabilitiesPattern" name="onlyServiceProviderAndFilterCapabilitiesPattern">
 		<sch:p xml:lang="en">
-    Verifies the presence all required top-level elements, for test OWS-2.6C.
+    Verifies the presence of the ServiceProvider and Filter_Capabilities only.
     </sch:p>
 		<sch:rule id="someTopLevel" context="csw:Capabilities">
 		     <sch:assert id="Capabilities.noServiceIdentification"  test="not(ows:ServiceIdentification)">
@@ -98,45 +103,80 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 		</sch:rule>
 	</sch:pattern>	
 
-	<sch:pattern id="ows.2.14.Pattern" name="ows.2.14.Pattern">
+	<sch:pattern id="fullOperationsMetadataPattern" name="fullOperationsMetadataPattern">
 		<sch:p xml:lang="en">
     Verifies the presence and correct attributes for the OperationsMetadata element, for the OWS specification.
     </sch:p>
 		<sch:rule id="Capabilities.OperationsMetadata.Content" context="csw:Capabilities">
-			<sch:assert id="Capabilities.OperationsMetadata.onlyGetCapabilities" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Get'">
+			<sch:assert id="Capabilities.OperationsMetadata.onlyGetCapabilities" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Get">
 	The OperationsMetadata must include the HTTP-Get GetCapabilities operation.
             </sch:assert>
 		</sch:rule>
 	</sch:pattern>
 
-	<sch:pattern id="csw.1.4.Pattern" name="csw.1.4.Pattern">
+	<sch:pattern id="requiredOperationsPattern" name="requiredOperationsPattern">
 		<sch:p xml:lang="en">
     Verifies the presence and correct attributes for the OperationsMetadata element, for the CSW specification.
     </sch:p>
 		<sch:rule id="Capabilities.OperationsMetadata.MandatoryContent" context="csw:Capabilities">
-			<sch:assert id="Capabilities.OperationsMetadata.GetCapabilities" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Get'">
+			<sch:assert id="Capabilities.OperationsMetadata.GetCapabilities" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Get">
 	The OperationsMetadata must include the HTTP-Get GetCapabilities operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.DescribeRecord" test="ows:OperationsMetadata/ows:Operation[@name='DescribeRecord']/ows:DCP/ows:HTTP/ows:Post'">
+   			<sch:assert id="Capabilities.OperationsMetadata.DescribeRecord" test="ows:OperationsMetadata/ows:Operation[@name='DescribeRecord']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post DescribeRecord operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.GetDomain" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Post'">
+   			<!--<sch:assert id="Capabilities.OperationsMetadata.GetDomain" test="ows:OperationsMetadata/ows:Operation[@name='GetCapabilities']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post GetDomain operation.
-            </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.GetRecords" test="ows:OperationsMetadata/ows:Operation[@name='GetRecords']/ows:DCP/ows:HTTP/ows:Post'">
+            </sch:assert>-->
+   			<sch:assert id="Capabilities.OperationsMetadata.GetRecords" test="ows:OperationsMetadata/ows:Operation[@name='GetRecords']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post GetRecords operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.GetRecordById" test="ows:OperationsMetadata/ows:Operation[@name='GetRecordById']/ows:DCP/ows:HTTP/ows:Get'">
+   			<sch:assert id="Capabilities.OperationsMetadata.GetRecordById" test="ows:OperationsMetadata/ows:Operation[@name='GetRecordById']/ows:DCP/ows:HTTP/ows:Get">
 	The OperationsMetadata must include the HTTP-Get GetRecordById operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.Harvest" test="ows:OperationsMetadata/ows:Operation[@name='Harvest']/ows:DCP/ows:HTTP/ows:Post'">
+   			<!--<sch:assert id="Capabilities.OperationsMetadata.Harvest" test="ows:OperationsMetadata/ows:Operation[@name='Harvest']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post Harvest operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.Transaction" test="ows:OperationsMetadata/ows:Operation[@name='Transaction']/ows:DCP/ows:HTTP/ows:Post'">
+   			<sch:assert id="Capabilities.OperationsMetadata.Transaction" test="ows:OperationsMetadata/ows:Operation[@name='Transaction']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post Transaction operation.
-            </sch:assert>                                                            
+            </sch:assert>-->
 		</sch:rule>
 	</sch:pattern>
+	
+	<sch:pattern id="allCSWRequiredElementsPattern" name="allCSWRequiredElementsPattern">
+		<sch:p xml:lang="en">
+    Verifies the presence of all capabilities elements for the CSW specification.
+    </sch:p>
+		<sch:rule id="Capabilities.RequiredElements" context="csw:Capabilities">
+			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.LogicalOperators" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:LogicalOperators">
+	The Capabilities document must have the And, Or, and Not logical operators (presence of the LogicalOperators element).
+            </sch:assert>
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsEqualTo" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsEqualTo'">
+	The Capabilities document must have the PropertyIsEqualTo comparison operator present.
+            </sch:assert>
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsNotEqualTo" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsNotEqualTo'">
+	The Capabilities document must have the PropertyIsNotEqualTo comparison operator present.
+            </sch:assert>            
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsLessThan" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsLessThan'">
+	The Capabilities document must have the PropertyIsLessThan comparison operator present.
+            </sch:assert>                
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsGreaterThan" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsGreaterThan'">
+	The Capabilities document must have the PropertyIsGreaterThan comparison operator present.
+            </sch:assert>    
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsLessThanOrEqualTo" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsLessThanOrEqualTo'">
+	The Capabilities document must have the PropertyIsLessThanOrEqualTo comparison operator present.
+            </sch:assert>                
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsGreaterThanOrEqualTo" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsGreaterThanOrEqualTo'">
+	The Capabilities document must have the PropertyIsGreaterThanOrEqualTo comparison operator present.
+            </sch:assert>    
+   			<sch:assert id="Capabilities.Filter_Capabilities.Scalar_Capabilities.ComparisonOperators.PropertyIsLike" test="ogc:Filter_Capabilities/ogc:Scalar_Capabilities/ogc:ComparisonOperators/ogc:ComparisonOperator='PropertyIsLike'">
+	The Capabilities document must have the PropertyIsLike comparison operator present.
+            </sch:assert>    
+			<sch:assert id="Capabilities.Filter_Capabilities.Spatial_Capabilities.SpatialOperators.BBOX" test="ogc:Filter_Capabilities/ogc:Spatial_Capabilities/ogcSpatialOperators/ogc:SpatialOperator/@name='BBOX'">
+	The Capabilities document must have the spatial operator BBOX present.
+            </sch:assert>
+		</sch:rule>
+	</sch:pattern>	
 	
 	<sch:diagnostics>
 		<sch:diagnostic id="includedDocElem">

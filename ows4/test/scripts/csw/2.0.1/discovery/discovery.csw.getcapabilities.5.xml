@@ -12,11 +12,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery.commons.getcapabilities.14">
+	<test name="csw:discovery.csw.getcapabilities.5">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>A complete service metadata document must include mandatory parameters and constraints in the OperationsMetadata section.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory OperationsMetadata section parameters and constraints.</comment>
-      <link>OGC 05-008c1, 7.4.6, p.26</link>
+      <assertion>Must implement a Filer_Capabilities section in implementing CSW binding. Must also implement the logical And, Or, and Not; comparison PropertyIsEqualTo, PropertyIsNotEqualTo, PropertyIsLessThan, PropertyIsGreaterThan, PropertyIsLessThanOrEqualTo, PropertyIsGreaterThanOrEqualTo, and PropertyIsLike; spatial BBOX operators.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory values listed in the CSW specification.  If all the required elements are present in the document then the test is valid, otherwise it fails.</comment>
+      <link>OGC 04-021r3, 10.5.2, p. 121</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -48,7 +48,7 @@
 				<ctl:call-test name="ctl:SchematronValidatingParser">
 					<ctl:with-param name="doc" select="$request1"/>
 					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
-					<ctl:with-param name="phase">FullOperationsMetadata</ctl:with-param>
+					<ctl:with-param name="phase">AllCSWRequiredElements</ctl:with-param>
 				</ctl:call-test>				
 			</xsl:if>						
 				

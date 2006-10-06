@@ -12,24 +12,23 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery.commons.describerecord.3">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+	<test name="csw:discovery.commons.getrecordbyid.1">
+      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>A comma (',') shall be used to delimit list items within multi-valued parameters in KVP strings.</assertion>
-      <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. The namespace pairing has a list of types to describe seperated by commas, the response is expected without exception.</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected without exception.</comment>
       <link>OGC 05-008c1, 11.5.3, p.57</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
 					</url>
 				   <method>get</method>
-					<param name="request">DescribeRecord</param>
+					<param name="request">GetRecordById</param>
 					<param name="version">2.0.1</param>
 					<param name="service">http://www.opengis.net/cat/csw</param>
-					<param name="typename">csw:Record</param>
-					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw),xmlns(wfs=http://www.opengis.net/wfs)</param>
+					<param name="id">REC-001,REC-002</param>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
@@ -39,7 +38,7 @@
 			</xsl:if>
 				
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//csw:DescribeRecordResponse</xsl:variable>
+				<xsl:variable name="expression">//csw:GetRecordByIdResponse</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>

@@ -39,7 +39,17 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 		<sch:active pattern="required"/>
 		<sch:active pattern="invalidUpdateSequenceException"/>
 	</sch:phase>
-	
+
+	<sch:phase id="NoApplicableCode">
+		<sch:active pattern="required"/>
+		<sch:active pattern="noApplicableCodeException"/>
+	</sch:phase>
+
+	<sch:phase id="OperationNotSupprted">
+		<sch:active pattern="required"/>
+		<sch:active pattern="operationNotSupportedException"/>
+	</sch:phase>
+
 	<sch:pattern id="required" name="Required elements">
 		<sch:p xml:lang="en">
 	Checks for required elements.
@@ -98,6 +108,31 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
 			<sch:assert id="ExceptionReport.InvalidUpdateSequence.code" test="ows:ServiceException/@exceptionCode='InvalidUpdateSequence'">
 	The ExceptionReport must have the exceptionCode value of 'InvalidUpdateSequence'.
             </sch:assert>    
+		</sch:rule>
+	</sch:pattern>	
+
+	<sch:pattern id="noApplicableCodeException" name="noApplicableCodeException">
+		<sch:p xml:lang="en">
+    Checks for the correct exception code when a NoApplicableCode exception is raised.
+    </sch:p>
+		<sch:rule id="ExceptionReport.NoApplicableCode" context="ows:ExceptionReport">
+			<sch:assert id="ExceptionReport.NoApplicableCode.code" test="ows:ServiceException/@exceptionCode='NoApplicableCode'">
+	The ExceptionReport must have the exceptionCode value of 'NoApplicableCode'.
+            </sch:assert>    
+		</sch:rule>
+	</sch:pattern>	
+
+	<sch:pattern id="operationNotSupportedException" name="operationNotSupportedException">
+		<sch:p xml:lang="en">
+    Checks for the correct exception code when a OperationNotSupported exception is raised.
+    </sch:p>
+		<sch:rule id="ExceptionReport.OperationNotSupported" context="ows:ExceptionReport">
+			<sch:assert id="ExceptionReport.OperationNotSupported.code" test="ows:ServiceException/@exceptionCode='OperationNotSupported'">
+	The ExceptionReport must have the exceptionCode value of 'OperationNotSupported'.
+            </sch:assert>    
+			<sch:assert id="ExceptionReport.OperationNotSupported.locator" test="ows:ServiceException/@locator='Transaction'">
+	The ExceptionReport must have the locator value of the not supported operation ('Transaction').
+            </sch:assert>                 
 		</sch:rule>
 	</sch:pattern>	
 	

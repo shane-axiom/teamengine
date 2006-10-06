@@ -12,12 +12,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery.commons.getcapabilities.14">
+	<test name="csw:discovery.commons.getcapabilities.15">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>A complete service metadata document must include mandatory parameters and constraints in the OperationsMetadata section.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory OperationsMetadata section parameters and constraints.</comment>
-      <link>OGC 05-008c1, 7.4.6, p.26</link>
-		<code>
+      <assertion>A response message containing an entity body must contain a Content-Type entity header field that correctly indicates the media type of the message body.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The capabilities document should return a valid document that has a Content-Type header that describes the xml returned, otherwise without this header the test fails.</comment>
+      <link>OGC 05-008c1, 11.7, p.61</link>
+		<code>		
 		
 			<xsl:variable name="request1">
 				<request>
@@ -28,29 +28,28 @@
 					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.CSWGML/>
+					<parsers:HTTPParser/>
 				</request>
 			</xsl:variable>
 			
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-
+				
 			<xsl:if test="$request1/*">
 				<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>
 				
-		    <xsl:if test="$request1/*">
-				<ctl:call-test name="ctl:SchematronValidatingParser">
-					<ctl:with-param name="doc" select="$request1"/>
-					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
-					<ctl:with-param name="phase">FullOperationsMetadata</ctl:with-param>
-				</ctl:call-test>				
-			</xsl:if>						
+				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
+				<xsl:if test="not($content-type = 'text/xml')">
+					<ctl:fail/>
+				</xsl:if>
+			</xsl:if>				
+				
+			<!--TODO: Is this the proper default format, 'text/xml'?-->
 				
 		</code>
 	</test>
