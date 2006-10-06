@@ -49,7 +49,7 @@
 				<ctl:call-test name="ctl:SchematronValidatingParser">
 					<ctl:with-param name="doc" select="$request1"/>
 					<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
-					<ctl:with-param name="phase">ows.2.6C</ctl:with-param>
+					<ctl:with-param name="phase">OnlyServiceProviderAndFilterCapabilities</ctl:with-param>
 				</ctl:call-test>				
 			</xsl:if>
 				
