@@ -76,7 +76,7 @@
 			<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
 			<ctl:with-param name="instruction">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 	</ctl:call-test>-->
@@ -102,6 +102,41 @@
 		<ctl:description>Afunction to call the XML validator.</ctl:description>
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="checkXMLRules" initialized="true"/>
 	</ctl:function>	
+
+	<!--Used to call the XMLValidatingParser test with a set of schemas defined here (globally, not at the test level), i.e.:-->
+	<!--<ctl:call-test name="ctl:XMLValidatingParser.CSWGML">
+			<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
+	</ctl:call-test>-->
+	<ctl:test name="ctl:XMLValidatingParser.WFSGML">
+			<ctl:param name="doc"/>
+			<ctl:assertion>Validating with XMLValidatingParser using predefined schemas.</ctl:assertion>
+			<ctl:code>
+				<ctl:call-test name="ctl:XMLValidatingParser">
+					<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
+					<ctl:with-param name="instruction">				
+						<parsers:schemas>
+							<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
+							<parsers:schema type="resource">xsd/ogc/gml/3.1.1/base/gml-3.1.1.xsd</parsers:schema>
+						</parsers:schemas>
+					</ctl:with-param>
+				</ctl:call-test>
+			</ctl:code>			
+	</ctl:test>			
+
+	<ctl:test name="ctl:XMLValidatingParser.WFS">
+			<ctl:param name="doc"/>
+			<ctl:assertion>Validating with XMLValidatingParser using predefined schemas.</ctl:assertion>
+			<ctl:code>
+				<ctl:call-test name="ctl:XMLValidatingParser">
+					<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
+					<ctl:with-param name="instruction">				
+						<parsers:schemas>
+							<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
+						</parsers:schemas>
+					</ctl:with-param>
+				</ctl:call-test>
+			</ctl:code>			
+	</ctl:test>	
 	
 	<!--=================-->
 	<!-- CUSTOM PARSERS -->
@@ -112,7 +147,7 @@
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
@@ -122,8 +157,8 @@
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/wfs-1.1.0.xsd</parsers:schema>
-					<parsers:schema type="resource">xsd/gml-3.1.1.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ogc/gml/3.1.1/base/gml-3.1.1.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
@@ -133,7 +168,7 @@
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/ows-common-1.0.1.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/ogc/ows/1.0.0/ows-1.0.0.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
@@ -143,7 +178,7 @@
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
-					<parsers:schema type="resource">xsd/xmlschema-1.0.xsd</parsers:schema>
+					<parsers:schema type="resource">xsd/w3c/xmlschema/1.0/XMLSchema.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
