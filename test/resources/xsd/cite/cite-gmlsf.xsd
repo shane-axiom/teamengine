@@ -13,7 +13,7 @@
     (OGC 06-049).
     </xsd:documentation>
 	</xsd:annotation>
-	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="gmlsf.xsd"/>
+	<xsd:import namespace="http://www.opengis.net/gml" schemaLocation="../ogc/gml/3.1.1/profiles/gmlsfProfile/1.0.0/gmlsf.xsd"/>
 	<xsd:element name="SimpleFeatureCollection" type="sf:SimpleFeatureCollectionType" substitutionGroup="gml:_GML">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
