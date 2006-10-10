@@ -43,16 +43,10 @@
 					<ctl:with-param name="doc" select="$request1//content/*"/>
 				</ctl:call-test>
 
-				<ctl:call-test name="ctl:XMLValidatingParser">
+				<ctl:call-test name="ctl:XMLValidatingParser.CSWGML">
 						<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
-						<ctl:with-param name="instruction">
-							<parsers:schemas>
-								<parsers:schema type="resource">xsd/csw-2.0.1-composite.xsd</parsers:schema>
-								<parsers:schema type="resource">xsd/gml-3.1.1.xsd</parsers:schema>
-							</parsers:schemas>
-						</ctl:with-param>
 				</ctl:call-test>			
-			
+
 				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
 				<xsl:if test="not($content-type = 'application/xml')">
 					<ctl:fail/>
