@@ -15,7 +15,7 @@
 	<test name="csw:discovery.csw.getrecordbyid.1.1">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>Must implement HTTP-GET KVP GetRecordById and may implement HTTP-POST XML version.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. This is a mandatory operation and a valid response is expected.</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. This is a mandatory operation and a valid response is expected of type GetRecordByIdResponse.</comment>
       <link>OGC 04-021r3, 10.3.1, p.113</link>
 		<code>
 		

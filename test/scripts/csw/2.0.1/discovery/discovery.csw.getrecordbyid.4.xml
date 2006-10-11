@@ -15,7 +15,7 @@
 	<test name="csw:discovery.csw.getrecordbyid.4">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>GetRecordById response must be schema valid according to CSW 2.0.1.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The response should be valid for the CSW schema for the operation.</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The response should be valid for the CSW schema for the operation, expecting a response of type GetRecordByIdResponse.</comment>
       <link>OGC 04-021r3, 10.9.5, p. 143</link>
 		<code>
 		

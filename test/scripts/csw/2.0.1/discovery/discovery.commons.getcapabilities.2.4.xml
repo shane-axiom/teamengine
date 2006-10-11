@@ -27,7 +27,7 @@
 				   <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service">http://www.opengis.net/cat/csw</param>
-					<myparsers:XMLValidatingParser.CSWGML/>
+					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
 			

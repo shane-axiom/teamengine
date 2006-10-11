@@ -10,13 +10,13 @@
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.occamlab.com/ctl ../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:1.1.0-[OPERATION]-[TEST-CASE]">
+	<test name="wfs:[CONFORMANCE-CLASS].[SPECIFICATION].[OPERATION].[TEST-CASE-NUMBER]">
 		<param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 		<assertion>[ACTUAL ASSERTION FROM ATS]</assertion>
-		<comment>[FULL DESCRIPTION OF TEST FROM ATS (more details)]</comment>
-		<link>wfs1.1.0#[LOCATION(S) IN ATS]</link>
+		<comment>[FULL DESCRIPTION OF TEST FROM ATS, GIVES PASS/FAILURE CONDITIONS]</comment>
+		<link>[LOCATION IN OGC SPEC DOCUMENT, INCLUDING PAGE NUMBER]</link>
 		<code>
 		
 			<xsl:variable name="request1">

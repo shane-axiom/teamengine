@@ -15,7 +15,7 @@
 	<test name="csw:discovery.commons.describerecord.2.2">
       <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
       <assertion>All XML request entities must include the following attributes on the document element: service, version (acceptable values depend on the service type).</assertion>
-      <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. There is a version ('2.0.1') and no service attribute.  he server should process the request as usual (for the default service of 'CSW').</comment>
+      <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. There is a version ('2.0.1') and no service attribute.  he server should process the request as usual (for the default service of 'http://www.opengis.net/cat/csw') and give a DescribeRecordResponse.</comment>
       <link>OGC 05-008c1, 9.2.3, p.37</link>
 		<code>
 		
@@ -26,11 +26,13 @@
 					</url>
 				   <method>post</method>
 				   <body><![CDATA[
-					<csw:DescribeRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1">
-						<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
-					</csw:DescribeRecord>
-				   ]]>
-					</body>
+<csw:DescribeRecord xmlns:csw="http://www.opengis.net/cat/csw" 
+ version="2.0.1" 
+ outputFormat="application/xml"
+ schemaLanguage="http://www.w3.org/2001/XMLSchema">
+	<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
+</csw:DescribeRecord>
+				   	]]></body>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>

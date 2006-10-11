@@ -15,7 +15,7 @@
 	<test name="csw:discovery.commons.getrecordbyid.1">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>A comma (',') shall be used to delimit list items within multi-valued parameters in KVP strings.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected without exception.</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected, without exception, of type GetRecordByIdResponse.</comment>
       <link>OGC 05-008c1, 11.5.3, p.57</link>
 		<code>
 		

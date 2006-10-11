@@ -119,7 +119,6 @@
 	<xi:include href="discovery/discovery.filter.getrecords.9.2.xml"/>
 	<xi:include href="discovery/discovery.filter.getrecords.10.1.xml"/>
 	<xi:include href="discovery/discovery.filter.getrecords.10.2.xml"/>
-	<xi:include href="discovery/discovery.filter.getrecords.10.3.xml"/>		
 	<xi:include href="discovery/discovery.filter.getrecords.11.xml"/>
 	<xi:include href="discovery/discovery.filter.getrecords.12.xml"/>
 				
@@ -494,9 +493,6 @@
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>		
 				<ctl:call-test name="csw:discovery.filter.getrecords.10.2">
-					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-				</ctl:call-test>		
-				<ctl:call-test name="csw:discovery.filter.getrecords.10.3">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>						
 				<ctl:call-test name="csw:discovery.filter.getrecords.11">

@@ -17,7 +17,7 @@
 	<test name="csw:discovery.filter.getrecords.11">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>Correctly evaluate the Or operator expressed by a valid ogc:Or element. Evaluates to true if any child predicates are true.</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The logical operator Or is used for the dc:title property, using PropertyIsEqualTo, for a value of 'title-2' and title-asdf'.  If the response returns with the one record in the DB that have the title value 'title-2' then the test is valid, otherwise it fails.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The logical operator Or is used for the dc:title property, using PropertyIsEqualTo, for a value of 'title-2' and 'title-asdf'.  If the response returns with the one record in the DB that have the title value 'title-2' then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-095, 10.2, p.14</link>
 		<code>
 		
@@ -28,25 +28,34 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw"  xmlns:dc="http://purl.org/dc/elements/1.1/" 
- xmlns:dct="http://purl.org/dc/terms/" xmlns:ogc="http://http://www.opengis.net/ogc" service="http://www.opengis.net/cat/csw" version="2.0.1">
-	<csw:Query typeName="csw:Record">
-		<ogc:Filter>
-			<ogc:Or>
-				<ogc:PropertyIsEqualTo>
-					<ogc:PropertyName>dc:title</ogc:PropertyName>
-					<ogc:Literal>title-asdf</ogc:Literal>
-				</ogc:PropertyIsEqualTo>
-				<ogc:PropertyIsEqualTo>
-					<ogc:PropertyName>dc:title</ogc:PropertyName>
-					<ogc:Literal>title-2</ogc:Literal>
-				</ogc:PropertyIsEqualTo>
-			</ogc:Or>
-		</ogc:Filter>
-	</csw:Query>
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" 
+  xmlns:ows="http://www.opengis.net/ows"
+  xmlns:dc="http://purl.org/dc/elements/1.1/" 
+  xmlns:dct="http://purl.org/dc/terms/"
+  version="2.0.1"
+  resultType="results"
+  outputSchema="http://www.opengis.net/cat/csw">
+  <csw:Query typeNames="csw:Record">
+    <csw:ElementSetName>summary</csw:ElementSetName>
+    <csw:Constraint version="1.1.0" 
+      xmlns:gml="http://www.opengis.net/gml"
+      xmlns:ogc="http://www.opengis.net/ogc">
+      <ogc:Filter>
+	<ogc:Or>
+		<ogc:PropertyIsEqualTo>
+			<ogc:PropertyName>dc:title</ogc:PropertyName>
+			<ogc:Literal>title-asdf</ogc:Literal>
+		</ogc:PropertyIsEqualTo>
+		<ogc:PropertyIsEqualTo>
+			<ogc:PropertyName>dc:title</ogc:PropertyName>
+			<ogc:Literal>title-2</ogc:Literal>
+		</ogc:PropertyIsEqualTo>
+	</ogc:Or>
+      </ogc:Filter>
+    </csw:Constraint>    
+  </csw:Query>
 </csw:GetRecords>
-					]]>
-					</body>
+					]]></body>					
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>
