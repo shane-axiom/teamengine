@@ -15,7 +15,7 @@
 	<test name="csw:discovery.csw.getrecordbyid.2.3">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>ElementSetName can be enumerated as brief, summary or full, where full is the full set of metadata to be returned. Other enumerations are specified in the profile.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The ElementSetName is set to 'brief' so the response is expected to have a full response returned (or as set in the profile).</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The ElementSetName is set to 'full' so the response is expected to have a full response returned (or as set in the profile).</comment>
       <link>OGC 04-021r3, 10.9.4.1, p. 142</link>
 		<code>
 		

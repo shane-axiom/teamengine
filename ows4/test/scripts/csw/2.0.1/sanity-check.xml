@@ -16,7 +16,7 @@
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>CSW sanity check - to determine if the service is running and has the test data loaded.</assertion>
-      <comment>This test first issues a GetCapabilities request using HTTP GET to the CSW server under test to ensure the service is running.  It then performs a GetRecord request for one of the data members that must be loaded to the server.</comment>
+      <comment>This test first issues a GetCapabilities request using HTTP GET to the CSW server under test to ensure the service is running (validates the response).  It then performs a GetRecord request for one of the records that must be loaded to the server and makes sure it returned the correct response, otherwise it fails.</comment>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -51,10 +51,26 @@
 					</url>
 					<method>post</method>
 				    <body><![CDATA[
-				    <csw:GetRecord xmlns:csw="http://www.opengis.net/cat/csw" version="2.0.1" service="http://www.opengis.net/cat/csw"/>
-				    <!--TODO: get record that is in data set-->
-				    ]]>
-					</body>
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" 
+  version="2.0.1"
+  resultType="results"
+  outputSchema="http://www.opengis.net/cat/csw">
+  
+  <csw:Query typeNames="csw:Record">
+    <csw:ElementSetName>summary</csw:ElementSetName>
+    <csw:Constraint version="1.1.0" 
+      xmlns:gml="http://www.opengis.net/gml"
+      xmlns:ogc="http://www.opengis.net/ogc">
+      <ogc:Filter>
+		  <ogc:PropertyIsEqualTo xmlns:dc="http://purl.org/dc/elements/1.1/">
+			  <ogc:PropertyName xmlns:ows="http://www.opengis.net/ows">csw:Record/dc:title</ogc:PropertyName>
+			  <ogc:Literal>title-2</ogc:Literal>
+          </ogc:PropertyIsEqualTo>
+      </ogc:Filter>
+    </csw:Constraint>    
+  </csw:Query>
+</csw:GetRecords>
+					]]></body>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>
 			</xsl:variable>

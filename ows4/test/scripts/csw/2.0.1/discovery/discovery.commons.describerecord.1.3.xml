@@ -29,6 +29,8 @@
 					<param name="request">DescribeRecord</param>				   
 				   	<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="typename">csw:Record</param>
+					<param name="outputFormat">application/xml</param>
+					<param name="schemaLanguage">http://www.w3.org/2001/XMLSchema</param>
 					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
 					<myparsers:XMLValidatingParser.ServiceException/>
 				</request>

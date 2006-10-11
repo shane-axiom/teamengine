@@ -14,7 +14,7 @@ ant test -Dquery="-mode=test -source=../../test/scripts/myTest.xml -logdir=logs"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.occamlab.com/ctl xsd/ctl.xsd">
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<!--================-->
 	<!-- TEST FUNCTIONS -->

@@ -28,7 +28,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc">
+<csw:GetRecords resultType="results" outputSchema="http://www.opengis.net/cat/csw" xmlns:csw="http://www.opengis.net/cat/csw" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc">
 	<csw:DistributedSearch hopCount="3"/>
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>

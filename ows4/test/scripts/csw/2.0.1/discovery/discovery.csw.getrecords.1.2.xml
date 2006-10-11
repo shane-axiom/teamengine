@@ -31,6 +31,9 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetRecords</param>
 					<param name="typenames">csw:Record</param>
+					<param name="resultType">results</param>
+					<param name="outputSchema">http://www.opengis.net/cat/csw</param>
+					<param name="elementSetName">summary</param>
 					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
 					<myparsers:XMLValidatingParser.CSW/>
 				</request>

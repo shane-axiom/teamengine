@@ -26,7 +26,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw">
+<csw:GetRecords resultType="results" outputSchema="http://www.opengis.net/cat/csw" xmlns:csw="http://www.opengis.net/cat/csw">
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
@@ -41,7 +41,7 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw" startPosition='2'>
+<csw:GetRecords resultType="results" outputSchema="http://www.opengis.net/cat/csw"  xmlns:csw="http://www.opengis.net/cat/csw" startPosition='2'>
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
