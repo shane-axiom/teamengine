@@ -28,14 +28,16 @@
 					</url>
 					<method>post</method>
 					<body><![CDATA[
-<csw:GetRecords resultType="results" outputSchema="http://www.opengis.net/cat/csw" xmlns:csw="http://www.opengis.net/cat/csw" xmlns:gml="http://www.opengis.net/gml" xmlns:ogc="http://www.opengis.net/ogc">
+<csw:GetRecords resultType="results" outputSchema="http://www.opengis.net/cat/csw" xmlns:csw="http://www.opengis.net/cat/csw" xmlns:ogc="http://www.opengis.net/ogc"  xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<csw:Query typeName="csw:Record">
-		<org:SortBy>
-			<ogc:SortProperty>
-				<ogc:PropertyName>gml:description</ogc:PropertyName>
-				<ogc:SortOrder>DESC</ogc:SortOrder>
-			</ogc:SortProperty>
-		</org:SortBy>
+	    <csw:Constraint version="1.1.0">
+			<org:SortBy>
+				<ogc:SortProperty>
+					<ogc:PropertyName>dc:title</ogc:PropertyName>
+					<ogc:SortOrder>DESC</ogc:SortOrder>
+				</ogc:SortProperty>
+			</org:SortBy>
+		</csw:Constraint>
 	</csw:Query>
 </csw:GetRecords>
 					]]></body>
@@ -47,11 +49,10 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:if test="$request1/*">					
+			<!--TODO: How to check for this?-->	
+			<!--<xsl:if test="$request1/*">						
 				
-				<!--TODO: How to check for this?-->						
-				
-			</xsl:if>		
+			</xsl:if>-->
 				
 		</code>
 	</test>

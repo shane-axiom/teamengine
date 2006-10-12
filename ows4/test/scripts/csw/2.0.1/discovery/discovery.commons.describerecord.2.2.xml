@@ -33,7 +33,7 @@
 	<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
 </csw:DescribeRecord>
 				   	]]></body>
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
 			

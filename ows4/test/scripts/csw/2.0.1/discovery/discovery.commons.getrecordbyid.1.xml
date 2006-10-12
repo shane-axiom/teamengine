@@ -29,7 +29,7 @@
 					<param name="version">2.0.1</param>
 					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="id">REC-001,REC-002</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
 			
