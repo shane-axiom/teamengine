@@ -14,7 +14,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.commons.transaction.1">
-      <param name="VAR_CSW_GETCAPABILITIES_HTTP_GET_URL"/>
+      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>All OGC web services must generate an exception report in response to an invalid request or whenever a condition arises that prevents request processing. A valid XML response entity must conform to the declaration of the ows:ExceptionReport.</assertion>
       <comment>This test issues a Transaction request using HTTP GET to the CSW server under test. The exception OperationNotSupported is raised when the the operation requested is not supported by the server, the name of the unsupported operation is expected in the 'locator' parameter and the value of the exceptionCode is 'OperationNotSupported' to be valid, otherwise the test fails.</comment>
       <link>OGC 05-008c1, 8.5, p.35</link>
@@ -23,13 +23,13 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GETCAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
 					<method>get</method>
 					<param name="service">http://www.opengis.net/cat/csw</param>
 					<param name="version">2.0.1</param>
 					<param name="request">Transaction</param>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			

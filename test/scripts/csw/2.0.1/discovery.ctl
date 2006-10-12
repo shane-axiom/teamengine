@@ -13,6 +13,9 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
+<!--xmlns:ows="http://www.opengis.net/ows"-->
+<!--xmlns:ows="http://www.opengeospatial.net/ows"-->
+
 	<!--====================-->
 	<!-- OWS COMMONS TESTS -->
 	<!--====================-->	
@@ -86,7 +89,6 @@
 	<xi:include href="discovery/discovery.csw.getrecordbyid.4.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.1.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.1.2.xml"/>
-	<xi:include href="discovery/discovery.csw.getrecords.10.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.2.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.2.2.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.2.3.xml"/>
@@ -102,6 +104,8 @@
 	<xi:include href="discovery/discovery.csw.getrecords.7.4.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.8.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecords.9.xml"/>
+	<xi:include href="discovery/discovery.csw.getrecords.10.xml"/>
+	<xi:include href="discovery/discovery.csw.getrecords.11.xml"/>	
 	<xi:include href="discovery/discovery.filter.getrecords.1.1.xml"/>
 	<xi:include href="discovery/discovery.filter.getrecords.1.2.xml"/>
 	<xi:include href="discovery/discovery.filter.getrecords.2.1.xml"/>
@@ -181,7 +185,7 @@
 				<xsl:value-of select="$getCapabilitiesDocument//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetDomain']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
 			</xsl:variable>								
 				
-			<!-- Run the tests -->
+			<!-- Run the tests -->	
 			
 			<!-- SANITY-CHECK -->			
 			<ctl:call-test name="csw:sanity-check">
@@ -429,12 +433,12 @@
 				<ctl:call-test name="csw:discovery.csw.getrecords.6.3">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>
-				<ctl:call-test name="csw:discovery.csw.getrecords.7.3">
+				<!--<ctl:call-test name="csw:discovery.csw.getrecords.7.3">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.getrecords.7.4">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-				</ctl:call-test>
+				</ctl:call-test>-->
 				<ctl:call-test name="csw:discovery.csw.getrecords.8">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>
@@ -444,6 +448,9 @@
 				<ctl:call-test name="csw:discovery.csw.getrecords.10">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>		
+				<ctl:call-test name="csw:discovery.csw.getrecords.11">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>										
 				<ctl:call-test name="csw:discovery.filter.getrecords.1.1">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>						
@@ -514,7 +521,7 @@
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
 				</ctl:call-test>
 			</xsl:if>
-
+			
 			<ctl:call-test name="csw:discovery.commons.transaction.1">
 				<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 			</ctl:call-test>

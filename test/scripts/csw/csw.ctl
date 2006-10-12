@@ -7,6 +7,8 @@
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:ows="http://www.opengis.net/ows"
+ xmlns:dc="http://purl.org/dc/elements/1.1/" 
+ xmlns:dct="http://purl.org/dc/terms/" 
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

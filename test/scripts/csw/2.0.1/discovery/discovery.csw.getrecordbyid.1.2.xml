@@ -32,7 +32,7 @@
 	<csw:Id>REC-001</csw:Id>
 </csw:GetRecordById>
 					]]></body>
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
 			

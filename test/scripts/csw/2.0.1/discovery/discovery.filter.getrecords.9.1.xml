@@ -53,7 +53,7 @@
   </csw:Query>
 </csw:GetRecords>
 					]]></body>					
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
 			

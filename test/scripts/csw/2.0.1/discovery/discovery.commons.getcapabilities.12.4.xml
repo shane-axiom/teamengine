@@ -30,7 +30,7 @@
 					<param name="version">2.0.1</param>
 					<param name="request">GetCapabilities</param>
 					<param name="updatesequence">10000.00</param>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			

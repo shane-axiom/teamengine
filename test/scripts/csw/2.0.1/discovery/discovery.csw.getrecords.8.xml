@@ -33,7 +33,7 @@
 	<csw:Query typeName="csw:Record"/>
 </csw:GetRecords>
 					]]></body>
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>	
 			
@@ -41,11 +41,10 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<xsl:if test="$request1/*">					
+			<!--TODO: How to check for this?-->	
+			<!--<xsl:if test="$request1/*">						
 				
-				<!--TODO: How to check for this?-->						
-				
-			</xsl:if>		
+			</xsl:if>-->
 				
 		</code>
 	</test>

@@ -32,7 +32,7 @@
 					<param name="outputFormat">application/xml</param>
 					<param name="schemaLanguage">http://www.w3.org/2001/XMLSchema</param>					
 					<param name="namespace">xmlns(csw=http://www.opengis.net/cat/csw)</param>
-					<myparsers:XMLValidatingParser.CSW/>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
 			
