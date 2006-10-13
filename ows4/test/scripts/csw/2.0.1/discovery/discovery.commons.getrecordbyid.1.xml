@@ -15,7 +15,7 @@
 	<test name="csw:discovery.commons.getrecordbyid.1">
       <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
       <assertion>A comma (',') shall be used to delimit list items within multi-valued parameters in KVP strings.</assertion>
-      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected, without exception, of type GetRecordByIdResponse.</comment>
+      <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected, without exception, of type GetRecordByIdResponse and should contain all 3 records as specified by the ids given.</comment>
       <link>OGC 05-008c1, 11.5.3, p.57</link>
 		<code>
 		
@@ -28,7 +28,7 @@
 					<param name="request">GetRecordById</param>
 					<param name="version">2.0.1</param>
 					<param name="service">http://www.opengis.net/cat/csw</param>
-					<param name="id">REC-001,REC-002</param>
+					<param name="id">urn:uuid:7b9826b0-53d5-11db-b0de-0800200c9a66,urn:uuid:8a7ed930-53d5-11db-b0de-0800200c9a66,urn:uuid:9984d380-53d5-11db-b0de-0800200c9a66</param>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>
@@ -43,6 +43,13 @@
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
+				
+				<xsl:variable name="expression">count(//csw:GetRecordByIdResponse/*) = 3</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+				
 			</xsl:if>			
 				
 		</code>

@@ -44,12 +44,10 @@
 				</ctl:call-test>
 				
 				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
-				<xsl:if test="not($content-type = 'text/xml')">
+				<xsl:if test="not($content-type = 'application/xml')">
 					<ctl:fail/>
 				</xsl:if>
 			</xsl:if>				
-				
-			<!--TODO: Is this the proper default format, 'text/xml'?-->
 				
 		</code>
 	</test>

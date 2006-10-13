@@ -17,7 +17,7 @@
 	<test name="csw:discovery.filter.getrecords.10.1">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>Correctly evaluate the And operator expressed by a valid ogc:And element. Evaluates to true if all child predicates are true.</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The logical operator And is used for the dc:title property, using PropertyIsEqualTo, for a value of 'title-1' and title-2'.  If the response returns with the two records in the DB that have the title values as stated then the test is valid, otherwise it fails.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The logical operator And is used for the dc:title property, using PropertyIsEqualTo, for a value of 'title-1' and 'title-2'.  If the response returns with the two records in the DB that have the title values as stated then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-095, 10.2, p.14</link>
 		<code>
 		

@@ -17,11 +17,11 @@
 	<test name="csw:discovery.filter.getrecords.2.1">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>Correctly evaluate the PropertyIsNotEqualTo predicate expressed by a valid ogc:PropertyIsNotEqualTo element.</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsNotEqualTo is used for the dct:modified property for a value of 2006-10-04.  If the response returns with the number of records in the DB minus one (XXX), then the test is valid, otherwise it fails.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsNotEqualTo is used for the dct:modified property for a value of '2006-03-26'.  If the response returns with the one other record, then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-095, 9.2, p.12</link>
 		<code>
 		
-			<!--TODO: replace 'XXX' with the actual number of records in the DB minus 1-->
+			<!--TODO: Does this evaluate records without this property set?-->		
 		
 			<xsl:variable name="request1">
 				<request>
@@ -45,7 +45,7 @@
       <ogc:Filter>
 	<ogc:PropertyIsNotEqualTo>
 		<ogc:PropertyName>dct:modified</ogc:PropertyName>
-		<ogc:Literal>2006-10-04</ogc:Literal>
+		<ogc:Literal>2006-03-26</ogc:Literal>
 	</ogc:PropertyIsNotEqualTo>
       </ogc:Filter>
     </csw:Constraint>    
@@ -61,13 +61,13 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">not(//csw:GetRecordsResponse/csw:SearchResults/csw:Record[dct:modified = '2006-10-04'])</xsl:variable>
+				<xsl:variable name="expression">boolean(//csw:GetRecordsResponse/csw:SearchResults/csw:Record[dct:modified = '2006-06-12'])</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 				
-				<xsl:variable name="expression">count(//csw:GetRecordsResponse/csw:SearchResults/csw:Record) = XXX</xsl:variable>
+				<xsl:variable name="expression">count(//csw:GetRecordsResponse/csw:SearchResults/csw:Record) = 1</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
