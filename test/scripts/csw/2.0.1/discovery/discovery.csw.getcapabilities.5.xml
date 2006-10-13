@@ -14,7 +14,7 @@
 
 	<test name="csw:discovery.csw.getcapabilities.5">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>Must implement a Filer_Capabilities section in implementing CSW binding. Must also implement the logical And, Or, and Not; comparison PropertyIsEqualTo, PropertyIsNotEqualTo, PropertyIsLessThan, PropertyIsGreaterThan, PropertyIsLessThanOrEqualTo, PropertyIsGreaterThanOrEqualTo, and PropertyIsLike; spatial BBOX operators.</assertion>
+      <assertion>Must implement a Filter_Capabilities section in implementing CSW binding. Must also implement the logical And, Or, and Not; comparison PropertyIsEqualTo, PropertyIsNotEqualTo, PropertyIsLessThan, PropertyIsGreaterThan, PropertyIsLessThanOrEqualTo, PropertyIsGreaterThanOrEqualTo, and PropertyIsLike; spatial BBOX operators.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. A capabilities document is expected, with all mandatory values listed in the CSW specification.  If all the required elements are present in the document then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-021r3, 10.5.2, p. 121</link>
 		<code>

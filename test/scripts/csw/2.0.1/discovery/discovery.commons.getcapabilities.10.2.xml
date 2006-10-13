@@ -15,7 +15,7 @@
 	<test name="csw:discovery.commons.getcapabilities.10.2">
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>If the the server recognizes the AcceptFormats parameter, the response entity shall correspond to the most preferred format that the service supports. If none of the content types is supported, the XML representation must be provided instead.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter has the bogus value 'asdf/asdf' and should result in the latest version capabilities document in the default 'text/xml' format.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The AcceptFormats parameter has the bogus value 'asdf/asdf' and should result in the latest version capabilities document in the default 'application/xml' format.</comment>
       <link>OGC 05-008c1, 7.3.5, p.18</link>
 		<code>
 		
@@ -45,7 +45,7 @@
 				</ctl:call-test>
 				
 				<xsl:variable name="content-type" select="$request1/response/headers/header[@name='Content-Type']"/>
-				<xsl:if test="not($content-type = 'text/xml')">
+				<xsl:if test="not($content-type = 'application/xml')">
 					<ctl:fail/>
 				</xsl:if>
 			</xsl:if>

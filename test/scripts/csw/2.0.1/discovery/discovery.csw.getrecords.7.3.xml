@@ -9,6 +9,8 @@
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:gml="http://www.opengis.net/gml"
  xmlns:ogc="http://www.opengis.net/ogc"
+ xmlns:dc="http://purl.org/dc/elements/1.1/" 
+ xmlns:dct="http://purl.org/dc/terms/" 
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -49,10 +51,13 @@
 				<ctl:fail/>
 			</xsl:if>
 
-			<!--TODO: How to check for this?-->	
-			<!--<xsl:if test="$request1/*">						
-				
-			</xsl:if>-->
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//csw:GetRecordsResponse/csw:SearchResults/csw:Record[1]/dc:title = 'title-1'</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>	
 				
 		</code>
 	</test>

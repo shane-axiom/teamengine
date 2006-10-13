@@ -15,7 +15,7 @@
 	<test name="csw:discovery.csw.getrecords.6.2">
       <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
       <assertion>The maxRecords parameter has a default value of 10. If the value is 0 then the server should react as if the 'resultType=hits' (see 10.8.4.2).</assertion>
-      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The maxRecords is set to '2' and the SearchResults whould have the correct number of records for the request.</comment>
+      <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The maxRecords is set to '2' and the SearchResults should have the correct number of records for the request (since more than 2 records in the DB).</comment>
       <link>OGC 04-021r3, 10.8.4.6, p. 136</link>
 		<code>
 		

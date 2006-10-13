@@ -51,8 +51,6 @@
 					<ctl:with-param name="phase">RequiredOperations</ctl:with-param>
 				</ctl:call-test>				
 			</xsl:if>						
-			
-			<!--TODO: Implement an example for each as well, not just checking the capabilities document (including the optional requests).-->
 				
 		</code>
 	</test>
