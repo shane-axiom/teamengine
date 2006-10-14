@@ -37,7 +37,7 @@
 					<param name="resultType">results</param>
 					<param name="outputSchema">http://www.opengis.net/cat/csw</param>
 					<param name="elementSetName">summary</param>							
-					<param name="namespace">xmlns(dc=xmlns:dc=http://purl.org/dc/elements/1.1/),xmlns(csw=http://www.opengis.net/cat/csw)</param>
+					<param name="namespace">dc:http://purl.org/dc/elements/1.1/,csw:http://www.opengis.net/cat/csw</param>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>	
