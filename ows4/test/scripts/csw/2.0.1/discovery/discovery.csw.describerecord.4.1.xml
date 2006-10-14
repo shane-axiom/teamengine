@@ -12,28 +12,28 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="csw:discovery.csw.describerecord.1.2">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
-      <assertion>Must implement HTTP-POST XML DescribeRecord and may implement HTTP-GET KVP version.</assertion>
-      <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. This is an optional operation and a valid response (DescribeRecordResponse) is expected if it is supported.</comment>
-      <link>OGC 04-021r3, 10.3.1, p.113</link>
+	<test name="csw:discovery.csw.describerecord.4.1">
+      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+      <assertion>For KVP encoding, must use namespace parameter to declare namespaces, for XML encoding, use XML conventions (xmlns:..., see http://www.w3.org/TR/1999/REC-xml-names-19990114/).</assertion>
+      <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. The namespace is specified in the XML request itself using xmlns:prefix=url.  A DescribeRecordResponse is expected.</comment>
+      <link>OGC 04-021r3, 10.6.4.2, p. 126</link>
 		<code>
 		
-			<!--Assume: The server supports the GET KVP DescribeRecord operation.-->
-			
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">http://www.opengis.net/cat/csw</param>
-					<param name="version">2.0.1</param>
-					<param name="request">DescribeRecord</param>
-					<param name="typename">csw:Record</param>
-					<param name="outputFormat">application/xml</param>
-					<param name="schemaLanguage">http://www.w3.org/2001/XMLSchema</param>					
-					<param name="namespace">csw:http://www.opengis.net/cat/csw</param>
+					<method>post</method>
+				   <body><![CDATA[
+<csw:DescribeRecord xmlns:csw="http://www.opengis.net/cat/csw" 
+ version="2.0.1" 
+ service="http://www.opengis.net/cat/csw"
+ outputFormat="application/xml"
+ schemaLanguage="http://www.w3.org/2001/XMLSchema">
+	<csw:TypeName targetNamespace="http://www.opengis.org/cat/csw">Record</csw:TypeName>
+</csw:DescribeRecord>
+				   	]]></body>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>

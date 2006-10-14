@@ -71,6 +71,13 @@
 
 	<xi:include href="discovery/discovery.csw.describerecord.1.1.xml"/>
 	<xi:include href="discovery/discovery.csw.describerecord.1.2.xml"/>
+	<xi:include href="discovery/discovery.csw.describerecord.2.1.xml"/>
+	<xi:include href="discovery/discovery.csw.describerecord.2.2.xml"/>	
+	<xi:include href="discovery/discovery.csw.describerecord.3.xml"/>	
+	<xi:include href="discovery/discovery.csw.describerecord.4.1.xml"/>
+	<xi:include href="discovery/discovery.csw.describerecord.4.2.xml"/>		
+	<xi:include href="discovery/discovery.csw.describerecord.5.xml"/>		
+	<xi:include href="discovery/discovery.csw.describerecord.6.xml"/>		
 	<xi:include href="discovery/discovery.csw.getcapabilities.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.2.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.2.2.xml"/>
@@ -80,6 +87,7 @@
 	<xi:include href="discovery/discovery.csw.getcapabilities.5.xml"/>
 	<xi:include href="discovery/discovery.csw.getdomain.1.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getdomain.1.2.xml"/>
+	<xi:include href="discovery/discovery.csw.getdomain.2.xml"/>	
 	<xi:include href="discovery/discovery.csw.getrecordbyid.1.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecordbyid.1.2.xml"/>
 	<xi:include href="discovery/discovery.csw.getrecordbyid.2.1.xml"/>
@@ -207,6 +215,9 @@
 				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.describerecord.1.2">
 					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.csw.describerecord.4.2">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>					
 				</ctl:call-test>			
 			</xsl:if>	
 						
@@ -226,6 +237,24 @@
 				<ctl:call-test name="csw:discovery.csw.describerecord.1.1">
 					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
 				</ctl:call-test>				
+				<ctl:call-test name="csw:discovery.csw.describerecord.2.1">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.csw.describerecord.2.2">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.csw.describerecord.3">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+				</ctl:call-test>				
+				<ctl:call-test name="csw:discovery.csw.describerecord.4.1">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+				</ctl:call-test>						
+				<ctl:call-test name="csw:discovery.csw.describerecord.5">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>					
+				</ctl:call-test>													
+				<ctl:call-test name="csw:discovery.csw.describerecord.6">
+					<ctl:with-param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL" select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>					
+				</ctl:call-test>						
 			</xsl:if>							
 						
 			<xsl:if test="not($VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL = '')">
@@ -364,6 +393,9 @@
 				<ctl:call-test name="csw:discovery.csw.getdomain.1.1">
 					<ctl:with-param name="VAR_CSW_GET_DOMAIN_HTTP_POST_URL" select="$VAR_CSW_GET_DOMAIN_HTTP_POST_URL"/>
 				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.csw.getdomain.2">
+					<ctl:with-param name="VAR_CSW_GET_DOMAIN_HTTP_POST_URL" select="$VAR_CSW_GET_DOMAIN_HTTP_POST_URL"/>
+				</ctl:call-test>				
 			</xsl:if>
 
 			<xsl:if test="not($VAR_CSW_GET_DOMAIN_HTTP_GET_URL = '')">
