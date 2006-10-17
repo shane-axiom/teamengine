@@ -15,7 +15,7 @@
 	<test name="wfs:basic.wfs.getcapabilities.3">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>Version number specified in a given request must correspond to a version supported by the service.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be 1.1.0. The response document will be tested to check that the version number returned in the capabilities document is the same as the requested version.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define the version number to be '1.1.0'. The response document will be tested to check that the version number returned in the capabilities document is the same as the requested version ('1.1.0').</comment>
       <link>OGC 04-094, 6.2.3, p.9</link>
 		<code>
 		

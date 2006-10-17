@@ -27,7 +27,7 @@
 					<method>get</method>
 					<param name="service">WFS</param>
 					<param name="version">1.1.0</param>
-					<param name="versionXXX">x.x.x</param>
+					<param name="versionXXX">x.x.x,x.y.z</param>
 					<param name="request">GetCapabilities</param>
 					<param name="ASDF">asdf:asdf</param>
 					<myparsers:XMLValidatingParser.WFS/>

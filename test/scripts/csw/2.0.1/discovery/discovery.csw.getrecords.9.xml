@@ -17,6 +17,7 @@
       <assertion>The server may include a RequestId element in the EchoedRequest element in the Acknowledgement and GetRecordsResponse.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The server supports RequestId and thus should have the RequestId in the repsonse.</comment>
       <link>OGC 04-021r3, 10.8.4.12, p. 138</link>
+      <link>optional</link>
 		<code>
 		
 			<!--Assume: The server supports the RequestId parameter.-->

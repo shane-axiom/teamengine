@@ -16,7 +16,8 @@
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>Host names in a URI are case-insensitive.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The URI in the request is in lowercase.  The respose will be tested to ensure a correct capabilities document was returned.</comment>
-      <link>OGC 04-094, 6.3.1, p.10; RFC 3986, 3.2.2</link>
+      <link>OGC 04-094, 6.3.1, p.10</link>
+      <link>RFC 3986, 3.2.2</link>
 		<code>
 		
 		<xsl:choose>
