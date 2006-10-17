@@ -294,7 +294,12 @@ public class TECore {
           copy.appendChild(apply);
           t = tf.newTransformer(new DOMSource(doc));
         } else if (e.getLocalName().equals("content")) {
-          content = e;
+          NodeList children2 = e.getChildNodes();
+          for (int j = 0; j < children2.getLength(); j++) {
+            if (children2.item(j).getNodeType() == Node.ELEMENT_NODE) {
+              content = (Element)children2.item(j);
+            }
+          }
         } else {
           parser_instruction = db.newDocument();
           tf.newTransformer().transform(new DOMSource(e), new DOMResult(parser_instruction));
