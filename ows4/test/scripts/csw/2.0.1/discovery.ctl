@@ -63,6 +63,13 @@
 	<xi:include href="discovery/discovery.commons.getcapabilities.9.1.xml"/>
 	<xi:include href="discovery/discovery.commons.getcapabilities.9.2.xml"/>
 	<xi:include href="discovery/discovery.commons.getrecordbyid.1.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.1.1.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.1.2.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.1.3.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.1.4.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.1.5.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.2.1.xml"/>
+	<xi:include href="discovery/discovery.commons.getrecords.2.2.xml"/>	
 	<xi:include href="discovery/discovery.commons.transaction.1.xml"/>
 			
 	<!--===========-->
@@ -81,10 +88,10 @@
 	<xi:include href="discovery/discovery.csw.getcapabilities.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.2.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.2.2.xml"/>
-	<xi:include href="discovery/discovery.csw.getcapabilities.2.3.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.3.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.4.xml"/>
 	<xi:include href="discovery/discovery.csw.getcapabilities.5.xml"/>
+	<xi:include href="discovery/discovery.csw.getcapabilities.6.xml"/>	
 	<xi:include href="discovery/discovery.csw.getdomain.1.1.xml"/>
 	<xi:include href="discovery/discovery.csw.getdomain.1.2.xml"/>
 	<xi:include href="discovery/discovery.csw.getdomain.2.xml"/>	
@@ -366,9 +373,6 @@
 				<ctl:call-test name="csw:discovery.csw.getcapabilities.2.1">
 					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 				</ctl:call-test>
-				<ctl:call-test name="csw:discovery.csw.getcapabilities.2.2">
-					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
-				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.getcapabilities.3">
 					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 				</ctl:call-test>
@@ -378,13 +382,16 @@
 				<ctl:call-test name="csw:discovery.csw.getcapabilities.5">
 					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
 				</ctl:call-test>	
+				<ctl:call-test name="csw:discovery.csw.getcapabilities.6">
+					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>				
 			</xsl:if>
 			
 			<xsl:if test="not($VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL = '')">
 				<ctl:call-test name="csw:discovery.commons.getcapabilities.3">
 					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL"/>
 				</ctl:call-test>
-				<ctl:call-test name="csw:discovery.csw.getcapabilities.2.3">
+				<ctl:call-test name="csw:discovery.csw.getcapabilities.2.2">
 					<ctl:with-param name="VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL"/>
 				</ctl:call-test>
 			</xsl:if>
@@ -435,6 +442,12 @@
 			</xsl:if>
 							
 			<xsl:if test="not($VAR_CSW_GET_RECORDS_HTTP_POST_URL = '')">
+				<ctl:call-test name="csw:discovery.commons.getrecords.2.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>			
+				<ctl:call-test name="csw:discovery.commons.getrecords.2.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.getrecords.1.1">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>			
@@ -552,6 +565,21 @@
 				<ctl:call-test name="csw:discovery.csw.getrecords.7.2">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
 				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.commons.getrecords.1.1">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.commons.getrecords.1.2">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.commons.getrecords.1.3">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.commons.getrecords.1.4">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+				</ctl:call-test>
+				<ctl:call-test name="csw:discovery.commons.getrecords.1.5">
+					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL" select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+				</ctl:call-test>																
 			</xsl:if>
 			
 			<ctl:call-test name="csw:discovery.commons.transaction.1">
