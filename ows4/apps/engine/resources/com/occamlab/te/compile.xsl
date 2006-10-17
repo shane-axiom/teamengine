@@ -325,7 +325,7 @@
 				</xsl:choose>
 			</xsl:for-each>
 		</xsl:variable>
-		<txsl:variable name="te:parse">
+		<txsl:variable name="te:response">
 			<parse>
 				<txsl:attribute name="id"><txsl:value-of select="$te:parse-id"/></txsl:attribute>
 				<xsl:choose>
@@ -339,26 +339,15 @@
 						<txsl:copy-of select="te:serialize_and_parse($te:core, $te:parse-instruction)"/>
 					</xsl:otherwise>
 				</xsl:choose>
-<!--
-				<xsl:choose>
-					<xsl:when test="boolean($parser/*)">
-						<xsl:variable name="parser-prefix" select="substring-before(name($parser/*), ':')"/>
-						<txsl:copy-of select="te:serialize_and_parse($te:parse-instruction, ${name($parser/*)}, ${name($parser/*)}-method)">
-							<xsl:copy-of select="namespace::*[name()=$parser-prefix]"/>
-						</txsl:copy-of>
-					</xsl:when>
-					<xsl:otherwise>
-						<response>
-							<content>
-								<txsl:copy-of select="te:serialize_and_parse($te:parse-instruction)"/>
-							</content>
-						</response>
-					</xsl:otherwise>
-				</xsl:choose>
--->
 			</parse>
 		</txsl:variable>
-		<txsl:copy-of select="$te:parse"/>
+		<txsl:if test="string-length($te:response/parse/response/parser) &gt; 0">
+			<txsl:value-of select="te:message($te:core, $te:call-depth + 1, $te:response/parse/response/parser)"/>
+		</txsl:if>
+		<txsl:value-of select="te:log_xml($te:core, $te:response/parse)"/>
+		<txsl:for-each select="$te:response/parse/response/content">
+			<txsl:copy-of select="*|text()"/>
+		</txsl:for-each>
 	</xsl:template>
 
 	<xsl:template match="ctl:call-test">
@@ -651,6 +640,14 @@
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:if>
+	</xsl:template>
+
+ 	<xsl:template match="xsl:template">
+		<xsl:copy>
+			<xsl:call-template name="loc"/>
+			<xsl:apply-templates select="@*"/>
+			<xsl:apply-templates mode="fn-code"/>
+		</xsl:copy>
 	</xsl:template>
 
  	<xsl:template match="@*">
