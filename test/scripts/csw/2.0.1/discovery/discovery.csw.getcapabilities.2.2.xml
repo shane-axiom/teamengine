@@ -13,21 +13,24 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.getcapabilities.2.2">
-      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL"/>
       <assertion>Must implement HTTP-GET KVP GetCapabilities and may implement POST XML version.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. This is a mandatory operation and a valid response is expected.</comment>
+      <comment>This test issues a GetCapabilities request using HTTP POST to the CSW server under test. This is an optional operation and a valid response is expected if it is supported.</comment>
       <link>OGC 04-021r3, 10.3.1, p.113</link>
 		<code>
+		
+			<!--Assume: The server supports the POST XML GetCapabilities operation.-->
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_POST_URL"/>
 					</url>
-					<method>get</method>
-					<param name="service">http://www.opengis.net/cat/csw</param>
-					<param name="version">2.0.1</param>
-					<param name="request">GetCapabilities</param>
+					<method>post</method>
+					<body><![CDATA[
+					<csw:GetCapabilities xmlns:csw="http://www.opengis.net/cat/csw" service="http://www.opengis.net/cat/csw" version="2.0.1"/>
+					]]>
+					</body>
 					<!--<myparsers:XMLValidatingParser.CSW/>-->
 				</request>
 			</xsl:variable>

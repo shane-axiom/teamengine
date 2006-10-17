@@ -131,10 +131,10 @@ xsi:schemaLocation="http://www.ascc.net/xml/schematron
    			<sch:assert id="Capabilities.OperationsMetadata.GetRecords" test="ows:OperationsMetadata/ows:Operation[@name='GetRecords']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post GetRecords operation.
             </sch:assert>
-   			<sch:assert id="Capabilities.OperationsMetadata.GetRecordById" test="ows:OperationsMetadata/ows:Operation[@name='GetRecordById']/ows:DCP/ows:HTTP/ows:Get">
+   			<!--<sch:assert id="Capabilities.OperationsMetadata.GetRecordById" test="ows:OperationsMetadata/ows:Operation[@name='GetRecordById']/ows:DCP/ows:HTTP/ows:Get">
 	The OperationsMetadata must include the HTTP-Get GetRecordById operation.
             </sch:assert>
-   			<!--<sch:assert id="Capabilities.OperationsMetadata.Harvest" test="ows:OperationsMetadata/ows:Operation[@name='Harvest']/ows:DCP/ows:HTTP/ows:Post">
+   			<sch:assert id="Capabilities.OperationsMetadata.Harvest" test="ows:OperationsMetadata/ows:Operation[@name='Harvest']/ows:DCP/ows:HTTP/ows:Post">
 	The OperationsMetadata must include the HTTP-Post Harvest operation.
             </sch:assert>
    			<sch:assert id="Capabilities.OperationsMetadata.Transaction" test="ows:OperationsMetadata/ows:Operation[@name='Transaction']/ows:DCP/ows:HTTP/ows:Post">

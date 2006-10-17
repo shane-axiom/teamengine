@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:dc="http://purl.org/dc/elements/1.1/" 
+ xmlns:dct="http://purl.org/dc/terms/"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:discovery.commons.getrecords.1.2">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+      <assertion>A KVP parameter value that denotes a bounding box shall conform to the general syntax specified in subclause 10.2.3. If no CRS reference is provided, a service-defined default value must be assumed.</assertion>
+      <comment>This test issues a GetRecords request using HTTP GET to the CSW server. Using the general BBOX, a 2D BBOX with the CRS URN ommitted.  A single feature in the BBOX is expected if the service accepts KVP Get GetRecords.</comment>
+      <link>OGC 05-008c1, 10.2.3, p.39</link>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_GET_URL"/>
+					</url>
+					<method>get</method>
+					<param name="service">http://www.opengis.net/cat/csw</param>
+					<param name="version">2.0.1</param>
+					<param name="request">GetRecords</param>
+					<param name="typenames">csw:Record</param>
+					<param name="resultType">results</param>
+					<param name="outputSchema">http://www.opengis.net/cat/csw</param>
+					<param name="elementSetName">summary</param>
+					<param name="BoundingBox">36.94,-8.52,69.96,30.19</param>
+					<param name="namespace">csw:http://www.opengis.net/cat/csw</param>
+					<!--<myparsers:XMLValidatingParser.CSW/>-->
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+
+			<xsl:if test="$request1/*">
+				<xsl:variable name="expression">//csw:GetRecordsResponse/csw:SearchResults/csw:Record/dc:title = 'title-1'</xsl:variable>
+				<ctl:call-test name="ctl:assert-xpath">
+					<ctl:with-param name="expr" select="$expression"/>
+					<ctl:with-param name="doc" select="$request1"/>
+				</ctl:call-test>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>
