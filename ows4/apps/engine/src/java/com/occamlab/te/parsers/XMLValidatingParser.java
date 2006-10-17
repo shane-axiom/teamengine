@@ -131,8 +131,15 @@ public class XMLValidatingParser {
 			System.setProperty(property_name, oldprop);
 		}
 		dbf.setNamespaceAware(true);
-		DocumentBuilder db = dbf.newDocumentBuilder();
 		ErrorHandlerImpl eh = new ErrorHandlerImpl("Parsing", logger);
+		if (schemas.size() == 0) {
+			eh.setRole("ValidatingParser");
+			dbf.setValidating(true);
+//			dbf.setFeature("http://xml.org/sax/features/validation", true);
+//			dbf.setFeature("http://apache.org/xml/features/validation/schema", true);
+			dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", "http://www.w3.org/2001/XMLSchema");
+		}
+		DocumentBuilder db = dbf.newDocumentBuilder();
 		db.setErrorHandler(eh);
 
 		Document doc = null;
@@ -173,12 +180,12 @@ public class XMLValidatingParser {
 		boolean b_ignore_errors = false;
 		String s_ignore_errors = instruction.getAttribute("ignoreErrors");
 		if (s_ignore_errors.length() > 0) b_ignore_errors = Boolean.parseBoolean(s_ignore_errors);
-		if (error_count > 0 && !b_ignore_errors) return null;
+		if (error_count > 0 && !b_ignore_errors) doc = null;
 
 		boolean b_ignore_warnings = true;
 		String s_ignore_warnings = instruction.getAttribute("ignoreWarnings");
 		if (s_ignore_warnings.length() > 0) b_ignore_warnings = Boolean.parseBoolean(s_ignore_warnings);
-		if (warning_count > 0 && !b_ignore_warnings) return null;
+		if (warning_count > 0 && !b_ignore_warnings) doc = null;
 
 		return doc;
 	}
