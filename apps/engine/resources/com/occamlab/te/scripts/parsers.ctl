@@ -31,6 +31,10 @@
 		<ctl:java class="com.occamlab.te.parsers.HTTPParser" method="parse"/>
 	</ctl:parser>
 
+	<ctl:parser name="parsers:ImageParser">
+		<ctl:java class="com.occamlab.te.parsers.ImageParser" method="parse"/>
+	</ctl:parser>
+
 	<ctl:parser name="parsers:NullParser">
 		<ctl:java class="com.occamlab.te.parsers.NullParser" method="parse"/>
 	</ctl:parser>
