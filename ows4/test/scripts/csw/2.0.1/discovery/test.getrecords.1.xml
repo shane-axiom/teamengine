@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+ xmlns="http://www.occamlab.com/ctl"
+ xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ xmlns:ctl="http://www.occamlab.com/ctl"
+ xmlns:parsers="http://www.occamlab.com/te/parsers"
+ xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:saxon="http://saxon.sf.net/"
+ xmlns:csw="http://www.opengis.net/cat/csw"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
+
+	<test name="csw:test.getrecords.1">
+      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <assertion>A test using XInclude in the request.</assertion>
+		<code>
+		
+			<xsl:variable name="request1">
+				<request>
+					<url>
+						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+					</url>
+					<method>post</method>
+					<body>
+						<xi:include href="test.getrecords.1.request.xml"/>
+					</body>
+				</request>
+			</xsl:variable>
+			
+			<xsl:if test="not($request1/*)">
+				<ctl:fail/>
+			</xsl:if>
+				
+		</code>
+	</test>
+</ctl:package>

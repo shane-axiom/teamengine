@@ -15,8 +15,9 @@
 	<test name="csw:discovery.csw.getdomain.1.2">
       <param name="VAR_CSW_GET_DOMAIN_HTTP_GET_URL"/>
       <assertion>Must implement HTTP-POST XML GetDomain and may implement HTTP-GET KVP version.</assertion>
-      <comment>This test issues a GetDomain request using HTTP GET to the CSW server under test. This is an optional operation and a valid response is expected if it is supported (GetDomainResponse).</comment>
+      <comment>This test issues a GetDomain request using HTTP GET to the CSW server under test. This is a conditional operation and when implemented a valid response (GetDomainResponse).</comment>
       <link>OGC 04-021r3, 10.3.1, p.113</link>
+	  <link>conditional</link>      
 		<code>
 		
 			<!--Assume: The server supports the GET KVP GetDomain operation.-->

@@ -16,6 +16,7 @@
       <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
       <assertion>If the the server recognizes the Sections parameter, the response entity shall include only the requested top-level elements. The following common sections (see Table 3) must be recognized: ServiceIdentification, ServiceProvider, OperationsMetadata, All. Additional service-specific values may be defined.</assertion>
       <link>OGC 05-008c1, 7.3.3, p.17</link>
+      <link>conditional</link>
 		<code>
 		
 			<xsl:variable name="request1">

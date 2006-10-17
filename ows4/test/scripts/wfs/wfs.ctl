@@ -153,17 +153,6 @@
 		</ctl:java>
 	</ctl:parser>	
 
-	<ctl:parser name="myparsers:XMLValidatingParser.GML3.1.1">
-		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
-			<ctl:with-param name="schemas_links">
-				<parsers:schemas>
-					<parsers:schema type="resource">xsd/ogc/wfs/1.1.0/wfs.xsd</parsers:schema>
-					<parsers:schema type="resource">xsd/ogc/gml/3.1.1/base/gml-3.1.1.xsd</parsers:schema>
-				</parsers:schemas>
-			</ctl:with-param>
-		</ctl:java>
-	</ctl:parser>	
-
 	<ctl:parser name="myparsers:XMLValidatingParser.ServiceException">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">

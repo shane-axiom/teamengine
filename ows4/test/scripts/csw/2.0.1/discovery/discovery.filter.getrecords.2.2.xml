@@ -21,8 +21,6 @@
       <link>OGC 04-095, 9.2, p.12</link>
 		<code>	
 		
-			<!--TODO: Does this evaluate records without this property set?-->
-		
 			<xsl:variable name="request1">
 				<request>
 					<url>

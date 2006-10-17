@@ -13,8 +13,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
+<!--May need to use the old OWS namespace until reference impl. is fixed-->
 <!--xmlns:ows="http://www.opengis.net/ows"-->
 <!--xmlns:ows="http://www.opengeospatial.net/ows"-->
+
+	<!--TEMPORARY TESTS-->
+	<xi:include href="discovery/test.getrecords.1.xml"/>
 
 	<!--====================-->
 	<!-- OWS COMMONS TESTS -->
@@ -152,8 +156,8 @@
 		<ctl:code>
 		
 			<!-- GetCapabilities to determine the proper URLs for the other operations-->
-			<!--<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geobrain.laits.gmu.edu:8099/LAITSCSW2/discovery</xsl:variable>-->
-			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geonetwork.mysdi.org:8081/geonetwork/srv/en/csw</xsl:variable>
+			<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geobrain.laits.gmu.edu:8099/LAITSCSW2/discovery</xsl:variable>
+			<!--<xsl:variable name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL">http://geonetwork.mysdi.org:8081/geonetwork/srv/en/csw</xsl:variable>-->
 			<xsl:variable name="getCapabilitiesDocument">
 				<ctl:request>
 					<ctl:url>
@@ -199,6 +203,12 @@
 			<xsl:variable name="VAR_CSW_GET_DOMAIN_HTTP_POST_URL">
 				<xsl:value-of select="$getCapabilitiesDocument//csw:Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetDomain']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
 			</xsl:variable>								
+	
+			<!--TEMPORARY TESTS-->
+			<ctl:call-test name="csw:test.getrecords.1">
+				<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>			
+				
 				
 			<!-- Run the tests -->	
 			
@@ -478,12 +488,12 @@
 				<ctl:call-test name="csw:discovery.csw.getrecords.6.3">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>
-				<!--<ctl:call-test name="csw:discovery.csw.getrecords.7.3">
+				<ctl:call-test name="csw:discovery.csw.getrecords.7.3">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.getrecords.7.4">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
-				</ctl:call-test>-->
+				</ctl:call-test>
 				<ctl:call-test name="csw:discovery.csw.getrecords.8">
 					<ctl:with-param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL" select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
 				</ctl:call-test>

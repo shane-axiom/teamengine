@@ -31,7 +31,7 @@
 				    </wfs:GetFeature>
 				    ]]>
 					</body>
-					<myparsers:XMLValidatingParser.GML3.1.1/>
+					<myparsers:XMLValidatingParser.WFS/>
 				</request>
 			</xsl:variable>
 			

@@ -19,9 +19,7 @@
       <assertion>Correctly evaluate the PropertyIsNotEqualTo predicate expressed by a valid ogc:PropertyIsNotEqualTo element.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server. The comparison operator PropertyIsNotEqualTo is used for the dct:modified property for a value of '2006-03-26'.  If the response returns with the one other record, then the test is valid, otherwise it fails.</comment>
       <link>OGC 04-095, 9.2, p.12</link>
-		<code>
-		
-			<!--TODO: Does this evaluate records without this property set?-->		
+		<code>	
 		
 			<xsl:variable name="request1">
 				<request>
