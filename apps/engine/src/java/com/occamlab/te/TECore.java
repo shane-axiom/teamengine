@@ -231,8 +231,7 @@ public class TECore {
 			uc.setDoOutput(true);
 			byte[] bytes = null;
 			String mime = null;
-			// TODO: Sometimes may use POST with KVP, need to modify for these cases
-			// TODO: Also need to allow for user to set other content-type and charsets
+			// TODO: Need to allow for user to set other content-type and charsets
 			if (body == null) {
 				bytes = sParams.getBytes();
 				mime = "application/x-www-form-urlencoded";

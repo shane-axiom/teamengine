@@ -28,7 +28,7 @@
 				   <method>get</method>
 					<param name="request">GetCapabilities</param>
 					<param name="version">1.1.0</param>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			

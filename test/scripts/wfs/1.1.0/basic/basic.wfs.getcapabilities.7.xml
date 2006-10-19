@@ -30,7 +30,7 @@
 					<param name="versionXXX">x.x.x,x.y.z</param>
 					<param name="request">GetCapabilities</param>
 					<param name="ASDF">asdf:asdf</param>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

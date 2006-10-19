@@ -15,7 +15,7 @@
 	<test name="wfs:basic.wfs.getfeature.2">
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
       <assertion>If @resultType='hits', then only the size of the resulting feature collection and a timestamp is returned (i.e. @numberOfFeatures, @timeStamp). Only instances of requested feature types are included in the total.</assertion>
-      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. Only the numberOfFeatures and timeStamp attriubutes are expected (no content).</comment>
+      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. Only the numberOfFeatures and timeStamp attributes are expected (no content).</comment>
       <link>OGC 04-094, 9.3, p.38</link>
 		<code>
 		
@@ -25,13 +25,10 @@
 						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
 					<method>post</method>
-				    <body><![CDATA[
-				    <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS" resultTypes="hits">
-					    <wfs:Query xmlns:sf="http://www.opengis.net/cite/gmlsf" typeName="sf:SimplePointFeature" />
-				    </wfs:GetFeature>
-				    ]]>
+				    <body>
+						<xi:include href="basic.wfs.getfeature.2.request.xml"/>				    
 					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

@@ -25,13 +25,10 @@
 						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
 					<method>post</method>
-				    <body><![CDATA[
-				    <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS">
-					    <wfs:Query xmlns:sf="http://www.opengis.net/cite/gmlsf" typeName="sf:SimplePointFeature" />
-				    </wfs:GetFeature>
-				    ]]>
+				    <body>
+   					   <xi:include href="basic.wfs.getfeature.6.request.xml"/>
 					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

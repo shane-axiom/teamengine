@@ -19,19 +19,18 @@
       <link>OGC 04-094, 9.2, p.35</link>
 		<code>
 		
+			<!--Assume: that the server does not support this operation?-->
+		
 			<xsl:variable name="request1">
 				<request>
 					<url>
 						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
 					<method>post</method>
-				    <body><![CDATA[
-				    <wfs:GetFeature xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS">
-					    <wfs:Query xmlns:sf="http://www.opengis.net/cite/gmlsf" typeName="sf:SimplePointFeature" featureVersion="1"/>
-				    </wfs:GetFeature>
-				    ]]>
+				    <body>
+						<xi:include href="basic.wfs.getfeature.7.request.xml"/>
 					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

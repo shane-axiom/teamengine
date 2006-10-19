@@ -40,13 +40,13 @@
 	<xi:include href="basic/basic.wfs.getcapabilities.4.1.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.4.2.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.4.3.xml"/>
-	<xi:include href="basic/basic.wfs.getcapabilities.5.1.xml"/>
-	<xi:include href="basic/basic.wfs.getcapabilities.5.2.xml"/>
+
 	<xi:include href="basic/basic.wfs.getcapabilities.6.1.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.6.2.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.6.3.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.7.xml"/>
 	<xi:include href="basic/basic.wfs.getcapabilities.8.xml"/>
+	<xi:include href="basic/basic.wfs.getcapabilities.9.xml"/>	
 	<xi:include href="basic/basic.wfs.getfeature.1.xml"/>
 	<xi:include href="basic/basic.wfs.getfeature.2.xml"/>
 	<xi:include href="basic/basic.wfs.getfeature.3.xml"/>
@@ -56,6 +56,7 @@
 	<xi:include href="basic/basic.wfs.getfeature.7.xml"/>
 	<xi:include href="basic/basic.wfs.getfeature.8.xml"/>
 	<xi:include href="basic/basic.wfs.getfeature.9.xml"/>
+	<xi:include href="basic/basic.wfs.getfeature.10.xml"/>
 	
 	<!--===============-->
 	<!-- WFS 1.0.0 TESTS -->
@@ -90,7 +91,8 @@
 		
 			<!-- GetCapabilities to determine the proper URLs for the other operations-->
 			<!--<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://nautilus.baruch.sc.edu/wms/in_situ</xsl:variable>-->
-			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://geo.openplans.org:8080/geoserver/wfs/GetCapabilities</xsl:variable>
+			<!--<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://geo.openplans.org:8080/geoserver/wfs/GetCapabilities</xsl:variable>-->
+			<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL">http://localhost:8080/wfs/http</xsl:variable>
 			<xsl:variable name="getCapabilitiesDocument">
 				<ctl:request>
 					<ctl:url>
@@ -124,9 +126,17 @@
 			<xsl:variable name="VAR_WFS_GET_FEATURE_HTTP_POST_URL">
 				<xsl:value-of select="$getCapabilitiesDocument//wfs:WFS_Capabilities/ows:OperationsMetadata/ows:Operation[@name='GetFeature']/ows:DCP/ows:HTTP/ows:Post/@xlink:href"/>
 			</xsl:variable>
+	
+			<!--TEMPORARY TESTS-->
+			<ctl:call-test name="wfs:basic.wfs.getfeature.9">
+				<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>	
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.2.2">
+				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+			</ctl:call-test>	
 						
 			<!-- Run the tests -->
-			
+				
 			<!-- SANITY-CHECK -->			
 			<ctl:call-test name="wfs:sanity-check">
 				<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
@@ -193,6 +203,9 @@
 				<ctl:call-test name="wfs:basic.wfs.getcapabilities.8">
 					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 				</ctl:call-test>
+				<ctl:call-test name="wfs:basic.wfs.getcapabilities.9">
+					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+				</ctl:call-test>				
 			</xsl:if>
 			
 			<xsl:if test="not($VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL = '')">							
@@ -202,12 +215,7 @@
 				<ctl:call-test name="wfs:basic.commons.getcapabilities.2.2">
 					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 				</ctl:call-test>			
-				<ctl:call-test name="wfs:basic.wfs.getcapabilities.5.1">
-					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-				</ctl:call-test>
-				<ctl:call-test name="wfs:basic.wfs.getcapabilities.5.2">
-					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-				</ctl:call-test>
+
 				<ctl:call-test name="wfs:basic.wfs.getcapabilities.6.1">
 					<ctl:with-param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL" select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 				</ctl:call-test>
@@ -247,6 +255,12 @@
 				<ctl:call-test name="wfs:basic.wfs.getfeature.9">
 					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL" select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 				</ctl:call-test>
+			</xsl:if>
+					
+			<xsl:if test="not($VAR_WFS_GET_FEATURE_HTTP_GET_URL = '')">							
+				<ctl:call-test name="wfs:basic.wfs.getfeature.10">
+					<ctl:with-param name="VAR_WFS_GET_FEATURE_HTTP_GET_URL" select="$VAR_WFS_GET_FEATURE_HTTP_GET_URL"/>
+				</ctl:call-test>					
 			</xsl:if>
 						
 			<!-- OPTIONAL -->

@@ -17,7 +17,7 @@
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
       <assertion>If a request type has not been implemented, an exception report must be returned.</assertion>
       <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The feature to request is not in the application schema and a ServiceException shall be returned.</comment>
-      <link>OGC 04-094, p. ?</link>
+      <link>OGC 04-094, 7.7, p. 23</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -27,9 +27,9 @@
 					</url>
 				   <method>post</method>
 				   <body>
-					   <xi:xinclude href="basic.wfs.getfeature.9.request.xml"/>
+					   <xi:include href="basic.wfs.getfeature.9.request.xml"/>
 					</body>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			
