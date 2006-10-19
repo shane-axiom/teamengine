@@ -27,7 +27,7 @@
 				   <method>get</method>
 					<param name="request">GetCapabilities</param>				   
 				   	<param name="service">WFS</param>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

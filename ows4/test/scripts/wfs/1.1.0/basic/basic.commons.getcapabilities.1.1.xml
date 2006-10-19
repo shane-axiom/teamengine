@@ -28,7 +28,7 @@
 					<param name="SERVICE">WFS</param>
 					<param name="VERSION">1.1.0</param>
 					<param name="REQUEST">GetCapabilities</param>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

@@ -27,9 +27,9 @@
 					</url>
 				   <method>post</method>
 				   <body>
-					   <xi:xinclude href="basic.wfs.getfeature.8.request.xml"/>
+					   <xi:include href="basic.wfs.getfeature.8.request.xml"/>
 					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

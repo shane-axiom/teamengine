@@ -17,6 +17,7 @@
       <assertion>The POST method may be supported using either the XML or KVP entity representations.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. This uses KVP parameters as the request.  A capabilities document is expected.</comment>
       <link>OGC 04-094, 13.1, p.79</link>
+       <link>optional</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -25,11 +26,14 @@
 					  <xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
 				   </url>
 				   <method>post</method>
-					<body><![CDATA[
+				   <param name="request">GetCapabilities</param>
+				   <param name="service">WFS</param>
+				   <param name="version">1.1.0</param>
+					<!--<body><![CDATA[
 					?request=GetCapabilities&service=WFS&version=1.1.0
 					]]>
-					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					</body>-->
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			

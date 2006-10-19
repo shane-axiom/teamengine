@@ -29,7 +29,7 @@
 				   <wfs:GetCapabilities xmlns:wfs="http://www.opengis.net/wfs" service="WFS"/>
 				   ]]>
 					</body>
-					<myparsers:XMLValidatingParser.WFS/>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			
