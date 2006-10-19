@@ -7,16 +7,17 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
+ xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getfeature.2">
+	<test name="wfs:basic.wfs.getfeature.9.1">
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-      <assertion>If @resultType='hits', then only the size of the resulting feature collection and a timestamp is returned (i.e. @numberOfFeatures, @timeStamp). Only instances of requested feature types are included in the total.</assertion>
-      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. Only the numberOfFeatures and timeStamp attributes are expected (no content).</comment>
-      <link>OGC 04-094, 9.3, p.38</link>
+      <assertion>If a request type has not been implemented, an exception report must be returned.</assertion>
+      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The feature to request is not in the application schema and a ServiceException shall be returned.</comment>
+      <link>OGC 04-094, 7.7, p. 23</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -24,11 +25,11 @@
 					<url>
 						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
-					<method>post</method>
-				    <body>
-						<xi:include href="basic.wfs.getfeature.2.request.xml"/>				    
+				   <method>post</method>
+				   <body>
+					   <xi:include href="basic.wfs.getfeature.9.1.request.xml"/>
 					</body>
-					<!--<myparsers:XMLValidatingParser.WFS/>-->
+					<!--<myparsers:XMLValidatingParser.ServiceException/>-->
 				</request>
 			</xsl:variable>
 			
@@ -37,20 +38,12 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">boolean(//wfs:FeatureCollection/@numberOfFeatures) and boolean(//wfs:FeatureCollection/@timeStamp)</xsl:variable>
+				<xsl:variable name="expression">//ows:ExceptionReport</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
 			</xsl:if>
-	
-			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">boolean(count(//wfs:FeatureCollection/*) = 0)</xsl:variable>
-				<ctl:call-test name="ctl:assert-xpath">
-					<ctl:with-param name="expr" select="$expression"/>
-					<ctl:with-param name="doc" select="$request1"/>
-				</ctl:call-test>
-			</xsl:if>	
 				
 		</code>
 	</test>

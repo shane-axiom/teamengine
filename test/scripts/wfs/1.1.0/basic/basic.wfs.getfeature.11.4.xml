@@ -12,11 +12,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getfeature.1">
+	<test name="wfs:basic.wfs.getfeature.11.4">
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-      <assertion>The default output format is XML that complies with GML 3.1.1.</assertion>
-      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The response should be valid against the GML 3.1.1 schema.</comment>
-      <link>OGC 04-094, 9.2, p.34</link>
+      <assertion>The following attributes are required for all XML request entities: @version (default '1.1.0'); @service (fixed 'WFS').</assertion>
+      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. There is no version or service attribute.  The server should process the request as usual with the default values.</comment>
+      <link>OGC 04-094, 7.8, p.24</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -24,10 +24,10 @@
 					<url>
 						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
 					</url>
-					<method>post</method>
-				    <body>
-						<xi:include href="basic.wfs.getfeature.1.request.xml"/>				    
-					</body>
+				   <method>post</method>
+				   <body>
+					   <xi:include href="basic.wfs.getfeature.11.4.request.xml"/>
+				   </body>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
@@ -35,14 +35,14 @@
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-
+				
 			<xsl:if test="$request1/*">
 				<xsl:variable name="expression">//wfs:FeatureCollection</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>
+			</xsl:if>					
 				
 		</code>
 	</test>
