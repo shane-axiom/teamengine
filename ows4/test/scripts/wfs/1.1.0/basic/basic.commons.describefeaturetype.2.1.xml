@@ -12,7 +12,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.commons.describefeaturetype.2">
+	<test name="wfs:basic.commons.describefeaturetype.2.1">
       <param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
       <assertion>A comma (',') shall be used to delimit list items within multi-valued parameters in KVP strings.</assertion>
       <comment>This test issues a DescibeFeatureType request using HTTP GET to the WFS server under test. The typename pairing has a list of types to describe seperated by commas, the response is expected without excpetion.</comment>

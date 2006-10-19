@@ -7,32 +7,28 @@
  xmlns:myparsers="http://www.galdosinc.com/myparsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
- xmlns:ows="http://www.opengis.net/ows"
  xmlns:xi="http://www.w3.org/2001/XInclude"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getcapabilities.5.2">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
-      <assertion>An unrecognized wfs:Native element must produce an exception if safeToIgnore='False'. It shall be ignored otherwise.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. There is a wfs:Native element, with the safeToIgnore attribute set to false.  The server should give a ServiceException.</comment>
-      <link>OGC 04-094, 7.5, p.22</link>
+	<test name="wfs:basic.wfs.getcapabilities.1.1">
+      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <assertion>The GET method request must be supported.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. A capabilities document is expected.</comment>
+      <link>OGC 04-094, 13.1, p.79</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
+						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
 					</url>
-				   <method>post</method>
-				   <body><![CDATA[
-				   <wfs:GetCapabilities xmlns:wfs="http://www.opengis.net/wfs" version="1.1.0" service="WFS">
-						<wfs:Native vendorId="Oracle" safeToIgnore="false"/>
-					</wfs:GetCapabilities>
-				   ]]>
-					</body>
-					<myparsers:XMLValidatingParser.ServiceException/>
+					<method>get</method>
+					<param name="service">WFS</param>
+					<param name="version">1.1.0</param>
+					<param name="request">GetCapabilities</param>
+					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
 			
@@ -41,12 +37,12 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//ows:ExceptionReport</xsl:variable>
+				<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>	
+			</xsl:if>
 				
 		</code>
 	</test>

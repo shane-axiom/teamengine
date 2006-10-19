@@ -12,7 +12,7 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getfeature.5">
+	<test name="wfs:basic.wfs.getfeature.5.1">
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
       <assertion>The response entity must be schema valid and include any optional feature properties requested by the client. The document element must be a wfs:FeatureCollection.</assertion>
       <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. A schema valid wfs:FeatureCollection is expected.</comment>
@@ -26,7 +26,7 @@
 					</url>
 					<method>post</method>
 				    <body>
-						<xi:include href="basic.wfs.getfeature.5.request.xml"/>				    
+						<xi:include href="basic.wfs.getfeature.5.1.request.xml"/>				    
 					</body>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>

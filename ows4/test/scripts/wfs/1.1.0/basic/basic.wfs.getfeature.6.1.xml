@@ -12,11 +12,11 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getfeature.4">
+	<test name="wfs:basic.wfs.getfeature.6.1">
       <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
-      <assertion>The @traverseXlinkDepth and @traverseXlinkExpiry attributes shall be ignored if the service does not implement the WFS-XLink conformance class.</assertion>
-      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. There are values set for the traverseXlinkDepth and traverseXlinkExpiry which will be used if the server supports them, and will be ignored otherwise, resulting in a valid response.</comment>
-      <link>OGC 04-094, 9.1, p.33</link>
+      <assertion>The response entity must include the @xsi:schemaLocation attribute to identify the set of GML application schemas against which the matching features are valid.</assertion>
+      <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The response is expected to have the correct xsi:schemaLocation in the reponse.</comment>
+      <link>OGC 04-094, 9.3.1, p.39</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -26,7 +26,7 @@
 					</url>
 					<method>post</method>
 				    <body>
-						<xi:include href="basic.wfs.getfeature.4.request.xml"/>				    
+   					   <xi:include href="basic.wfs.getfeature.6.1.request.xml"/>
 					</body>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
@@ -37,7 +37,7 @@
 			</xsl:if>
 
 			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//wfs:FeatureCollection</xsl:variable>
+				<xsl:variable name="expression">boolean(//wfs:FeatureCollection/@xsi:schemaLocation)</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
