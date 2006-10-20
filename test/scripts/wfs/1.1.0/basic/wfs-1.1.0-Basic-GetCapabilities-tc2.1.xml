@@ -12,12 +12,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getcapabilities.2.1">
+	<test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc2.1">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_POST_URL"/>
       <assertion>The POST method may be supported using either the XML or KVP entity representations.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP POST to the WFS server under test. This uses an XML body as the request.  A capabilities document is expected.</comment>
+      <comment>This optional test issues a GetCapabilities request using HTTP POST to the WFS server under test. This uses an XML body as the request for the operation.  A capabilities document is expected.</comment>
+	  <link>wfs-1.1.0-Basic-GetCapabilities-tc2</link>
       <link>OGC 04-094, 13.1, p.79</link>
-      <link>optional</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -27,7 +27,7 @@
 				   </url>
 				   <method>post</method>
 				   <body>
-					   <xi:include href="basic.wfs.getcapabilities.2.1.request.xml"/>
+					   <xi:include href="wfs-1.1.0-Basic-GetCapabilities-tc2.1.request.xml"/>
 				   </body>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>

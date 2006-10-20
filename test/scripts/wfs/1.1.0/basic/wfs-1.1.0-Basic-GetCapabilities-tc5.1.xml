@@ -12,11 +12,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.wfs.getcapabilities.7.1">
+	<test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc5.1">
       <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
-      <assertion>Unrecognized parameters in KVP-encoded query strings shall be ignored.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The request will define additional non-supported KVP strings that shall be ignored, resulting in the server processing the request as usual.</comment>
-      <link>OGC 04-094, 14.2.1, p.94</link>
+      <assertion>The response entity must be valid and have wfs:WFS_Capabilities as the document element.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. A capabilities document is expected, with the correct root element.</comment>
+      <link>wfs-1.1.0-Basic-GetCapabilities-tc5</link>
+      <link>OGC 04-094, 13.1, p.79</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -27,9 +28,7 @@
 					<method>get</method>
 					<param name="service">WFS</param>
 					<param name="version">1.1.0</param>
-					<param name="versionXXX">x.x.x,x.y.z</param>
 					<param name="request">GetCapabilities</param>
-					<param name="ASDF">asdf:asdf</param>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
