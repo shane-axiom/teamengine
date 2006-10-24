@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://cite.opengeospatial.org/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="wfs:basic.wfs.getfeature.11.3">
-      <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+      <param name="wfs.GetFeature.post.url"/>
       <assertion>The following attributes are required for all XML request entities: @version (default '1.1.0'); @service (fixed 'WFS').</assertion>
       <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. There is a service ('WFS') and no version attribute.  The server should process the request as usual (for the default version of '1.1.0').</comment>
       <link>OGC 04-094, 7.8, p.24</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+						<xsl:value-of select="$wfs.GetFeature.post.url"/>
 					</url>
 				   <method>post</method>
 				   <body>

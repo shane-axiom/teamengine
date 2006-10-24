@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://cite.opengeospatial.org/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="wfs:basic.wfs.getfeature.1.1">
-      <param name="VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+      <param name="wfs.GetFeature.post.url"/>
       <assertion>The default output format is XML that complies with GML 3.1.1.</assertion>
       <comment>This test issues a GetFeature request using HTTP POST to the WFS server under test. The response should be valid against the GML 3.1.1 schema.</comment>
       <link>OGC 04-094, 9.2, p.34</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_FEATURE_HTTP_POST_URL"/>
+						<xsl:value-of select="$wfs.GetFeature.post.url"/>
 					</url>
 					<method>post</method>
 				    <body>

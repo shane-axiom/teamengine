@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://cite.opengeospatial.org/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:sf="http://www.opengis.net/cite/gmlsf"
@@ -14,17 +14,17 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="wfs:wfs-1.1.0-Basic-DescribeFeatureType-tc1.1">
-      <param name="VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+      <param name="wfs.DescribeFeatureType.get.url"/>
       <assertion>A valid namespace binding expressed by the namespace parameter in a KVP string shall conform to the syntax specified in subclause 14.4.</assertion>
       <comment>This test issues a DescribeFeatureType request using HTTP GET to the WFS server under test. The namespace for the feature type will be indicated in the KVP namespace parameter.  The server shall give a correct reponse document.</comment>
-      <link>wfs-1.1.0-Basic-DescribeFeatureType-tc1</link>
+      <link>wfs-1.1.0-Basic-DescribeFeatureType-atc1</link>
       <link>OGC 04-094, 14.4, p.96</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_DESCRIBE_FEATURE_TYPE_HTTP_GET_URL"/>
+						<xsl:value-of select="$wfs.DescribeFeatureType.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="service">WFS</param>
