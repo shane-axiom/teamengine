@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.getrecords.9">
-      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <param name="csw.GetRecords.post.url"/>
       <assertion>The server may include a RequestId element in the EchoedRequest element in the Acknowledgement and GetRecordsResponse.</assertion>
       <comment>This test issues a GetRecords request using HTTP POST to the CSW server under test. The server supports RequestId and thus should have the RequestId in the repsonse.</comment>
       <link>OGC 04-021r3, 10.8.4.12, p. 138</link>
@@ -25,7 +25,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+						<xsl:value-of select="$csw.GetRecords.post.url"/>
 					</url>
 					<method>post</method>
 					<body><![CDATA[

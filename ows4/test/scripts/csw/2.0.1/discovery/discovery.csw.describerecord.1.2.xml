@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.describerecord.1.2">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+      <param name="csw.DescribeRecord.get.url"/>
       <assertion>Must implement HTTP-POST XML DescribeRecord and may implement HTTP-GET KVP version.</assertion>
       <comment>This test issues a DescribeRecord request using HTTP GET to the CSW server under test. This is an optional operation and a valid response (DescribeRecordResponse) is expected if it is supported.</comment>
       <link>OGC 04-021r3, 10.3.1, p.113</link>
@@ -24,7 +24,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_GET_URL"/>
+						<xsl:value-of select="$csw.DescribeRecord.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="service">http://www.opengis.net/cat/csw</param>

@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.describerecord.2.2">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+      <param name="csw.DescribeRecord.post.url"/>
       <assertion>Each TypeName must be fully qualified.</assertion>
       <comment>This test issues a DescribeRecord request using HTTP POST to the CSW server under test. The typename is not fully qualified and an exception is expected.</comment>
       <link>OGC 04-021r3, 10.6.4.2, p. 126</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+						<xsl:value-of select="$csw.DescribeRecord.post.url"/>
 					</url>
 					<method>post</method>
 				   <body><![CDATA[

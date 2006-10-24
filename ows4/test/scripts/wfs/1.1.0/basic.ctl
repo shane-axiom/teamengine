@@ -3,7 +3,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://cite.opengeospatial.org/parsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:ows="http://www.opengis.net/ows"
@@ -73,7 +73,6 @@
       <ctl:param name="wfs.GetCapabilities.document"/>
       <ctl:param name="gmlsf.profile.level"/>
 
-                                          	
 		<ctl:assertion>Tests the WFS 1.1.0 basic capabilities and operations.</ctl:assertion>
 		<ctl:code>
 		
