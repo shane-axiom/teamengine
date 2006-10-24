@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://cite.opengeospatial.org/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,17 +13,17 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc9.1">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <param name="wfs.GetCapabilities.get.url"/>
       <assertion>The Content-Type of all KVP-encoded request entities must be 'application/x-www-form-urlencoded'.</assertion>
       <comment>This test issues two GetCapabilities request using HTTP GET to the WFS server under test. The request uses the required 'application/x-www-form-urlencoded' encoding and the capabilities is expected as usual.</comment>
-      <link>wfs-1.1.0-Basic-GetCapabilities-tc9</link>
+      <link>wfs-1.1.0-Basic-GetCapabilities-atc9</link>
       <link>OGC 04-094, 6.5.1, p.13</link>
 		<code>
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$wfs.GetCapabilities.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="service">WFS</param>

@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://cite.opengeospatial.org/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:wfs="http://www.opengis.net/wfs"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,29 +13,29 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc4.2">
-      <param name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <param name="wfs.GetCapabilities.get.url"/>
       <assertion>Host names in a URI are case-insensitive.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The URI in the request is in mixed case.  The respose will be tested to ensure a correct capabilities document was returned.</comment>
-      <link>wfs-1.1.0-Basic-GetCapabilities-tc4</link>
+      <link>wfs-1.1.0-Basic-GetCapabilities-atc4</link>
       <link>OGC 04-094, 6.3.1, p.10</link>
       <link>RFC 3986, 3.2.2</link>
 		<code>
 		
 		<xsl:choose>
-			<xsl:when test="boolean(starts-with($VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL,'http://') or starts-with($VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL,'https://'))">
-				<xsl:variable name="after_slashes"><xsl:value-of select="substring-after($VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL,'//')"/></xsl:variable>
-				<xsl:variable name="prefix"><xsl:value-of select="substring-before($VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL,'//')"/></xsl:variable>
+			<xsl:when test="boolean(starts-with($wfs.GetCapabilities.get.url,'http://') or starts-with($wfs.GetCapabilities.get.url,'https://'))">
+				<xsl:variable name="after_slashes"><xsl:value-of select="substring-after($wfs.GetCapabilities.get.url,'//')"/></xsl:variable>
+				<xsl:variable name="prefix"><xsl:value-of select="substring-before($wfs.GetCapabilities.get.url,'//')"/></xsl:variable>
 				<xsl:variable name="stripped_uri"><xsl:value-of select="substring-before($after_slashes,'/')"/></xsl:variable>
 				<xsl:variable name="postfix"><xsl:value-of select="substring-after($after_slashes,'/')"/></xsl:variable>
 				<xsl:variable name="uppercase_uri"><xsl:value-of select="translate($stripped_uri,'abcdefghijklmnopqrstuvwxyz','AbCDeFghIJklMnoPQrSTUVwxYZ')"/></xsl:variable>
-				<xsl:variable name="VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"><xsl:value-of select="concat($prefix,'//',$uppercase_uri,'/',$postfix)"/></xsl:variable>
+				<xsl:variable name="wfs.GetCapabilities.get.url"><xsl:value-of select="concat($prefix,'//',$uppercase_uri,'/',$postfix)"/></xsl:variable>
 			</xsl:when>
 		</xsl:choose>		
 		
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_WFS_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$wfs.GetCapabilities.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="service">WFS</param>
