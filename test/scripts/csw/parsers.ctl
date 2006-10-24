@@ -3,7 +3,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:ows="http://www.opengis.net/ows"
@@ -14,32 +14,9 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<!--================-->
-	<!-- TEST FUNCTIONS -->
-	<!--================-->
-
-	<!-- General XPath evaluator (uses Saxon 8.0), i.e.: -->
-	<!--<xsl:variable name="expression">//csw:Capabilities</xsl:variable>
-		<ctl:call-test name="ctl:assert-xpath">
-		<ctl:with-param name="expr" select="$expression"/>
-		<ctl:with-param name="doc" select="$request1"/>
-	</ctl:call-test>-->
-	<ctl:test name="ctl:assert-xpath">
-		<ctl:param name="expr">An XPath expression.</ctl:param>
-		<ctl:param name="doc">An XML document.</ctl:param>
-		<ctl:assertion>Test that the given document contains the given xpath assertion.</ctl:assertion>
-		<ctl:code>
-			<xsl:for-each select="$doc">
-				<xsl:choose>
-					<xsl:when test="saxon:evaluate($expr)"/>
-					<xsl:otherwise>
-						<ctl:message>The expression '<xsl:value-of select="$expr"/>' failed.</ctl:message>
-						<ctl:fail/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:for-each>
-		</ctl:code>
-	</ctl:test>
+	<!--=========-->
+	<!-- PARSERS -->
+	<!--=========-->
 	
 	<!-- Used to call the schematron validator outside the request element, i.e.: -->
 	<!--<ctl:call-test name="ctl:SchematronValidatingParser">
@@ -197,12 +174,5 @@
 			</ctl:with-param>
 		</ctl:java>
 	</ctl:parser>	
-
-	<!--====================-->
-	<!-- PACKAGE INCLUSIONS -->
-	<!--====================-->	
-	
-	<xi:include href="2.0.1/discovery.ctl"/>	
 	
 </ctl:package>
-

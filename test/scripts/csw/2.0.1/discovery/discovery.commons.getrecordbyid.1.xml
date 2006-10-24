@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.commons.getrecordbyid.1">
-      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
+      <param name="csw.GetRecordById.get.url"/>
       <assertion>A comma (',') shall be used to delimit list items within multi-valued parameters in KVP strings.</assertion>
       <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The id pairing has a list of records seperated by commas, the response is expected, without exception, of type GetRecordByIdResponse and should contain all 3 records as specified by the ids given.</comment>
       <link>OGC 05-008c1, 11.5.3, p.57</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
+						<xsl:value-of select="$csw.GetRecordById.get.url"/>
 					</url>
 				   <method>get</method>
 					<param name="request">GetRecordById</param>

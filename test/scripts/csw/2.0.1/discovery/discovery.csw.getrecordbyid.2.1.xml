@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:dc="http://purl.org/dc/elements/1.1/"  
@@ -14,7 +14,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.getrecordbyid.2.1">
-      <param name="VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
+      <param name="csw.GetRecordById.get.url"/>
       <assertion>ElementSetName can be enumerated as brief, summary or full, where full is the full set of metadata to be returned. Other enumerations are specified in the profile.</assertion>
       <comment>This test issues a GetRecordById request using HTTP GET to the CSW server under test. The ElementSetName is set to 'brief' so the response is expected to have a brief amount of information, as set in the profile.</comment>
       <link>OGC 04-021r3, 10.9.4.1, p. 142</link>
@@ -25,7 +25,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORD_BY_ID_HTTP_GET_URL"/>
+						<xsl:value-of select="$csw.GetRecordById.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="request">GetRecordById</param>

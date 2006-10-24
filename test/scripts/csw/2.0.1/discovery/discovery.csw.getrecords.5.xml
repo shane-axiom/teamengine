@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.csw.getrecords.5">
-      <param name="VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+      <param name="csw.GetRecords.post.url"/>
       <assertion>The startPosition parameter has a default value of 1 and starts at first record in result set.</assertion>
       <comment>This test issues two GetRecords requests using HTTP POST to the CSW server under test. The first request has no startPosition stated and should return the first record in the set, the second has the value of '2' and should return the next record, copmparing the first record in each set should be different.</comment>
       <link>OGC 04-021r3, 10.8.4.5, p. 136</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+						<xsl:value-of select="$csw.GetRecords.post.url"/>
 					</url>
 					<method>post</method>
 					<body><![CDATA[
@@ -43,7 +43,7 @@
 			<xsl:variable name="request2">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_RECORDS_HTTP_POST_URL"/>
+						<xsl:value-of select="$csw.GetRecords.post.url"/>
 					</url>
 					<method>post</method>
 					<body><![CDATA[

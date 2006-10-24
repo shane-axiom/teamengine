@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:ows="http://www.opengis.net/ows"
@@ -14,7 +14,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.commons.getcapabilities.12.5">
-      <param name="VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+      <param name="csw.GetCapabilities.get.url"/>
       <assertion>In the event that a GetCapabilities request cannot be processed for any reason, the response entity shall include an exception report. The exception code must be one of those listed in Table 5.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the CSW server under test. The exception NoApplicableCode is raised when XXX, and should result in a service exception. No 'locator' is needed.</comment>
       <link>OGC 05-008c1, 7.4.1, p.19</link>
@@ -25,7 +25,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_GET_CAPABILITIES_HTTP_GET_URL"/>
+						<xsl:value-of select="$csw.GetCapabilities.get.url"/>
 					</url>
 					<method>get</method>
 					<param name="service">http://www.opengis.net/cat/csw</param>

@@ -4,7 +4,7 @@
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://www.galdosinc.com/myparsers"
+ xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
  xmlns:saxon="http://saxon.sf.net/"
  xmlns:csw="http://www.opengis.net/cat/csw"
  xmlns:xi="http://www.w3.org/2001/XInclude"
@@ -13,7 +13,7 @@
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
 	<test name="csw:discovery.commons.describerecord.2.4">
-      <param name="VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+      <param name="csw.DescribeRecord.post.url"/>
       <assertion>All XML request entities must include the following attributes on the document element: service, version (acceptable values depend on the service type).</assertion>
       <comment>This test issues a DescribeRecord request using HTTP POST to the WFS server under test. There is no service and no version attribute.  The server should process the request as usual (for the default version of '2.0.1' and service of 'http://www.opengis.org/cat/csw') giving a DescribeRecordResponse.</comment>
       <link>OGC 05-008c1, 9.2.3, p.37</link>
@@ -22,7 +22,7 @@
 			<xsl:variable name="request1">
 				<request>
 					<url>
-						<xsl:value-of select="$VAR_CSW_DESCRIBE_RECORD_HTTP_POST_URL"/>
+						<xsl:value-of select="$csw.DescribeRecord.post.url"/>
 					</url>
 				   <method>post</method>
 				   <body><![CDATA[
