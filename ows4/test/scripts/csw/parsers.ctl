@@ -1,39 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ctl:package
- xmlns="http://www.w3.org/2001/XMLSchema"
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
  xmlns:ctl="http://www.occamlab.com/ctl"
  xmlns:parsers="http://www.occamlab.com/te/parsers"
- xmlns:myparsers="http://teamengine.sourceforge.net/parsers"
- xmlns:saxon="http://saxon.sf.net/"
- xmlns:csw="http://www.opengis.net/cat/csw"
- xmlns:ows="http://www.opengis.net/ows"
- xmlns:dc="http://purl.org/dc/elements/1.1/" 
- xmlns:dct="http://purl.org/dc/terms/" 
- xmlns:xi="http://www.w3.org/2001/XInclude"
- xmlns:xsd="http://www.w3.org/2001/XMLSchema"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://www.occamlab.com/ctl ../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
-
-	<!--=========-->
-	<!-- PARSERS -->
-	<!--=========-->
+ xmlns:p="http://teamengine.sourceforge.net/parsers">
 	
-	<!-- Used to call the schematron validator outside the request element, i.e.: -->
-	<!--<ctl:call-test name="ctl:SchematronValidatingParser">
-		<ctl:with-param name="doc" select="$request1"/>
-		<ctl:with-param name="schematronFile">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
-		<ctl:with-param name="phase">Default</ctl:with-param>
-	</ctl:call-test>-->
+	<!-- Sample usage:
+	<ctl:call-test name="ctl:SchematronValidatingParser">
+		<ctl:with-param name="doc" select="$response"/>
+		<ctl:with-param name="schema">sch/csw/2.0.1/CSWCapabilities.sch</ctl:with-param>
+		<ctl:with-param name="phase">DefaultPhase</ctl:with-param>
+	</ctl:call-test>
+    -->
 	<ctl:test name="ctl:SchematronValidatingParser">
 			<ctl:param name="doc"/>
-			<ctl:param name="schematronFile"/>
+			<ctl:param name="schema"/>
 			<ctl:param name="phase"/>
-			<ctl:assertion>Validating with SchematronValidatingParser.</ctl:assertion>
+			<ctl:assertion>\
+            Performs rule-based validation using a Schematron 1.5 schema.
+            </ctl:assertion>
 			<ctl:code>
 				<xsl:variable name="return-value">
 					<ctl:call-function name="ctl:CallSchematronValidatingParser">
 						<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
-						<ctl:with-param name="schematronFile" select="string($schematronFile)"/>
+						<ctl:with-param name="schema" select="string($schema)"/>
 						<ctl:with-param name="phase" select="string($phase)"/>
 					</ctl:call-function>
 				</xsl:variable>
@@ -44,25 +34,31 @@
 	</ctl:test>	
 	<ctl:function name="ctl:CallSchematronValidatingParser">
 		<ctl:param name="doc"/>
-		<ctl:param name="schematronFile"/>
+		<ctl:param name="schema"/>
 		<ctl:param name="phase"/>
-		<ctl:description>Afunction to call the schematon validator.</ctl:description>
-		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="checkSchematronRules" initialized="true"/>
+		<ctl:description>Invokes the Schematon validator.</ctl:description>
+		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" 
+                  method="checkSchematronRules" 
+                  initialized="true"/>
 	</ctl:function>		
 
-	<!-- Used to call the xml validator outside the request element (after using parsers:HTTPParser in this case), i.e.: -->
-	<!--<ctl:call-test name="ctl:XMLValidatingParser">
-			<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
+	<!-- Sample usage:
+	<ctl:call-test name="ctl:XMLValidatingParser">
+			<ctl:with-param name="doc"><xsl:copy-of select="$response//content/*"/></ctl:with-param>
 			<ctl:with-param name="instruction">
 				<parsers:schemas>
 					<parsers:schema type="resource">xsd/ogc/csw/2.0.1/csw-2.0.1.xsd</parsers:schema>
 				</parsers:schemas>
 			</ctl:with-param>
-	</ctl:call-test>-->
+	</ctl:call-test>
+    -->
 	<ctl:test name="ctl:XMLValidatingParser">
 			<ctl:param name="doc"/>
 			<ctl:param name="instruction"/>
-			<ctl:assertion>Validating with XMLValidatingParser.</ctl:assertion>
+			<ctl:assertion>
+            Validates the XML instance against the set of XML Schemas specified
+            using the $instruction parameter.
+            </ctl:assertion>
 			<ctl:code>
 				<xsl:variable name="return-value">
 					<ctl:call-function name="ctl:CallXMLValidatingParser">
@@ -78,17 +74,22 @@
 	<ctl:function name="ctl:CallXMLValidatingParser">
 		<ctl:param name="doc"/>
 		<ctl:param name="instruction"/>
-		<ctl:description>Afunction to call the XML validator.</ctl:description>
-		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="checkXMLRules" initialized="true"/>
+		<ctl:description>Invokes the XML Schema validator.</ctl:description>
+		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" 
+                  method="checkXMLRules" 
+                  initialized="true"/>
 	</ctl:function>	
 
-	<!--Used to call the XMLValidatingParser test with a set of schemas defined here (globally, not at the test level), i.e.:-->
-	<!--<ctl:call-test name="ctl:XMLValidatingParser.CSWGML">
-			<ctl:with-param name="doc"><xsl:copy-of select="$request1//content/*"/></ctl:with-param>
-	</ctl:call-test>-->
-	<ctl:test name="ctl:XMLValidatingParser.CSWGML">
+	<!-- Sample usage:
+	<ctl:call-test name="ctl:XMLValidatingParser.CSW">
+	    <ctl:with-param name="doc"><xsl:copy-of select="$response//content/*"/></ctl:with-param>
+	</ctl:call-test>
+    -->
+	<ctl:test name="ctl:XMLValidatingParser.CSW">
 			<ctl:param name="doc"/>
-			<ctl:assertion>Validating with XMLValidatingParser using predefined schemas.</ctl:assertion>
+			<ctl:assertion>
+            Validates a given XML document against the CSW 2.0.1 schema set.
+            </ctl:assertion>
 			<ctl:code>
 				<ctl:call-test name="ctl:XMLValidatingParser">
 					<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
@@ -99,30 +100,10 @@
 						</parsers:schemas>
 					</ctl:with-param>
 				</ctl:call-test>
-			</ctl:code>			
-	</ctl:test>			
-
-	<ctl:test name="ctl:XMLValidatingParser.CSW">
-			<ctl:param name="doc"/>
-			<ctl:assertion>Validating with XMLValidatingParser using predefined schemas.</ctl:assertion>
-			<ctl:code>
-				<ctl:call-test name="ctl:XMLValidatingParser">
-					<ctl:with-param name="doc"><xsl:copy-of select="$doc"/></ctl:with-param>
-					<ctl:with-param name="instruction">				
-						<parsers:schemas>
-							<parsers:schema type="resource">xsd/ogc/csw/2.0.1/csw-2.0.1.xsd</parsers:schema>
-						</parsers:schemas>
-					</ctl:with-param>
-				</ctl:call-test>
-			</ctl:code>			
+			</ctl:code>
 	</ctl:test>	
 	
-	<!--=================-->
-	<!-- CUSTOM PARSERS -->
-	<!--=================-->		
-	
-	<!-- XML validating parsers, defined for various response types to be reused by multiple tests -->
-	<ctl:parser name="myparsers:XMLValidatingParser.CSW">
+	<ctl:parser name="p:XMLValidatingParser.CSW">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
@@ -132,7 +113,7 @@
 		</ctl:java>
 	</ctl:parser>	
 
-	<ctl:parser name="myparsers:XMLValidatingParser.ServiceException">
+	<ctl:parser name="p:XMLValidatingParser.OWS">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
@@ -142,7 +123,7 @@
 		</ctl:java>
 	</ctl:parser>	
 	
-	<ctl:parser name="myparsers:XMLValidatingParser.XMLSchema">
+	<ctl:parser name="p:XMLValidatingParser.XMLSchema">
 		<ctl:java class="com.occamlab.te.parsers.XMLValidatingParser" method="parse" initialized="true">
 			<ctl:with-param name="schemas_links">
 				<parsers:schemas>
@@ -152,24 +133,30 @@
 		</ctl:java>
 	</ctl:parser>		
 	
-	<!-- Schematron vlaidator used in request element, pass in information for schematron schema to use, i.e.: -->
-	<!--<myparsers:SchematronValidatingParser>
-			<parsers:schemas>
-				<parsers:schema type="resource" phase="Default">sch/csw/2.0.1/CSWCapabilities.sch</parsers:schema>
-			</parsers:schemas>
-		</myparsers:SchematronValidatingParser>-->
-	<ctl:parser name="myparsers:SchematronValidatingParser">
+	<!-- Sample usage:
+	<p:SchematronValidatingParser>
+	    <parsers:schemas>
+		    <parsers:schema type="resource" phase="Default">sch/csw/2.0.1/CSWCapabilities.sch</parsers:schema>
+	    </parsers:schemas>
+	</p:SchematronValidatingParser>
+    -->
+	<ctl:parser name="p:SchematronValidatingParser">
 		<ctl:param name="schema_link"/>
-		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true"/>
+		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" 
+                  method="parse" 
+                  initialized="true"/>
 	</ctl:parser>		
 	
-	<!-- Schematron validator used in request element, uses the given schema, i.e.: -->
-	<!--<myparsers:SchematronValidatingParser.CSWCapabilities/>-->
-	<ctl:parser name="myparsers:SchematronValidatingParser.CSWCapabilities">
-		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" method="parse" initialized="true">
+	<!-- Sample usage:
+	<p:SchematronValidatingParser.CSWCapabilities />
+    -->
+	<ctl:parser name="p:SchematronValidatingParser.CSWCapabilities">
+		<ctl:java class="com.occamlab.te.parsers.SchematronValidatingParser" 
+                  method="parse" 
+                  initialized="true">
 			<ctl:with-param name="schema_link">
 					<parsers:schemas>
-						<parsers:schema type="resource" phase="Default">sch/csw/2.0.1/CSWCapabilities.sch</parsers:schema>
+						<parsers:schema type="resource" phase="DefaultPhase">sch/csw/2.0.1/Capabilities.sch</parsers:schema>
 					</parsers:schemas>
 			</ctl:with-param>
 		</ctl:java>
