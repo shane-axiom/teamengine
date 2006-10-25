@@ -2,8 +2,10 @@
 	<description>Main TEAM Engine application</description>
 	
 	<!-- The build.properties file(s) must contain the path location of the Java JRE and Tomcat installation-->
-	<property file="../../build.properties"/>
-	<property file="build.properties"/>
+	<!-- Load property overrides from user home -->
+    <property file="${user.home}/${ant.project.name}.properties"/>
+    <property file="../../build.properties"/>
+	
 	
 	<property name="lib.dir" value="${basedir}/lib"/>
 	<property name="resource.dir" value="${basedir}/resources"/>
