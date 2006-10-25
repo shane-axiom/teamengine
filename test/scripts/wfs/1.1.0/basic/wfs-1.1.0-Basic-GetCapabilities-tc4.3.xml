@@ -16,7 +16,7 @@
       <param name="wfs.GetCapabilities.get.url"/>
       <assertion>Host names in a URI are case-insensitive.</assertion>
       <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. The URI in the request is in lowercase.  The respose will be tested to ensure a correct capabilities document was returned.</comment>
-      <link>wfs-1.1.0-Basic-GetCapabilities-atc4</link>
+      <link>wfs-1.1.0-Basic-atc2</link>
       <link>OGC 04-094, 6.3.1, p.10</link>
       <link>RFC 3986, 3.2.2</link>
 		<code>
@@ -45,17 +45,18 @@
 				</request>
 			</xsl:variable>
 			
-			<xsl:if test="not($request1/*)">
-				<ctl:fail/>
-			</xsl:if>
-				
-			<xsl:if test="$request1/*">
-				<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
-				<ctl:call-test name="ctl:assert-xpath">
-					<ctl:with-param name="expr" select="$expression"/>
-					<ctl:with-param name="doc" select="$request1"/>
-				</ctl:call-test>
-			</xsl:if>					
+			<xsl:choose>
+				<xsl:when test="not($request1/*)">
+			              	<ctl:fail/>
+			              </xsl:when>
+			              <xsl:otherwise>
+					<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
+					<ctl:call-test name="ctl:assert-xpath">
+						<ctl:with-param name="expr" select="$expression"/>
+						<ctl:with-param name="doc" select="$request1"/>
+					</ctl:call-test>
+				</xsl:otherwise>
+			</xsl:choose>				
 				
 		</code>
 	</test>
