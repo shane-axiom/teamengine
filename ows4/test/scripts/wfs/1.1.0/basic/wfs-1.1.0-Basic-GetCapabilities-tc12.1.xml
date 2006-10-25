@@ -12,11 +12,12 @@
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.occamlab.com/ctl ../../../../../apps/engine/resources/com/occamlab/te/schemas/ctl.xsd">
 
-	<test name="wfs:basic.commons.getcapabilities.2.3">
+	<test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc12.1">
       <param name="wfs.GetCapabilities.get.url"/>
-      <assertion>A KVP-encoded GetCapabilities request shall include the following query parameters: service=WxS request=GetCapabilities, where WxS is a mnemonic label for a service type.</assertion>
-      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. TThere is a service ('WFS') and no version attribute.  The server should process the request as usual (for the default version of '1.1.0').</comment>
-      <link>OGC 05-008c1, 7.2.2, p.12 (Table 2)</link>
+      <assertion>All OGC web services must implement the GetCapabilities request to provide an XML representation of service metadata.</assertion>
+      <comment>This test issues a GetCapabilities request using HTTP GET to the WFS server under test. A capabilities document is expected.</comment>
+	  <link>ows-1.0.0-metadata-atc1</link>
+      <link>OGC 05-008c1, 7.1, p.10</link>
 		<code>
 		
 			<xsl:variable name="request1">
@@ -24,9 +25,10 @@
 					<url>
 						<xsl:value-of select="$wfs.GetCapabilities.get.url"/>
 					</url>
-				   <method>get</method>
-					<param name="request">GetCapabilities</param>				   
-				   	<param name="service">WFS</param>
+					<method>get</method>
+					<param name="service">WFS</param>
+					<param name="version">1.1.0</param>
+					<param name="request">GetCapabilities</param>
 					<!--<myparsers:XMLValidatingParser.WFS/>-->
 				</request>
 			</xsl:variable>
@@ -34,14 +36,14 @@
 			<xsl:if test="not($request1/*)">
 				<ctl:fail/>
 			</xsl:if>
-				
+
 			<xsl:if test="$request1/*">
 				<xsl:variable name="expression">//wfs:WFS_Capabilities</xsl:variable>
 				<ctl:call-test name="ctl:assert-xpath">
 					<ctl:with-param name="expr" select="$expression"/>
 					<ctl:with-param name="doc" select="$request1"/>
 				</ctl:call-test>
-			</xsl:if>					
+			</xsl:if>
 				
 		</code>
 	</test>

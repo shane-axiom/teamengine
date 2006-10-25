@@ -50,13 +50,12 @@
 	<!--================-->
 	<!-- COMMONS TESTS -->
 	<!--================-->	
-		
-	<xi:include href="basic/basic.commons.getcapabilities.1.1.xml"/>
-	<xi:include href="basic/basic.commons.getcapabilities.1.2.xml"/>
-	<xi:include href="basic/basic.commons.getcapabilities.1.3.xml"/>
-	<xi:include href="basic/basic.commons.getcapabilities.2.1.xml"/>
-	<xi:include href="basic/basic.commons.getcapabilities.2.2.xml"/>
-	<xi:include href="basic/basic.commons.getcapabilities.2.3.xml"/>
+
+	<xi:include href="basic/wfs-1.1.0-Basic-GetCapabilities-tc10.1.xml"/>
+	<xi:include href="basic/wfs-1.1.0-Basic-GetCapabilities-tc10.2.xml"/>
+	<xi:include href="basic/wfs-1.1.0-Basic-GetCapabilities-tc10.3.xml"/>
+	<xi:include href="basic/wfs-1.1.0-Basic-GetCapabilities-tc11.1.xml"/>
+	<xi:include href="basic/wfs-1.1.0-Basic-GetCapabilities-tc12.1.xml"/>
 
 	<xi:include href="basic/basic.commons.describefeaturetype.1.1.xml"/>
 	<xi:include href="basic/basic.commons.describefeaturetype.1.2.xml"/>
@@ -136,7 +135,22 @@
 				</ctl:call-test>
 				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc9.1">
 					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
-				</ctl:call-test>																
+				</ctl:call-test>		
+				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc10.1">
+					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc10.2">
+					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc10.3">
+					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
+				</ctl:call-test>
+				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc11.1">
+					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
+				</ctl:call-test>																				
+				<ctl:call-test name="wfs:wfs-1.1.0-Basic-GetCapabilities-tc12.1">
+					<ctl:with-param name="wfs.GetCapabilities.get.url" select="$wfs.GetCapabilities.get.url"/>
+				</ctl:call-test>					
 			</xsl:if>
 
 			<xsl:if test="not($wfs.DescribeFeatureType.get.url = '')">
