@@ -38,7 +38,8 @@
 	</target>
 	
 	<!--Usage: ant test -Dquery="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" -->
-	<target name="test" if="query" description="Runs the main Test class with supplied argument string">
+	<target name="test" depends="jar" if="query" 
+        description="Runs the main Test class with supplied argument string">
 		<java classname="com.occamlab.te.Test" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
 			<arg line="${query}"/>
@@ -49,8 +50,6 @@
 				<pathelement path="${resource.dir}"/>
 				<pathelement path="${java.class.path}"/>
 				<pathelement path="${basedir}"/>
-				<pathelement path="${test.dir}/resources"/>
-				<pathelement path="${test.dir}/scripts"/>
 			</classpath>
 		</java>
 	</target>
