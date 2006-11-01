@@ -1,19 +1,27 @@
 Running the team engine (command line).
+==============================
 
 1) Install Java JRE 1.5.0 or greater (or use the JRE included with the JDK).
 
-2) Include the java JRE location in a build.properties file. For example, 
-'java.dir C:/Program Files/java/jre1.5.0_07'.
+2) Check out the scripts from the CITE repository at <https://svn.opengeospatial.org:8443/ogc-projects/cite/trunk/ets>
+    Let CITE_ETS denote the root diretory of the local copy.
 
-3) Compile the teamengine jar file, at the prompt type 'ant jar'.
+3) Check out the ows4 branch of the teamengine from sourceforge at <https://svn.sourceforge.net/svnroot/teamengine/branches/ows4>
 
-4) Run any of the team engine commands via ant (see teamengine.html in the 
-docs/ directory for more info on command parameters).  To run a CTL test suite, use:
-ant test -Dquery="-mode=test -source=../../test/scripts/wfs/main.ctl -logdir=logs" or 
-ant test -Dquery="-mode=test -source=../../test/scripts/csw/main.ctl -logdir=logs"
+4) Include the java JRE location in a build.properties file (either in the ows4 root directory or in your local home directory).
+    See the build.properties.example for more information.
 
-5) View the logs after a test is run, using: ant viewlog -Dquery="-logdir=logs -session=s0001"
+e.g.
+java.dir C:/Program Files/java/jre1.5.0_07  
 
+5) Run the "test" target in /apps/engine/build.xml, specifying
+    the main.ctl script to run in the ets.args system property.
 
-* Additional or alternative commands are contained in the engine build file 
-(use 'ant -p' or manually examine the file for more details).
+e.g.
+>ant test -Dets.args="-mode=test -source=$CITE_ETS/src/ctl/csw/2.0.1/main.ctl -logdir=logs"
+
+6) Optionally, view the logs after a test is run, using the "viewlog" target in /apps/engine/build.xml, specifying
+    the log directory and the session number.
+
+e.g.
+>ant viewlog -Dets.args="-logdir=logs -session=s0001"
