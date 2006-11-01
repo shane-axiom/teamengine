@@ -37,12 +37,12 @@
 		<delete dir="build"/>
 	</target>
 	
-	<!--Usage: ant test -Dquery="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" -->
-	<target name="test" depends="jar" if="query" 
-        description="Runs the main Test class with supplied argument string">
+	<!--Usage: ant test -Dets.args="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" -->
+	<target name="test" depends="jar" if="ets.args" 
+        description="Runs the test engine with supplied argument string">
 		<java classname="com.occamlab.te.Test" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
-			<arg line="${query}"/>
+			<arg line="${ets.args}"/>
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
@@ -54,11 +54,11 @@
 		</java>
 	</target>
 	
-	<!--Usage: ant listsuites -Dquery="-source=../../test/scripts/temp/demo.xml" -->
-	<target name="listsuites" if="query" description="Lists the suites in a ctl test file">
+	<!--Usage: ant listsuites -Dets.args="-source=../../test/scripts/temp/demo.xml" -->
+	<target name="listsuites" if="ets.args" description="Lists the suites in a ctl test file">
 		<java classname="com.occamlab.te.ListSuites" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
-			<arg line="${query}"/>
+			<arg line="${ets.args}"/>
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
@@ -69,11 +69,11 @@
 		</java>
 	</target>
 	
-	<!--Usage: ant viewlog -Dquery="-logdir=logs -session=s0001" -->
-	<target name="viewlog" if="query" description="Views the log results from a test run">
+	<!--Usage: ant viewlog -Dets.args="-logdir=logs -session=s0001" -->
+	<target name="viewlog" if="ets.args" description="Views the log results from a test run">
 		<java classname="com.occamlab.te.ViewLog" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
-			<arg line="${query}"/>
+			<arg line="${ets.args}"/>
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
