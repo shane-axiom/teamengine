@@ -21,6 +21,8 @@
  ****************************************************************************/
 package com.occamlab.te.web;
 
+import com.occamlab.te.Test;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,10 +54,13 @@ public class Config {
         System.out.println("Error: Directory " + UsersDir.getAbsolutePath() + " does not exist.");
       }
 
+      File script_dir = Test.getResourceAsFile("com/occamlab/te/scripts/parsers.ctl").getParentFile();
+
       SourcesHash = new LinkedHashMap();
       NodeList sourcesList = config.getElementsByTagName("sources");
       for (int i = 0; i < sourcesList.getLength(); i++) {
         ArrayList list = new ArrayList();
+        list.add(script_dir);
         Element sources = (Element)sourcesList.item(i);
         String id = sources.getAttribute("id"); 
         NodeList sourceList = sources.getElementsByTagName("source");  
