@@ -367,15 +367,21 @@ public class TECore {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db = dbf.newDocumentBuilder();
+		Transformer t = TransformerFactory.newInstance().newTransformer();
 		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
 		Document response_doc = db.newDocument();
+		Element parser_e = response_doc.createElement("parser");
 		Element response_e = response_doc.createElement("response");
 		if (response_id != null) {
 			response_e.setAttribute("id", response_id);
 		}
 		Element content_e = response_doc.createElement("content");
 		if (instruction == null) {
-			TransformerFactory.newInstance().newTransformer().transform(new StreamSource(uc.getInputStream()), new DOMResult(content_e));
+			try {
+				t.transform(new StreamSource(uc.getInputStream()), new DOMResult(content_e));
+			} catch (Exception e) {
+				parser_e.setTextContent(e.getMessage());
+			}
 		} else {
 			Element instruction_e;
 			if (instruction instanceof Element) {
@@ -404,20 +410,18 @@ public class TECore {
 			}
 			pwLogger.close();
 			if (return_object instanceof Node) {
-				Transformer t = TransformerFactory.newInstance().newTransformer();
 				t.transform(new DOMSource((Node)return_object), new DOMResult(content_e));
 			} else if (return_object != null) {
 				content_e.appendChild(response_doc.createTextNode(return_object.toString()));
 			}
 			//System.out.println(content_e.getTextContent());
 
-			Element parser_e = response_doc.createElement("parser");
 			parser_e.setAttribute("prefix", instruction_e.getPrefix());
 			parser_e.setAttribute("local-name", instruction_e.getLocalName());
 			parser_e.setAttribute("namespace-uri", instruction_e.getNamespaceURI());
 			parser_e.setTextContent(swLogger.toString());
-			response_e.appendChild(parser_e);
 		}
+		response_e.appendChild(parser_e);
 		response_e.appendChild(content_e);
 		response_doc.appendChild(response_e);
 		return response_doc;
