@@ -59,7 +59,7 @@
 			<xs:element name="context" type="xs:string" minOccurs="0"/>
 			<xs:element name="assertion" type="xs:string"/>
 			<xs:element name="comment" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-			<xs:element name="link" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="link" type="ctl:linkType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="code" type="ctl:codeType"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:QName" use="required"/>
@@ -69,7 +69,7 @@
 		<xs:sequence>
 			<xs:element name="title" type="xs:string"/>
 			<xs:element name="description" type="xs:string" minOccurs="0"/>
-			<xs:element name="link" type="xs:anyURI" minOccurs="0"/>
+			<xs:element name="link" type="ctl:linkType" minOccurs="0"/>
 			<xs:element name="starting-test" type="xs:QName"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:QName" use="required"/>
@@ -101,6 +101,13 @@
 		<xs:sequence minOccurs="0" maxOccurs="unbounded">
 			<xs:any processContents="lax"/>
 		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="linkType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="title" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
 	</xs:complexType>
 	<xs:simpleType name="boolean">
 		<xs:restriction base="xs:string">
