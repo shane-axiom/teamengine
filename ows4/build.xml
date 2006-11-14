@@ -62,7 +62,10 @@
           <fileset dir="apps/manager/web"/>
         </copy>
         <copy todir="webapps/teamengine/WEB-INF/classes">
-          <fileset dir="apps/engine/resources"/>
+          <fileset dir="apps/engine/resources">
+            <exclude name="com/occamlab/te/scripts/*.dxsl"/>
+            <exclude name="com/occamlab/te/scripts/*.txsl"/>
+          </fileset>
           <fileset dir="apps/manager/resources"/>
         </copy>
         <copy todir="webapps/teamengine/WEB-INF/lib">
@@ -169,6 +172,7 @@
       <fileset dir=".">
         <include name="apps/engine/lib/**"/>
         <include name="apps/engine/resources/**"/>
+        <exclude name="apps/engine/resources/com/occamlab/te/scripts/*.dxsl"/>
         <exclude name="apps/engine/resources/com/occamlab/te/scripts/*.txsl"/>
         <include name="bin/setenv.*.example"/>
         <include name="bin/test.*"/>
