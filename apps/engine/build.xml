@@ -40,7 +40,7 @@
 	<!--Usage: ant test -Dets.args="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" -->
 	<target name="test" depends="jar" if="ets.args" 
         description="Runs the test engine with supplied argument string">
-		<java classname="com.occamlab.te.Test" fork="true" jvm="${java.dir}/bin/java.exe">
+		<java classname="com.occamlab.te.Test" fork="true" jvm="${java.dir}/bin/java.exe" maxmemory="512m">
 			<env key="JAVA_HOME" value="${java.dir}"/>
 			<arg line="${ets.args}"/>
 			<classpath>
