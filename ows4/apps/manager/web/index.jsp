@@ -80,6 +80,10 @@ while (it1.hasNext()) {
 		if (desc != null) {
 			out.println(desc);
 		}
+        out.println("<br />");
+        if (null != suite.getDataLink()) {
+			out.print("<a href=\"" + suite.getDataLink() + "\">" + "Test data</a>");
+		}
 	}
 }
 
@@ -87,6 +91,10 @@ Url = new URL(request.getScheme(), request.getServerName(), request.getServerPor
 %>
 			</ul>
 		</p>
+        <p>
+        <img alt="WARNING!" src="images/warning.gif" align="bottom" hspace="4" />
+        Test data must be loaded before running a test suite!
+        </p>
 		<a href="<%=Url.toString()%>/viewSessions.jsp"/>Start Testing</a>
 		<%@ include file="footer.jsp" %>
 	</body>
