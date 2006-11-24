@@ -69,7 +69,7 @@
 		<xs:sequence>
 			<xs:element name="title" type="xs:string"/>
 			<xs:element name="description" type="xs:string" minOccurs="0"/>
-			<xs:element name="link" type="ctl:linkType" minOccurs="0"/>
+			<xs:element name="link" type="ctl:linkType" minOccurs="0" maxOccurs="unbounded"/>
 			<xs:element name="starting-test" type="xs:QName"/>
 		</xs:sequence>
 		<xs:attribute name="name" type="xs:QName" use="required"/>
