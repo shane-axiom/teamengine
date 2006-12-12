@@ -134,7 +134,9 @@ public class TECore {
 			dir.mkdir();
 			File f = new File(dir, "log.xml");
 			f.delete();
-			logger = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+			//logger = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF-8"));
+			logger = new PrintWriter(writer);
 			logger.println("<log>");
 		}
 		Loggers.push(logger);
