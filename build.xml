@@ -12,8 +12,45 @@
 
   <property file="build.properties"/>
 
-  <property name="default.usersdir" value="webapps/teamengine/WEB-INF/users"/>
-  <property name="usersdir" value="${default.usersdir}"/>
+  <property name="usersdir" value="webapps/teamengine/WEB-INF/users"/>
+
+  <property name="component.excludes" value=""/>
+  <property name="script.excludes" value=""/>     <!-- may provide patterns such as "wms-1.1.1/** wms-1.3.0/**" to prevent building/executing script packages -->
+
+  <path id="components.path">
+    <dirset dir="components" includes="*" excludes="${component.excludes}"/>
+  </path>
+
+  <path id="scripts.path">
+    <dirset dir="scripts" includes="*" excludes="${script.excludes}"/>
+  </path>
+
+  <path id="engine.classpath">
+    <fileset dir="apps/engine/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <pathelement location="apps/engine/resources"/>
+  </path>
+
+  <property environment="env"/>
+
+  <target name="init.version.stamp" unless="version.stamp">
+    <tstamp>
+      <format property="version.stamp" pattern="-yyyy.MM.dd"/>
+    </tstamp>
+  </target>
+
+<!--
+  <target name="xx">
+    <echo>${script}</echo>
+  </target>
+
+  <target name="x">
+    <foreach param="script" target="xx">
+      <path refid="scripts.path"/>
+    </foreach>
+  </target>
+-->
 
   <target name="clean.component">
     <ant dir="${component}" target="clean"/>
@@ -31,22 +68,15 @@
       </then>
     </if>
     <foreach param="component" target="clean.component">
-      <path>
-        <dirset dir="components" includes="*"/>
-      </path>
+      <path refid="components.path"/>
     </foreach>
     <delete dir="${basedir}/build"/>
     <delete dir="${basedir}/webapps"/>
     <delete dir="${basedir}/zips"/>
   </target>
  
-  <target name="init">
-    <tstamp>
-      <format property="version.stamp" pattern="-yyyy.MM.dd"/>
-    </tstamp>
-  </target>
-  
-  <target name="jar.engine" depends="init">
+
+  <target name="jar.engine">
     <ant dir="apps/engine"/>
   </target>
 
@@ -64,9 +94,7 @@
 
   <target name="jar.components">
     <foreach param="component" target="jar.component">
-      <path>
-        <dirset dir="components" includes="*"/>
-      </path>
+      <path refid="components.path"/>
     </foreach>
   </target>
 
@@ -106,9 +134,7 @@
         <echo file="${configfile}" append="true">  &lt;home&gt;&lt;/home&gt;${line.separator}</echo>
         <echo file="${configfile}" append="true">  &lt;usersdir&gt;${usersdir}&lt;/usersdir&gt;${line.separator}</echo>
         <foreach param="script" target="config.xml.script" inheritall="true">
-          <path>
-            <dirset dir="scripts" includes="*"/>
-          </path>
+          <path refid="scripts.path"/>
         </foreach>
         <echo file="${configfile}" append="true">&lt;/config&gt;</echo>
       </else>
@@ -138,9 +164,9 @@
   <target name="webapp.manager" depends="jar.manager,config.xml,context.xml">
     <mkdir dir="webapps/teamengine/WEB-INF/lib"/>
     <if>
-      <equals arg1="${usersdir}" arg2="${default.usersdir}"/>
+      <equals arg1="${usersdir}" arg2="webapps/teamengine/WEB-INF/users"/>
       <then>
-        <mkdir dir="${default.usersdir}"/>
+        <mkdir dir="${usersdir}"/>
       </then>
     </if>
     <copy todir="webapps/teamengine">
@@ -193,9 +219,7 @@
     <mkdir dir="webapps/teamengine/WEB-INF/classes"/>
     <mkdir dir="webapps/teamengine/WEB-INF/lib"/>
     <foreach param="component" target="webapp.component">
-      <path>
-        <dirset dir="components" includes="*"/>
-      </path>
+      <path refid="components.path"/>
     </foreach>
   </target>
 
@@ -234,9 +258,7 @@
     <mkdir dir="webapps/teamengine/WEB-INF/classes"/>
     <mkdir dir="webapps/teamengine/WEB-INF/scripts"/>
     <foreach param="script" target="webapp.script">
-      <path>
-        <dirset dir="scripts" includes="*"/>
-      </path>
+      <path refid="scripts.path"/>
     </foreach>
   </target>
 
@@ -252,7 +274,7 @@
     </zip>
   </target>
 
-  <target name="zip.engine.bin" depends="jar.engine">
+  <target name="zip.engine.bin" depends="jar.engine,init.version.stamp">
     <delete dir="build"/>
     <mkdir dir="build"/>
     <mkdir dir="build/teamengine${version.stamp}"/>
@@ -275,7 +297,7 @@
     <zip destfile="zips/teamengine${version.stamp}-bin.zip" basedir="build"/>
   </target>
 
-  <target name="zip.engine.src">
+  <target name="zip.engine.src" depends="init.version.stamp">
     <delete dir="build"/>
     <mkdir dir="build"/>
     <mkdir dir="build/teamengine${version.stamp}"/>
@@ -294,7 +316,7 @@
     <zip destfile="zips/teamengine${version.stamp}-src.zip" basedir="build"/>
   </target>
 
-  <target name="zip.manager.src">
+  <target name="zip.manager.src" depends="init.version.stamp">
     <delete dir="build"/>
     <mkdir dir="build"/>
     <mkdir dir="build/teamengine${version.stamp}"/>
@@ -326,9 +348,7 @@
 
   <target name="zip.components" depends="jar.components">
     <foreach param="component" target="zip.component">
-      <path>
-        <dirset dir="components" includes="*"/>
-      </path>
+      <path refid="components.path"/>
     </foreach>
   </target>
 
@@ -343,9 +363,7 @@
 
   <target name="zip.scripts">
     <foreach param="script" target="zip.script">
-      <path>
-        <dirset dir="scripts" includes="*"/>
-      </path>
+      <path refid="scripts.path"/>
     </foreach>
   </target>
 
@@ -360,5 +378,64 @@
       </then>
     </if>
   </target>
+
+  <target name="test" depends="jar.engine,jar.components">
+    <path id="test.classpath">
+      <path refid="engine.classpath"/>
+      <fileset dir="components" excludes="${component.excludes}">
+        <include name="*/lib/*.jar"/>
+      </fileset>
+      <dirset dir="components" excludes="${component.excludes}">
+        <include name="*/resources"/>
+      </dirset>
+      <dirset dir="scripts" excludes="${script.excludes}">
+        <include name="*/resources"/>
+      </dirset>
+    </path>
+<!--
+    <property name="debug.test.classpath" refid="test.classpath"/>
+    <echo>${debug.test.classpath}</echo>
+-->
+    <property name="test.args" value=""/>
+    <if>
+      <equals arg1="${test.args}" arg2=""/>
+      <then>
+        <echo>Supply arguments using -Dtest.args="string"</echo>
+      </then>
+    </if>
+
+    <java classname="com.occamlab.te.Test" fork="true" jvm="${env.JAVA_HOME}/bin/java.exe" maxmemory="512m" classpathref="test.classpath">
+      <arg line="${test.args}"/>
+    </java>
+  </target>
+
+  <target name="viewlog" depends="jar.engine">
+    <property name="viewlog.args" value=""/>
+    <if>
+      <equals arg1="${viewlog.args}" arg2=""/>
+      <then>
+        <echo>Supply arguments using -Dviewlog.args="string"</echo>
+      </then>
+    </if>
+
+    <java classname="com.occamlab.te.ViewLog" fork="true" jvm="${env.JAVA_HOME}/bin/java.exe" classpathref="engine.classpath">
+      <arg line="${viewlog.args}"/>
+    </java>
+  </target>
+
+  <target name="listsuites" depends="jar.engine">
+    <property name="listsuites.args" value=""/>
+    <if>
+      <equals arg1="${listsuites.args}" arg2=""/>
+      <then>
+        <echo>Supply arguments using -Dlistsuites.args="string"</echo>
+      </then>
+    </if>
+
+    <java classname="com.occamlab.te.ListSuites" fork="true" jvm="${env.JAVA_HOME}/bin/java.exe" classpathref="engine.classpath">
+      <arg line="${listsuites.args}"/>
+    </java>
+  </target>
+
 </project>
 
