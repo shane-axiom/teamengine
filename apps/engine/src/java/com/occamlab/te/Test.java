@@ -108,6 +108,8 @@ public class Test {
 		while (it.hasNext()) {
 			File sourcefile = (File)it.next();
 			Document txsl = DB.newDocument();
+			compile_t.clearParameters();
+			main_t.clearParameters();
 			if (sourcefile.isDirectory()) {
 				Element transform = txsl.createElementNS(XSL_NS, "xsl:transform");
 				transform.setAttribute("version", "1.0");
