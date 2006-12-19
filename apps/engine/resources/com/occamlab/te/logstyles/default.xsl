@@ -232,12 +232,19 @@
 		</xsl:for-each>
 		<xsl:text>&#xa;</xsl:text>
 		<xsl:if test="parser[not(.='')]">
-			<xsl:value-of select="concat('Messages from parser ', parser/@prefix, ':', parser/@local-name, ':&#xa;')"/>
+			<xsl:value-of select="concat('   Messages from parser ', parser/@prefix, ':', parser/@local-name, ':&#xa;')"/>
 			<xsl:text>        </xsl:text>
 			<xsl:value-of select="translate(parser, '&#xa;', '&#xa;      ')"/>
 			<xsl:text>&#xa;</xsl:text>
 		</xsl:if>
 		<xsl:text>&#xa;</xsl:text>
+	</xsl:template>
+
+	<xsl:template match="parse">
+		<xsl:text>Parse </xsl:text>
+		<xsl:value-of select="@id"/>
+		<xsl:text>:&#xa;</xsl:text>
+		<xsl:apply-templates select="response"/>
 	</xsl:template>
 
 	<xsl:template match="testcall">
