@@ -68,16 +68,24 @@ public class Test {
 	return doc;
 	}
 	*/
+	
+	// Prepare/compile the test file
 	public Test(List sources, boolean validate, int mode) throws Exception {
+		
+		// Setup the DocumentBuilderFactory and DocumentBuilder
+		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
 		DBF = DocumentBuilderFactory.newInstance();
 		DBF.setNamespaceAware(true);
+		DBF.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);		
 		DB = DBF.newDocumentBuilder();
-		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
+
+		// Setup the transformer to convert from CTL to engine-runnable test script
 		TF = TransformerFactory.newInstance();
 		TF.setAttribute(FeatureKeys.LINE_NUMBERING, Boolean.TRUE);
 		TF.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
 		CL = Thread.currentThread().getContextClassLoader();
 
+		// Setup a CTL validator to check against the test file
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema ctl_schema = sf.newSchema(getResourceAsFile("com/occamlab/te/schemas/ctl.xsd"));
 		Validator ctl_validator = ctl_schema.newValidator();
@@ -88,6 +96,7 @@ public class Test {
 		copy_t.setOutputProperty(OutputKeys.INDENT, "yes");
 		File compile_file;
 		String extension;
+		// Transform the test file into a document (dxsl) or for actually running (txsl)
 		if (mode == DOC_MODE) {
 			compile_file = getResourceAsFile("com/occamlab/te/generate_dxsl.xsl");
 			extension = "dxsl";
@@ -95,6 +104,7 @@ public class Test {
 			compile_file = getResourceAsFile("com/occamlab/te/compile.xsl");
 			extension = "txsl";
 		}
+		// Prepare the transformers
 		Transformer compile_t = TF.newTransformer(new StreamSource(compile_file));
 		InputStream main_is = CL.getResourceAsStream("com/occamlab/te/main.xsl");
 		Transformer main_t = TF.newTransformer(new StreamSource(main_is));
@@ -104,12 +114,16 @@ public class Test {
 		Node script_element = script_doc.createElement("script");
 		script_doc.appendChild(script_element);
 
+		// Goes through each test source file and compiles it together to run later (txsl file)
 		Iterator it = sources.iterator();
 		while (it.hasNext()) {
 			File sourcefile = (File)it.next();
 			Document txsl = DB.newDocument();
+			DocumentBuilder inputDB = DBF.newDocumentBuilder();
+			Document inputDoc = null;
 			compile_t.clearParameters();
 			main_t.clearParameters();
+			// Get all test source files in a directory
 			if (sourcefile.isDirectory()) {
 				Element transform = txsl.createElementNS(XSL_NS, "xsl:transform");
 				transform.setAttribute("version", "1.0");
@@ -119,7 +133,7 @@ public class Test {
 					if (children[i].toLowerCase().endsWith(".ctl") || children[i].toLowerCase().endsWith(".xml")) {
 						File ctl_file = new File(sourcefile, children[i]);
 						if (ctl_file.isFile()) {
-							File txsl_file = new File(sourcefile, children[i].substring(0, children[i].length() - 3) + extension);
+							File txsl_file = new File(sourcefile, children[i].substring(0, children[i].length() - 3) + extension); //assumes 3-letter file extensions!
 							boolean needs_compiling;
 							if (txsl_file.exists()) {
 								needs_compiling = txsl_file.lastModified() < ctl_file.lastModified() ||
@@ -134,7 +148,9 @@ public class Test {
 									if (validation_eh.getErrorCount() == old_count) {
 										compile_t.setParameter("filename", ctl_file.getAbsolutePath());
 										compile_t.setParameter("txsl_filename", txsl_file.toURL().toString());
-										compile_t.transform(new StreamSource(ctl_file), new StreamResult(txsl_file));
+										// OLD: compile_t.transform(new StreamSource(ctl_file), new StreamResult(txsl_file));
+										inputDoc = inputDB.parse(ctl_file);
+										compile_t.transform(new DOMSource(inputDoc), new DOMResult(txsl));
 									}
 								} catch (org.xml.sax.SAXException e) {
 									System.exit(1);
@@ -149,13 +165,17 @@ public class Test {
 						}
 					}
 				}
-			} else {
+			} 
+			// Or get the one specific test file
+			else {
 				try {
 					int old_count = validation_eh.getErrorCount();
 					if (validate)	ctl_validator.validate(new StreamSource(sourcefile));
 					if (validation_eh.getErrorCount() == old_count) {
 						compile_t.setParameter("filename", sourcefile.getAbsolutePath());
-						compile_t.transform(new StreamSource(sourcefile), new DOMResult(txsl));
+						// OLD: compile_t.transform(new StreamSource(sourcefile), new DOMResult(txsl));
+						inputDoc = inputDB.parse(sourcefile);
+						compile_t.transform(new DOMSource(inputDoc), new DOMResult(txsl));
 					}
 				} catch (org.xml.sax.SAXException e) {
 					System.exit(1);
@@ -449,10 +469,12 @@ public class Test {
 		}
 
 		Thread.currentThread().setName("CTL Test Engine");
-
+		
+		// Setup/compile test object
 		Test t = new Test(sources, validate, mode);
 		if (mode == DOC_MODE) mode = TEST_MODE;
 		TECore core = new TECore(System.out, false);
+		// Run the compiled test object
 		t.test(mode, logdir, suite_name, session, tests, core);
 	}
 }
