@@ -53,9 +53,12 @@ public class TECore {
 	Stack Loggers = new Stack();
 
 	public TECore(PrintStream out, boolean web) throws Exception {
-		DBF = DocumentBuilderFactory.newInstance();
-		DB = DBF.newDocumentBuilder();
 		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
+		DBF = DocumentBuilderFactory.newInstance();
+		DBF.setNamespaceAware(true);
+		DBF.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);		
+		DB = DBF.newDocumentBuilder();
+		
 		TF = TransformerFactory.newInstance();
 		TF.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
 		Out = out;
@@ -91,9 +94,12 @@ public class TECore {
 	}
 
 	public static Document read_log(String logdir, String callpath) throws Exception {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
 		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		dbf.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);		
+		DocumentBuilder db = dbf.newDocumentBuilder();
+				
 		Document doc = db.newDocument();
 		File dir = new File(logdir, callpath);
 		File f = new File(dir, "log.xml");
@@ -263,9 +269,12 @@ public class TECore {
 	}
 
 	public Document serialize_and_parse(Node parse_instruction) throws Throwable {
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		DocumentBuilder db = dbf.newDocumentBuilder();
 		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		dbf.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);		
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer t = null;
 		Node content = null;
@@ -366,11 +375,13 @@ public class TECore {
 	}
 
 	public Document parse(URLConnection uc, String response_id, Node instruction) throws Throwable {
+		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
+		dbf.setFeature("http://apache.org/xml/features/xinclude/fixup-base-uris", false);		
 		DocumentBuilder db = dbf.newDocumentBuilder();
+		
 		Transformer t = TransformerFactory.newInstance().newTransformer();
-		System.setProperty("org.apache.xerces.xni.parser.XMLParserConfiguration","org.apache.xerces.parsers.XIncludeParserConfiguration");
 		Document response_doc = db.newDocument();
 		Element parser_e = response_doc.createElement("parser");
 		Element response_e = response_doc.createElement("response");
