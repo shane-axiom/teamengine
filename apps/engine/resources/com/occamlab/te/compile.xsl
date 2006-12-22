@@ -249,6 +249,7 @@
 						<txsl:attribute name="id"><txsl:value-of select="$te:web-call-id"/></txsl:attribute>
 						<xsl:apply-templates select="ctl:url" mode="drop-namespace"/>
 						<xsl:apply-templates select="ctl:method" mode="drop-namespace"/>
+						<xsl:apply-templates select="ctl:header" mode="drop-namespace"/>
 						<xsl:apply-templates select="ctl:param" mode="drop-namespace"/>
 						<xsl:apply-templates select="ctl:body" mode="drop-namespace"/>
 					</request>
@@ -264,6 +265,7 @@
 				<xsl:choose>
 					<xsl:when test="self::ctl:url"/>
 					<xsl:when test="self::ctl:method"/>
+					<xsl:when test="self::ctl:header"/>
 					<xsl:when test="self::ctl:param"/>
 					<xsl:when test="self::ctl:body"/>
 					<xsl:otherwise>
