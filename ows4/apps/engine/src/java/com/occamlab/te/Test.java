@@ -104,7 +104,7 @@ public class Test {
 			compile_file = getResourceAsFile("com/occamlab/te/compile.xsl");
 			extension = "txsl";
 		}
-		// Prepare the transformers
+		// Prepare the XSLT transformers
 		Transformer compile_t = TF.newTransformer(new StreamSource(compile_file));
 		InputStream main_is = CL.getResourceAsStream("com/occamlab/te/main.xsl");
 		Transformer main_t = TF.newTransformer(new StreamSource(main_is));
@@ -130,10 +130,11 @@ public class Test {
 				txsl.appendChild(transform);
 				String[] children = sourcefile.list();
 				for (int i = 0; i < children.length; i++) {
+					// Finds all .ctl and .xml files in the directory to use
 					if (children[i].toLowerCase().endsWith(".ctl") || children[i].toLowerCase().endsWith(".xml")) {
 						File ctl_file = new File(sourcefile, children[i]);
 						if (ctl_file.isFile()) {
-							File txsl_file = new File(sourcefile, children[i].substring(0, children[i].length() - 3) + extension); //assumes 3-letter file extensions!
+							File txsl_file = new File(sourcefile, children[i].substring(0, children[i].length() - 3) + extension);
 							boolean needs_compiling;
 							if (txsl_file.exists()) {
 								needs_compiling = txsl_file.lastModified() < ctl_file.lastModified() ||
@@ -207,6 +208,7 @@ public class Test {
 			System.exit(1);
 		}
 
+		// Continues to compile the source test files together
 		try {
 			TransformerFactory tf = TransformerFactory.newInstance();
 			tf.setAttribute(FeatureKeys.LINE_NUMBERING, Boolean.TRUE);
@@ -219,6 +221,7 @@ public class Test {
 		}
 	}
 
+	// Deletes a directory and all it's chilldren files
 	public static void deleteDir(File dir) {
 		String[] children = dir.list();
 		for (int i = 0; i < children.length; i++) {
@@ -232,6 +235,7 @@ public class Test {
 		dir.delete();
 	}
 
+	// Deletes just the sub directories for a certain directory
 	public static void deleteSubDirs(File dir) {
 		String[] children = dir.list();
 		for (int i = 0; i < children.length; i++) {
@@ -242,11 +246,13 @@ public class Test {
 		}
 	}
 
+	// Loads a file into memory from the classpath
 	public static File getResourceAsFile(String resource) throws Exception {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		return new File(URLDecoder.decode(cl.getResource(resource).getFile(), "UTF-8"));
 	}
 
+	// Loads a DOM Document from the classpath
 	Document getResourceAsDoc(String resource) throws Exception {
 		InputStream is = CL.getResourceAsStream(resource);
 		if (is != null) {
@@ -259,6 +265,7 @@ public class Test {
 		}
 	}
 
+	// Get information on a specific test and return the information in a DOM Document
 	Document getTemplateFromLog(File logdir, String callpath) throws Exception {
 		Document logdoc;
 		logdoc = TECore.read_log(logdir.getAbsolutePath(), callpath);
@@ -272,7 +279,9 @@ public class Test {
 		return doc;
 	}
 
+	// Main test method
 	public void test(int mode, File logdir, String suitename, String session, List tests, TECore core) throws Exception {
+		// Setup session (log) directory
 		File session_dir = null;
 
 		if (session != null) session_dir = new File(logdir, session);
@@ -300,6 +309,7 @@ public class Test {
 			}
 		}
 
+		// Prepare suite
 		Map templates = new HashMap();
 		if (tests.isEmpty()) {
 			if (mode == RETEST_MODE) {
@@ -343,6 +353,7 @@ public class Test {
 			}
 		}
 
+		// Run each test and log the results
 		Transformer t = ScriptTemplates.newTransformer();
 		Iterator it = templates.keySet().iterator();
 		while (it.hasNext()) {
@@ -376,6 +387,7 @@ public class Test {
 		}
 	}
 
+	// Determine next session number
 	public static String newSessionId(File logdir) {
 		int i = 1;
 		String session = "s0001";
@@ -399,6 +411,7 @@ public class Test {
 		File f = getResourceAsFile("com/occamlab/te/compile.xsl");
 		sources.add(new File(f.getParentFile(), "scripts"));
 
+		// Parse arguments from command-line
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].startsWith("-cmd=")) {
 				cmd = args[i].substring(5);

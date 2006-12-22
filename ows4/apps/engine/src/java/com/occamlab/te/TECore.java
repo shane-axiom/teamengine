@@ -133,6 +133,7 @@ public class TECore {
 		return doc;
 	}
 
+	// Start logging (create log file)
 	public Node create_log(String logdir, String callpath) throws Exception {
 		PrintWriter logger = null;
 		if (logdir.length() > 0) {
@@ -149,6 +150,7 @@ public class TECore {
 		return null;
 	}
 
+	// Log additional information to the log file
 	public Node log_xml(Node xml) throws Exception {
 		PrintWriter logger = (PrintWriter)Loggers.peek();
 		if (logger != null) {
@@ -162,6 +164,7 @@ public class TECore {
 		return null;
 	}
 
+	// Close the log file
 	public Node close_log() throws Exception {
 		PrintWriter logger = (PrintWriter)Loggers.pop();
 		if (logger != null) {
@@ -192,12 +195,14 @@ public class TECore {
 		return null;
 	}
 
+	// Create a URLConnection to the service with the proper headers, etc
 	public static URLConnection build_request(Node xml) throws Exception {
 		Node body = null;
 		String sUrl = null;
 		String sParams = "";
 		String method = "GET";
 
+		// Read in the test information (from CTL)
 		NodeList nl = xml.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node n = (Node) nl.item(i);
@@ -218,6 +223,7 @@ public class TECore {
 			}
 		}
 
+		// Complete GET KVP syntax
 		if (method.equals("GET") && sParams.length() > 0) {
 			if (sUrl.indexOf("?") < 0) {
 				sUrl += "?";
@@ -231,19 +237,23 @@ public class TECore {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer t = tf.newTransformer();
 
+		// Open the URLConnection
 		URLConnection uc = new URL(sUrl).openConnection();
 		if (uc instanceof HttpURLConnection) {
 			((HttpURLConnection)uc).setRequestMethod(method);
 		}
+		// POST setup (XML payload and header information)
 		if (method.equals("POST") || method.equals("PUT")) {
 			uc.setDoOutput(true);
 			byte[] bytes = null;
 			String mime = null;
-			// TODO: Need to allow for user to set other content-type and charsets
+			// KVP over POST
 			if (body == null) {
 				bytes = sParams.getBytes();
 				mime = "application/x-www-form-urlencoded";
-			} else {
+			} 
+			// XML POST
+			else {
 				NodeList children = body.getChildNodes();
 				for (int i = 0; i < children.getLength(); i++) {
 					if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
@@ -259,6 +269,7 @@ public class TECore {
 					mime = "text/plain";
 				}
 			}
+			// Set headers
 			uc.setRequestProperty("Content-Type", mime);
 			uc.setRequestProperty("Content-Length", Integer.toString(bytes.length));
 			OutputStream os = uc.getOutputStream();
