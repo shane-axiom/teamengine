@@ -198,6 +198,7 @@ public class TECore {
 	// Create a URLConnection to the service with the proper headers, etc
 	public static URLConnection build_request(Node xml) throws Exception {
 		Node body = null;
+		ArrayList headers = new ArrayList();
 		String sUrl = null;
 		String sParams = "";
 		String method = "GET";
@@ -213,6 +214,9 @@ public class TECore {
 				else if (n.getLocalName().equals("method")) {
 					method = n.getTextContent().toUpperCase();
 				}
+				else if (n.getLocalName().equals("header")) {
+					headers.add(new String[] {((Element)n).getAttribute("name"), n.getTextContent()});
+				}				
 				else if (n.getLocalName().equals("param")) {
 					if (sParams.length() > 0) sParams += "&";
 					sParams += ((Element)n).getAttribute("name") + "=" + n.getTextContent();
@@ -272,7 +276,21 @@ public class TECore {
 			// Set headers
 			uc.setRequestProperty("Content-Type", mime);
 			uc.setRequestProperty("Content-Length", Integer.toString(bytes.length));
+
+			// Enter the custom headers (overwrites the defaults if present)
+			for (int i = 0; i < headers.size(); i++) {
+				String[] header = (String[])headers.get(i);
+				//System.out.println("Custom Headers: "+header[0]+" "+header[1]);
+				uc.setRequestProperty(header[0], header[1]);
+			}			
+			
 			OutputStream os = uc.getOutputStream();
+
+			//System.out.println("Info for "+uc.getURL().toString()+":");
+			//for (int i = 0; i < uc.getHeaderFields().size(); i++) {
+			//	System.out.println("Header: "+uc.getHeaderFieldKey(i)+" "+uc.getHeaderField(i));
+			//}	
+			
 			os.write(bytes);
 		}
 
