@@ -151,7 +151,7 @@ public class Test {
 										compile_t.setParameter("txsl_filename", txsl_file.toURL().toString());
 										// OLD: compile_t.transform(new StreamSource(ctl_file), new StreamResult(txsl_file));
 										inputDoc = inputDB.parse(ctl_file);
-										compile_t.transform(new DOMSource(inputDoc), new DOMResult(txsl));
+										compile_t.transform(new DOMSource(inputDoc), new StreamResult(txsl_file));
 									}
 								} catch (org.xml.sax.SAXException e) {
 									System.exit(1);
