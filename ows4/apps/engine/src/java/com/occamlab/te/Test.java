@@ -416,12 +416,19 @@ public class Test {
 			if (args[i].startsWith("-cmd=")) {
 				cmd = args[i].substring(5);
 			} else if (args[i].startsWith("-source=")) {
-				sources.add(new File(args[i].substring(8)));
+				//OLD: sources.add(new File(args[i].substring(8)));
+				boolean exists = new File(args[i].substring(8)).exists();
+				File sourceFile = exists ? new File(args[i].substring(8)) : getResourceAsFile(args[i].substring(8));
+				sources.add(sourceFile);
 			} else if (args[i].startsWith("-package=")) {
-				File packagefile = new File(args[i].substring(9));
+				//OLD: File packagefile = new File(args[i].substring(9));
+				boolean exists = new File(args[i].substring(9)).exists();
+				File packagefile = exists ? new File(args[i].substring(9)) : getResourceAsFile(args[i].substring(9));
 				sources.add(packagefile);
 			} else if (args[i].startsWith("-sourcedir=")) {
-				File sourcedir = new File(args[i].substring(11));
+				//OLD: File sourcedir = new File(args[i].substring(11));
+				boolean exists = new File(args[i].substring(11)).exists();
+				File sourcedir = exists ? new File(args[i].substring(11)) : getResourceAsFile(args[i].substring(11));
 				sources.add(sourcedir);
 			} else if (args[i].startsWith("-logdir=")) {
 				logdir = new File(args[i].substring(8));

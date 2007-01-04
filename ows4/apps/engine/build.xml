@@ -1,18 +1,18 @@
 <project name="team" basedir="." default="jar">
 	<description>Main TEAM Engine application</description>
 	
-	<!-- The build.properties file(s) must contain the path location of the Java JRE and Tomcat installation-->
+	<!-- The build.properties file(s) must contain the path location of the Java JRE, the ets base directory, as well as the Tomcat installation -->
 	<!-- Load property overrides from user home -->
     <property file="${user.home}/${ant.project.name}.properties"/>
+	<property file="./build.properties"/>    
     <property file="../../build.properties"/>
 	
-	
 	<property name="lib.dir" value="${basedir}/lib"/>
-	<property name="resource.dir" value="${basedir}/resources"/>
-	<property name="test.dir" value="${basedir}/../../test"/>
+	<property name="engine.resource.dir" value="${basedir}/resources"/>
+	<property name="ets.resource.dir" value="${ets.base.dir}/resources"/>
 	
 	<path id="classpath">
-		<fileset dir="lib" includes="*.jar" excludes="teamengine.jar"/>
+		<fileset dir="lib" includes="*.jar" excludes="${ant.project.name}.jar"/>
 	</path>
 	
 	<target name="compile">
@@ -21,23 +21,27 @@
 	</target>
 	
 	<target name="jar" depends="compile">
-		<jar destfile="lib/teamengine.jar">
+		<jar destfile="${lib.dir}/${ant.project.name}.jar">
 			<fileset dir="build" excludes=".*"/>
 		</jar>
 	</target>
 	
 	<target name="javadoc" description="Creates javadocs from the java source">
 		<mkdir dir="build"/>
-		<javadoc destdir="build/javadocs" author="true" version="true" use="true" windowtitle="Teamengine API">
+		<javadoc destdir="build/javadocs" author="true" version="true" use="true" windowtitle="Team Engine API">
 			<fileset dir="${basedir}/src/java/com/occamlab/te" defaultexcludes="yes"/>
 		</javadoc>
 	</target>
 	
 	<target name="clean">
 		<delete dir="build"/>
+		<delete file="${lib.dir}/${ant.project.name}.jar"/>
 	</target>
 	
-	<!--Usage: ant test -Dets.args="-mode=test -source=../../test/scripts/wfs/wfs.ctl -logdir=logs" -->
+	<!--
+Usage:
+ant test -Dets.args="-mode=test -source=../../../../../OGC-CITE/wfs/1.1.0/ets/ctl/main.ctl -logdir=logs"
+	-->
 	<target name="test" depends="jar" if="ets.args" 
         description="Runs the test engine with supplied argument string">
 		<java classname="com.occamlab.te.Test" fork="true" jvm="${java.dir}/bin/java.exe" maxmemory="512m">
@@ -47,14 +51,19 @@
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
 				</fileset>
-				<pathelement path="${resource.dir}"/>
+				<pathelement path="${engine.resource.dir}"/>
+				<pathelement path="${ets.base.dir}"/>
+				<pathelement path="${ets.resource.dir}"/>
 				<pathelement path="${java.class.path}"/>
 				<pathelement path="${basedir}"/>
 			</classpath>
 		</java>
 	</target>
 	
-	<!--Usage: ant listsuites -Dets.args="-source=../../test/scripts/temp/demo.xml" -->
+	<!--
+Usage:
+ant listsuites -Dets.args="-source=../../../../../OGC-CITE/wfs/1.1.0/ets/ctl/main.ctl" 
+	-->
 	<target name="listsuites" if="ets.args" description="Lists the suites in a ctl test file">
 		<java classname="com.occamlab.te.ListSuites" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
@@ -63,13 +72,18 @@
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
 				</fileset>
-				<pathelement path="${resource.dir}"/>
+				<pathelement path="${engine.resource.dir}"/>
+				<pathelement path="${ets.base.dir}"/>				
 				<pathelement path="${java.class.path}"/>
+				<pathelement path="${basedir}"/>				
 			</classpath>
 		</java>
 	</target>
 	
-	<!--Usage: ant viewlog -Dets.args="-logdir=logs -session=s0001" -->
+	<!--
+Usage:
+ant viewlog -Dets.args="-logdir=logs -session=s0001"
+	-->
 	<target name="viewlog" if="ets.args" description="Views the log results from a test run">
 		<java classname="com.occamlab.te.ViewLog" fork="true" jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
@@ -78,8 +92,9 @@
 				<fileset dir="${lib.dir}">
 					<include name="**/*.jar"/>
 				</fileset>
-				<pathelement path="${resource.dir}"/>
+				<pathelement path="${engine.resource.dir}"/>
 				<pathelement path="${java.class.path}"/>
+				<pathelement path="${basedir}"/>
 			</classpath>
 		</java>
 	</target>
