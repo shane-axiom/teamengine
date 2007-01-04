@@ -41,6 +41,8 @@
 	<!--
 Usage:
 ant test -Dets.args="-mode=test -source=../../../../../OGC-CITE/wfs/1.1.0/ets/ctl/main.ctl -logdir=logs"
+ant test -Dets.args="-mode=test -source=C:/eclipse/workspace/OGC-CITE/wfs/1.1.0/ets/ctl/main.ctl -logdir=logs"
+ant test -Dets.args="-mode=test -source=ctl/main.ctl -logdir=logs"
 	-->
 	<target name="test" depends="jar" if="ets.args" 
         description="Runs the test engine with supplied argument string">
