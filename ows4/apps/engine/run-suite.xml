@@ -54,7 +54,6 @@
 		<java classname="com.occamlab.te.ViewLog" fork="true" 
             jvm="${java.dir}/bin/java.exe">
 			<env key="JAVA_HOME" value="${java.dir}"/>
-			<arg value="-mode=test"/>
             <arg value="-logdir=logs"/>
             <arg value="-session=${session.id}"/>
 			<classpath>
