@@ -341,6 +341,9 @@ public class TECore {
 							content = (Element)children2.item(j);
 						}
 					}
+					if (content == null) {
+						content = (Node)children2.item(0);
+					}
 				} else {
 					parser_instruction = db.newDocument();
 					tf.newTransformer().transform(new DOMSource(e), new DOMResult(parser_instruction));
@@ -352,8 +355,8 @@ public class TECore {
 		}
 		File temp = File.createTempFile("$te_", ".xml");
 		if (content.getNodeType() == Node.TEXT_NODE) {
-			RandomAccessFile raf = new RandomAccessFile(temp, "w");
-			raf.writeBytes(((Text)temp).getTextContent());
+			RandomAccessFile raf = new RandomAccessFile(temp, "rw");
+			raf.writeBytes(((Text)content).getTextContent());
 			raf.close();
 		} else {
 			t.transform(new DOMSource((Node)content), new StreamResult(temp));
