@@ -105,6 +105,7 @@ public class XMLValidatingParser {
 		String oldprop = System.getProperty(property_name);
 		System.setProperty(property_name, "org.apache.xerces.jaxp.validation.XMLSchemaFactory");
 		SF = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		SF.setFeature("http://apache.org/xml/features/validation/schema-full-checking", false);
 		if (oldprop == null) {
 			System.clearProperty(property_name);
 		} else {
