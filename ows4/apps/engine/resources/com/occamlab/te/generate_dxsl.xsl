@@ -26,7 +26,7 @@
  xmlns:te="java:com.occamlab.te.TECore"
  xmlns:formfn="java:com.occamlab.ctlfns.FormFn"
  xmlns:saxon="http://saxon.sf.net/"
- version="1.0">
+ version="2.0">
 	<xsl:strip-space elements="*"/>
 	<xsl:output indent="yes"/>
 	<xsl:namespace-alias stylesheet-prefix="txsl" result-prefix="xsl"/>
