@@ -252,6 +252,7 @@
 						<xsl:apply-templates select="ctl:header" mode="drop-namespace"/>
 						<xsl:apply-templates select="ctl:param" mode="drop-namespace"/>
 						<xsl:apply-templates select="ctl:body" mode="drop-namespace"/>
+						<xsl:apply-templates select="ctl:part" mode="drop-namespace"/>
 					</request>
 				</txsl:otherwise>
 			</txsl:choose>
@@ -268,6 +269,7 @@
 					<xsl:when test="self::ctl:header"/>
 					<xsl:when test="self::ctl:param"/>
 					<xsl:when test="self::ctl:body"/>
+					<xsl:when test="self::ctl:part"/>
 					<xsl:otherwise>
 						<xsl:apply-templates select="."/>
 					</xsl:otherwise>

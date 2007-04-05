@@ -38,10 +38,11 @@ import java.util.*;
 
 public class TECore {
 	static final String XSL_NS = "http://www.w3.org/1999/XSL/Transform";
+	static final String CTL_NS = "http://www.occamlab.com/ctl";
 
-	DocumentBuilderFactory DBF;
+	static public DocumentBuilderFactory DBF;
 	DocumentBuilder DB;
-	TransformerFactory TF = TransformerFactory.newInstance();
+	static public TransformerFactory TF = TransformerFactory.newInstance();
 	Transformer FormTransformer;
 	PrintStream Out;
 	String FormHtml;
@@ -195,14 +196,43 @@ public class TECore {
 		return null;
 	}
 
+	// Get a File pointer to a file reference (in XML)
+	public static File getFile(NodeList fileNodes) {
+		File file = null;
+		for (int i = 0; i < fileNodes.getLength(); i++) {
+			Element e = (Element)fileNodes.item(i);
+			String type = e.getAttribute("type");
+			
+			try {
+				// URL, File, or Resource
+				if (type.equals("url")) {
+					URL url = new URL(e.getTextContent());
+					file = new File(url.toURI());
+				} else if (type.equals("file")) {
+					file = new File(e.getTextContent());
+				} else if (type.equals("resource")) {
+					ClassLoader cl = Thread.currentThread().getContextClassLoader();
+					file = new File(cl.getResource(e.getTextContent()).getFile());
+				} else {
+					System.out.println("Incorrect file reference:  Unknown type!");
+				}
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+		return file;
+	}
+
 	// Create a URLConnection to the service with the proper headers, etc
 	public static URLConnection build_request(Node xml) throws Exception {
 		Node body = null;
 		ArrayList headers = new ArrayList();
+		ArrayList parts = new ArrayList();
 		String sUrl = null;
 		String sParams = "";
 		String method = "GET";
-
+		String charset = "UTF-8";
+		
 		// Read in the test information (from CTL)
 		NodeList nl = xml.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
@@ -224,6 +254,9 @@ public class TECore {
 				else if (n.getLocalName().equals("body")) {
 					body = n;
 				}
+				else if (n.getLocalName().equals("part")) {
+					parts.add(n);
+				}				
 			}
 		}
 
@@ -251,6 +284,7 @@ public class TECore {
 			uc.setDoOutput(true);
 			byte[] bytes = null;
 			String mime = null;
+			
 			// KVP over POST
 			if (body == null) {
 				bytes = sParams.getBytes();
@@ -258,13 +292,16 @@ public class TECore {
 			} 
 			// XML POST
 			else {
+				String bodyContent = "";
+				
 				NodeList children = body.getChildNodes();
 				for (int i = 0; i < children.getLength(); i++) {
 					if (children.item(i).getNodeType() == Node.ELEMENT_NODE) {
 						ByteArrayOutputStream baos = new ByteArrayOutputStream();
 						t.transform(new DOMSource(children.item(i)), new StreamResult(baos));
+						bodyContent = baos.toString();
 						bytes = baos.toByteArray();
-						mime = "application/xml";
+						mime = "application/xml; charset="+charset;
 						break;
 					}
 				}
@@ -272,10 +309,97 @@ public class TECore {
 					bytes = body.getTextContent().getBytes();
 					mime = "text/plain";
 				}
+				
+				// Add parts if present (ebrim specific)
+				if (parts.size() > 0) {
+					String prefix = "--";
+					String boundary = "7bdc3bba-e2c9-11db-8314-0800200c9a66";
+					String newline = "\r\n";
+					
+					// Set main body
+					String contents = "";
+					contents += prefix + boundary + newline;
+					contents += "Content-Disposition: form-data; name=\"Transaction\"" + "; filename=\"\"" + newline;
+					contents += "Content-Type: " + mime + newline + newline;
+					contents += bodyContent;
+					
+					// Global Content-Type and Length to be added after the parts have been parsed
+					mime = "multipart/form-data; boundary="+boundary;
+					
+					// Append all parts to the original body, seperated by the boundary sequence
+					for (int i = 0; i < parts.size(); i++) {
+						String content = "";
+						Element currentPart = (Element)parts.get(i);
+						String partName = currentPart.getAttribute("name");
+						String contentType = currentPart.getAttribute("content-type");
+						
+						// Default encodings and content-type
+						if (contentType.equals("application/xml")) {
+							contentType= "application/xml; charset="+charset;
+						}
+						if (contentType == null ||
+						    contentType.equals("")) {
+						    	contentType= "application/octet-stream";
+						}
+
+						// Get the fileName, if it exists
+						NodeList files = currentPart.getElementsByTagNameNS(CTL_NS, "file");
+						String fileName = "";
+						if (files.getLength() > 0) {
+							Element e = (Element)files.item(0);
+							fileName = e.getTextContent();
+						}
+						
+						// Set headers for each part
+						content += "Content-Disposition: form-data; name=\"" + partName + "\"" + "; filename=\""+fileName+"\"" + newline;
+						content += "Content-Type: " + contentType + newline + newline;
+						
+						// Get part for a specified file
+						if (files.getLength() > 0) {
+							File contentFile = getFile(files);
+
+							StringBuffer buff = new StringBuffer();
+							try {
+								BufferedReader rd = new BufferedReader(new FileReader(contentFile));
+								String line;
+								while ((line = rd.readLine()) != null) {
+									buff.append(line + "\n");
+								}
+								rd.close();
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
+							
+							content += buff.toString();
+						}
+						// Get part from inline data (or xi:include)
+						else {
+							// Text
+							if (currentPart.getFirstChild() instanceof Text) {
+								content += currentPart.getTextContent();
+							}
+							// XML
+							else {
+								content += DocumentToString(currentPart.getFirstChild());
+							}
+						}
+						
+						contents += newline + prefix + boundary + newline + content;
+					}
+					
+					contents += newline + prefix + boundary + prefix + newline;
+					
+					//System.out.println("Contents:\n"+contents);
+					bytes = contents.getBytes(charset);
+				}
 			}
+			
 			// Set headers
 			uc.setRequestProperty("Content-Type", mime);
 			uc.setRequestProperty("Content-Length", Integer.toString(bytes.length));
+
+			//System.out.println("Content-Type: "+uc.getRequestProperty("Content-Type"));
+			//System.out.println("Content-Length: "+uc.getRequestProperty("Content-Length"));
 
 			// Enter the custom headers (overwrites the defaults if present)
 			for (int i = 0; i < headers.size(); i++) {
@@ -286,10 +410,20 @@ public class TECore {
 			
 			OutputStream os = uc.getOutputStream();
 
-			//System.out.println("Info for "+uc.getURL().toString()+":");
-			//for (int i = 0; i < uc.getHeaderFields().size(); i++) {
-			//	System.out.println("Header: "+uc.getHeaderFieldKey(i)+" "+uc.getHeaderField(i));
-			//}	
+			// DEBUG
+			/*System.out.println("Info for "+uc.getURL().toString()+":");
+			for (int i = 0; i < uc.getHeaderFields().size(); i++) {
+				System.out.println("Header: "+uc.getHeaderFieldKey(i)+" "+uc.getHeaderField(i));
+			}*/	
+			
+			/*try {
+				File respFile = new File(System.getProperty("java.io.tmpdir"), "tecore-request.txt");
+				FileWriter fw = new FileWriter(respFile);
+				fw.write(new String(bytes));
+				fw.close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}*/
 			
 			os.write(bytes);
 		}
@@ -369,7 +503,7 @@ public class TECore {
 
 	public Node register_parser(String namespace_uri, String local_name, String method_name, Object parser) throws Exception {
 		String key = namespace_uri + "," + local_name;
-		//System.out.println("Registerd " + key);
+		//System.out.println("Registered " + key);
 		if (parser instanceof String || parser instanceof Node) {
 			ParserInstances.put(key, null);
 		} else {
@@ -505,6 +639,7 @@ public class TECore {
 		return null;
 	}
 
+	// TODO: The transformer for the form has issues using Saxon higher than 8.6.1 (problem with configuration of factory/transformer?)
 	public Document form(Document xhtml) throws Exception {
 		String name = Thread.currentThread().getName();
 		NamedNodeMap attrs = xhtml.getElementsByTagName("form").item(0).getAttributes();
@@ -538,4 +673,28 @@ public class TECore {
 		FormResults = null;
 		return doc;
 	}
+	
+	/**
+	* Converts a DOM Document/Node to a String
+	*
+	* @param node
+	*          the node to convert
+	* @return String
+	*          a string representation of the DOM
+	*/
+	public static String DocumentToString(Node node) {
+		try {
+			DOMSource domSource = new DOMSource(node);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.transform(domSource, result);
+			return writer.toString();
+		} catch(Exception e) {
+			System.err.print("Error coverting Document to String.  "+e.getMessage());
+			return null;
+		}
+	}
+	
 }
