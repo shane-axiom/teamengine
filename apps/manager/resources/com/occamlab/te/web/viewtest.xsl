@@ -42,7 +42,7 @@
 	</xsl:template>
 	
 	<xsl:template match="/">
-		<xsl:for-each select="/ctl:package/ctl:test[substring-after(@name, ':') = $local-name]">
+		<xsl:for-each select="//ctl:package/ctl:test[substring-after(@name, ':') = $local-name]">
 			<xsl:variable name="prefix" select="substring-before(@name, ':')"/>
 			<xsl:if test="namespace::*[name()=$prefix] = $namespace-uri">
 				<xsl:call-template name="viewtest"/>
