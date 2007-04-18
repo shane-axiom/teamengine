@@ -646,9 +646,16 @@ public class TECore {
 		Attr attr = (Attr)attrs.getNamedItem("name");
 		if (attr != null) name = attr.getValue();
 
+		// Get "method" attribute - "post" or "get"
+		attr = (Attr)attrs.getNamedItem("method");
+		String method = "";
+		if (attr != null) method = attr.getValue();
+
+		// Set parameters for use by formfn.xsl
 		FormTransformer.setParameter("title", name);
 		FormTransformer.setParameter("web", Web ? "yes" : "no");
 		FormTransformer.setParameter("thread", Long.toString(Thread.currentThread().getId()));
+		FormTransformer.setParameter("method", method.toLowerCase().equals("post") ? "post" : "get");
 
 		//FormTransformer.transform(new DOMSource(xhtml), new StreamResult(System.out));
 		StringWriter sw = new StringWriter();
