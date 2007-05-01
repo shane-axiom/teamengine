@@ -24,18 +24,26 @@ import org.w3c.dom.NodeList;
 
 import com.occamlab.te.TECore;
 
-// Returns an element as follows for a zip file input:
-// <ctl:manifest xmlns:ctl="...">
-//    <ctl:file-entry 
-//    full-path="${java.io.temp}/dir/doc.kml" 
-//    size="2048" />
-// </ctl:manifest>
+/**
+* Parses a zip file input by extracting the contents to the java temp directory
+* and returning a manifest describing the files as follows:
+*
+* <ctl:manifest xmlns:ctl="http://www.occamlab.com/ctl">
+*    <ctl:file-entry 
+*    full-path="${java.io.temp}/dir/doc.kml" 
+*    size="2048" />
+* </ctl:manifest>
+*
+* @author jparrpearson
+*/
 public class ZipParser {
 	
 	public static final String PARSERS_NS = "http://www.occamlab.com/te/parsers";
 	public static final String CTL_NS = "http://www.occamlab.com/ctl";
 
-	// Parse function called within the <ctl:request> element
+	/**
+	 * Parse function called within the <ctl:request> element
+	 */
 	public static Document parse(URLConnection uc, Element instruction, PrintWriter logger, TECore core) throws Throwable {
 		uc.connect();
 
@@ -49,7 +57,7 @@ public class ZipParser {
 		InputStream is = uc.getInputStream();
 		ZipInputStream zis = new ZipInputStream(is);
 		
-		String directory = "temp-zip-dir";
+		String directory = "zipparser.temp";
 		new File(System.getProperty("java.io.tmpdir") + directory).mkdir();
 		
 		// Unzip the file to a temporary location (java temp)
@@ -58,9 +66,15 @@ public class ZipParser {
 		        // Open the output file
 		        String filename = entry.getName();
 		        long size = entry.getSize();
+		        // Make the temp directory and subdirectories if needed
+		        String subdir = "";
+		        if (filename.lastIndexOf("/") != -1) subdir = filename.substring(0,filename.lastIndexOf("/"));
+		        else if (filename.lastIndexOf("\\") != -1) subdir = filename.substring(0,filename.lastIndexOf("\\"));
+		        new File(System.getProperty("java.io.tmpdir") + directory + "/" + subdir).mkdir();
 		        File outFile = new File(System.getProperty("java.io.tmpdir") + directory, filename);
+		        if (outFile.isDirectory()) continue;
 		        OutputStream out = new FileOutputStream(outFile);
-		    
+
 		        // Transfer bytes from the ZIP file to the output file
 		        byte[] buf = new byte[1024];
 		        int len;
@@ -70,7 +84,7 @@ public class ZipParser {
 
 			// Add the file information to the document
 		        Element fileEntry = doc.createElementNS(CTL_NS, "file-entry");
-		        fileEntry.setAttribute("full-path", outFile.getPath());
+		        fileEntry.setAttribute("full-path", outFile.getPath().replace('\\','/'));
 		        fileEntry.setAttribute("size", String.valueOf(size));
 		        root.appendChild(fileEntry);
 		}
