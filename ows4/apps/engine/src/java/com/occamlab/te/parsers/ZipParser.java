@@ -41,6 +41,43 @@ public class ZipParser {
 	public static final String PARSERS_NS = "http://www.occamlab.com/te/parsers";
 	public static final String CTL_NS = "http://www.occamlab.com/ctl";
 
+	// Add more mime types as necessary, if mime type not listed a default will be given
+	public static String[][] ApplicationMediaTypeMappings = {
+	{"kml","vnd.google-earth.kml+xml"},
+	{"kmz","vnd.google-earth.kmz"},
+	{"xml","application/xml"},
+	{"txt","text/plain"},
+	{"jpg","image/jpeg"},
+	{"jpeg","image/jpeg"},
+	{"gif","image/gif"},
+	{"png","image/png"}};
+
+	/**
+	 * Returns the mime media type value for the given extension
+	 * 
+	 * @param ext
+	 *	the filename extension to lookup
+	 * @return String
+	 *	the mime type for the given extension
+	 */
+	public static String getMediaType (String ext) {
+		String mediaType = "";
+		
+		// Find the media type value in the lookup table
+		for (int i = 0; i < ApplicationMediaTypeMappings.length; i++) {
+			if (ApplicationMediaTypeMappings[i][0].equals(ext.toLowerCase())) {
+				mediaType = ApplicationMediaTypeMappings[i][1];
+			}
+		}
+		
+		// Give the media type default of "application/octet-stream"
+		if (mediaType.equals("")) {
+			mediaType = "application/octet-stream";
+		}
+		
+		return mediaType;
+	}
+
 	/**
 	 * Parse function called within the <ctl:request> element
 	 */
@@ -63,9 +100,11 @@ public class ZipParser {
 		// Unzip the file to a temporary location (java temp)
 		ZipEntry entry = null;
 		while ((entry = zis.getNextEntry()) != null) {
-		        // Open the output file
+		        // Open the output file and get info from it
 		        String filename = entry.getName();
 		        long size = entry.getSize();
+		        String ext = filename.substring(filename.lastIndexOf(".")+1);
+		        String mediaType = getMediaType(ext);
 		        // Make the temp directory and subdirectories if needed
 		        String subdir = "";
 		        if (filename.lastIndexOf("/") != -1) subdir = filename.substring(0,filename.lastIndexOf("/"));
@@ -85,6 +124,7 @@ public class ZipParser {
 			// Add the file information to the document
 		        Element fileEntry = doc.createElementNS(CTL_NS, "file-entry");
 		        fileEntry.setAttribute("full-path", outFile.getPath().replace('\\','/'));
+		        fileEntry.setAttribute("media-type", mediaType);
 		        fileEntry.setAttribute("size", String.valueOf(size));
 		        root.appendChild(fileEntry);
 		}
