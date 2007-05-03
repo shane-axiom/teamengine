@@ -71,11 +71,11 @@ public class XMLValidatingParser {
 	}
 
 	// Similar to load_schemas, but in this case hold the File pointer for each schema, not the schema itself (for use in pooling schema validation)
-	void loadSchemaList(Element schemaLinks, ArrayList schemas) throws Exception {
+	void loadSchemaList(Node schemaLinks, ArrayList schemas) throws Exception {
 		
 		// Parse Document for schema elements
 		Document d = schemaLinks.getOwnerDocument();
-		NodeList nodes = d.getElementsByTagName("schema");
+		NodeList nodes = d.getElementsByTagNameNS("http://www.occamlab.com/te/parsers", "schema");
 		
 		// Add schema information to ArrayList for loading
 		for (int i = 0; i < nodes.getLength(); i++) {
