@@ -198,11 +198,13 @@ public class XMLValidatingParser {
 	*	The file document to validate
 	* @param Document instruction
 	*	The xml encapsulated schema information (file locations)
-	* @return the original document (null if there were errors)
+	* @return false if there were errors, true if none
 	*
 	* @author jparrpearson
 	*/
-	public Document checkXMLRules(Document doc, Document instruction) throws Exception {
+	public boolean checkXMLRules(Document doc, Document instruction) throws Exception {
+		
+		boolean isValid = true;
 		
 		// Load schemas
 		ArrayList schemas = new ArrayList();
@@ -214,7 +216,6 @@ public class XMLValidatingParser {
 
 		// Validate against loaded schemas
 		if (doc != null) {
-			
 			// Get all the schemas and make them into one
 			Source[] schemaSources = new Source[schemas.size()];
 			for (int i = 0; i < schemas.size(); i++) {
@@ -226,7 +227,6 @@ public class XMLValidatingParser {
 			eh.setRole("Validation");
 	      		validator.setErrorHandler(eh);
 			validator.validate(new DOMSource(doc));
-			
 		}
 
 		// Print errors
@@ -247,17 +247,20 @@ public class XMLValidatingParser {
 
 		//Element instruction_e = (Element)instruction.getFirstChild();
 
+		// TEMP
+		//System.out.println("Warning/error count: "+warning_count+"/"+error_count);
+
 		// If there were errors return null, otherwise the repsonse document
 		boolean b_ignore_errors = false;
 		String s_ignore_errors = instruction.getDocumentElement().getAttribute("ignoreErrors");
 		if (s_ignore_errors.length() > 0) b_ignore_errors = Boolean.parseBoolean(s_ignore_errors);
-		if (error_count > 0 && !b_ignore_errors) return null;
+		if (error_count > 0 && !b_ignore_errors) isValid = false;
 
 		boolean b_ignore_warnings = true;
 		String s_ignore_warnings = instruction.getDocumentElement().getAttribute("ignoreWarnings");
 		if (s_ignore_warnings.length() > 0) b_ignore_warnings = Boolean.parseBoolean(s_ignore_warnings);
-		if (warning_count > 0 && !b_ignore_warnings) return null;
+		if (warning_count > 0 && !b_ignore_warnings) isValid = false;
 
-		return doc;
+		return isValid;
 	}
 }
