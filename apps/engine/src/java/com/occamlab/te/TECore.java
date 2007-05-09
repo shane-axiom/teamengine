@@ -63,6 +63,8 @@ public class TECore {
 		TF = TransformerFactory.newInstance();
 		TF.setAttribute(FeatureKeys.VERSION_WARNING, Boolean.FALSE);
 		Out = out;
+		System.setOut(Out); // sets the stdout to go to the appropriate place
+		System.setErr(Out);
 		Web = web;
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		InputStream is = cl.getResourceAsStream("com/occamlab/te/formfn.xsl");
