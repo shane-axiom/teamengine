@@ -683,6 +683,37 @@
 		<txsl:copy-of select="tec:callFunction($te:core, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params)"/>
 	</xsl:template>
 
+	<!-- Calls parse-qname, make-params-var -->
+	<xsl:template match="ctl:create-monitor">
+		<txsl:variable name="url">
+			<xsl:apply-templates select="ctl:url/*"/>
+		</txsl:variable>
+		<xsl:for-each select="ctl:triggers-test">
+			<xsl:variable name="qname">
+				<xsl:call-template name="parse-qname"/>
+			</xsl:variable>
+			<xsl:call-template name="make-params-var"/>
+			<xsl:choose>
+				<xsl:when test="../following-sibling::*">
+					<txsl:value-of select="tec:createMonitor($te:core, $url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params, ..\following-sibling::*, concat('{generate-id()}_', position()))"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<txsl:value-of select="tec:createMonitor($te:core, $url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params, concat('{generate-id()}_', position()))"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:if test="not(ctl:triggers-test)">
+			<xsl:choose>
+				<xsl:when test="ctl:url/following-sibling::*">
+					<txsl:value-of select="tec:createMonitor($te:core, ctl:url\following-sibling::*, $url)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<txsl:value-of select="tec:createMonitor($te:core, $url)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:if>
+	</xsl:template>
+
 	<!-- Calls template "function" -->
 <!--
 	<xsl:template match="xsl:call-template">
