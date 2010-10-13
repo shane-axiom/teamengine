@@ -796,21 +796,29 @@ public class TECore implements Runnable {
         return new SimpleEntry<String, MonitorCall>(monitorUrl, mc);
     }
 
+    // Monitor without parser that doesn't trigger a test
     public String createMonitor(String url) {
-        return createMonitor(url, null);
+        return createMonitor(url, null, "");
     }
 
-    public String createMonitor(String url, Node parserInstruction) {
+    // Monitor that doesn't trigger a test
+    public String createMonitor(String url, Node parserInstruction, String passThrough) {
         Entry<String, MonitorCall> entry = newMonitorEntry(url);
-        entry.getValue().setParserInstruction(DomUtils.getElement(parserInstruction));
+        MonitorCall mc = entry.getValue();
+        if (parserInstruction != null) {
+        	mc.setParserInstruction(DomUtils.getElement(parserInstruction));
+        	mc.setPassThrough(Boolean.parseBoolean(passThrough));
+        }
         return entry.getKey();
     }
 
+    // Monitor without parser that triggers a test
     public String createMonitor(XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, String callId) throws Exception {
-        return createMonitor(context, url, localName, namespaceURI, params, null, callId);
+        return createMonitor(context, url, localName, namespaceURI, params, null, "", callId);
     }
 
-    public String createMonitor(XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String callId) throws Exception {
+    // Monitor that triggers a test
+    public String createMonitor(XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String passThrough, String callId) throws Exception {
         Entry<String, MonitorCall> entry = newMonitorEntry(url);
         MonitorCall mc = entry.getValue();
         mc.setContext(context);
@@ -831,6 +839,7 @@ public class TECore implements Runnable {
             } else {
                 mc.setParserInstruction((Element)node);
             }
+            mc.setPassThrough(Boolean.parseBoolean(passThrough));
         }
         mc.setCallId(callId);
         return entry.getKey();

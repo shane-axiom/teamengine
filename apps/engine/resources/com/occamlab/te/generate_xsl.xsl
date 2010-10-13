@@ -685,32 +685,29 @@
 
 	<!-- Calls parse-qname, make-params-var -->
 	<xsl:template match="ctl:create-monitor">
-		<txsl:variable name="url">
+		<txsl:variable name="te:url">
 			<xsl:apply-templates select="ctl:url/*"/>
 		</txsl:variable>
+		<xsl:for-each select="ctl:parser/*">
+			<txsl:variable name="te:parser-xml">
+				<xsl:copy>
+					<xsl:apply-templates select="@*"/>
+					<xsl:apply-templates/>
+				</xsl:copy>
+			</txsl:variable>
+		</xsl:for-each>
+		<xsl:variable name="parser-params">
+			<xsl:if test="ctl:parser">, $te:parser-xml, '<xsl:value-of select="string(@pass-through)"/>'</xsl:if>
+		</xsl:variable>
 		<xsl:for-each select="ctl:triggers-test">
 			<xsl:variable name="qname">
 				<xsl:call-template name="parse-qname"/>
 			</xsl:variable>
 			<xsl:call-template name="make-params-var"/>
-			<xsl:choose>
-				<xsl:when test="../following-sibling::*">
-					<txsl:value-of select="tec:createMonitor($te:core, $url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params, ..\following-sibling::*, concat('{generate-id()}_', position()))"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<txsl:value-of select="tec:createMonitor($te:core, $url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params, concat('{generate-id()}_', position()))"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<txsl:value-of select="tec:createMonitor($te:core, $te:url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params{$parser-params}, concat('{generate-id()}_', position()))"/>
 		</xsl:for-each>
 		<xsl:if test="not(ctl:triggers-test)">
-			<xsl:choose>
-				<xsl:when test="ctl:url/following-sibling::*">
-					<txsl:value-of select="tec:createMonitor($te:core, ctl:url\following-sibling::*, $url)"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<txsl:value-of select="tec:createMonitor($te:core, $url)"/>
-				</xsl:otherwise>
-			</xsl:choose>
+			<txsl:value-of select="tec:createMonitor($te:core, $te:url{$parser-params})"/>
 		</xsl:if>
 	</xsl:template>
 

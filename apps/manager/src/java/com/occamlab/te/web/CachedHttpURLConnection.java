@@ -10,11 +10,11 @@ import java.net.HttpURLConnection;
 public class CachedHttpURLConnection extends HttpURLConnectionCopy {
     byte[] content = null;
 
-    CachedHttpURLConnection(HttpURLConnectionCopy uc) {
+    public CachedHttpURLConnection(HttpURLConnectionCopy uc) {
         super(uc);
     }
     
-    CachedHttpURLConnection(HttpURLConnection uc) {
+    public CachedHttpURLConnection(HttpURLConnection uc) {
         this(new HttpURLConnectionCopy(uc));
     }
     
