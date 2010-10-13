@@ -13,7 +13,7 @@ import java.util.Map;
 public class HttpURLConnectionCopy extends HttpURLConnection {
     HttpURLConnection uc = null;
     
-    HttpURLConnectionCopy(HttpURLConnection uc) {
+    public HttpURLConnectionCopy(HttpURLConnection uc) {
         super(null);
         this.uc = uc;
     }

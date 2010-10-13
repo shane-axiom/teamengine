@@ -54,6 +54,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.FeatureKeys;
@@ -94,6 +95,7 @@ public class TestServlet extends HttpServlet {
     public static final String CTL_NS = "http://www.occamlab.com/ctl";
 
     DocumentBuilder DB;
+    Transformer identityTransformer;
     Engine engine;
     Map<String, Index> indexes;
     Config conf;
@@ -119,6 +121,8 @@ public class TestServlet extends HttpServlet {
             conf = new Config();
 
             DB = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            
+            identityTransformer = TransformerFactory.newInstance().newTransformer();
 
 //            File logsDir = new File(System.getProperty("catalina.base"), "logs");
 
@@ -286,11 +290,14 @@ public class TestServlet extends HttpServlet {
                 }
             }
             
-            copy_stream(uc.getInputStream(), response.getOutputStream());
+            if (mc.isPassThrough()) {
+            	identityTransformer.transform(new DOMSource(eResponse), new StreamResult(response.getOutputStream()));
+            } else {
+            	copy_stream(uc.getInputStream(), response.getOutputStream());
+            }
 
             if (mc.getCallId() != null) {
-                Transformer t = TransformerFactory.newInstance().newTransformer();
-                t.transform(new DOMSource(mc.getParams()), new DOMResult(doc));
+            	identityTransformer.transform(new DOMSource(mc.getParams()), new DOMResult(doc));
                 Element eParams = DomUtils.getElementByTagName(doc, "params");
                 Element eReqParam = doc.createElement("param");
                 eReqParam.setAttribute("local-name", "request");
@@ -307,7 +314,7 @@ public class TestServlet extends HttpServlet {
                 eRespParam.setAttribute("prefix", "");
                 eRespParam.setAttribute("type", "node()");
                 Element eRespValue = doc.createElement("value");
-                t.transform(new DOMSource(eResponse), new DOMResult(eRespValue));
+                identityTransformer.transform(new DOMSource(eResponse), new DOMResult(eRespValue));
                 eRespParam.appendChild(eRespValue);
                 eParams.appendChild(eRespParam);
                 net.sf.saxon.s9api.DocumentBuilder builder = core.getEngine().getBuilder();
@@ -520,7 +527,7 @@ public class TestServlet extends HttpServlet {
                 response.setContentType("text/html");
                 out.println("<html>");
                 out.println("<head><title>Form Submitted</title></head>");
-                out.print("<body onload=\"window.parent.update()\"></body>");
+                out.print("<body onload=\"window.parent.formSubmitted()\"></body>");
                 out.println("</html>");
             }
         } catch (Throwable t) {
