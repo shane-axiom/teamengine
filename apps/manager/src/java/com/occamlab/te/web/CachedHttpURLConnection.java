@@ -38,4 +38,11 @@ public class CachedHttpURLConnection extends HttpURLConnectionCopy {
         }
         return new ByteArrayInputStream(content);
     }
+    
+    public int getLength() throws IOException {
+        if (content == null) {
+            connect();
+        }
+    	return content.length;
+    }
 }

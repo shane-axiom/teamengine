@@ -34,13 +34,13 @@
 			<name>NGC</name>
 			<title>Northrop Grumman</title>
 			<standard>
-				<name>Generic</name>
-				<title>Generic</title>
+				<name>WMS Client</name>
+				<title>WMS Client</title>
 				<version>
 					<name>1.0</name>
 					<suite>
-						<namespace-uri>my</namespace-uri>
-						<prefix>my</prefix>
+						<namespace-uri>urn:wms_client_test_suite</namespace-uri>
+						<prefix>wms_c</prefix>
 						<local-name>suite</local-name>
 						<title>Example Client Test Suite</title>
 						<description>Validates Client Requests.</description>
@@ -48,7 +48,7 @@
 					<revision>
 						<name>A</name>
 						<sources>
-							<source>client_test.ctl</source>
+							<source>wms_c/ctl</source>
 						</sources>
 					</revision>
 				</version>

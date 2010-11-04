@@ -8,6 +8,11 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
+		<servlet-name>monitor</servlet-name>
+		<servlet-class>com.occamlab.te.web.MonitorServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>registrationHandler</servlet-name>
 		<servlet-class>com.occamlab.te.web.RegistrationHandlerServlet</servlet-class>
 	</servlet>
@@ -65,7 +70,11 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>test</servlet-name>
-		<url-pattern>/test/*</url-pattern>
+		<url-pattern>/test</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>monitor</servlet-name>
+		<url-pattern>/monitor/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>registrationHandler</servlet-name>
