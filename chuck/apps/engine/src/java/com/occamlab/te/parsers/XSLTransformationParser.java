@@ -5,6 +5,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,7 +52,7 @@ public class XSLTransformationParser {
     	final String[] atts = {"url", "file", "resource"};
     	for (String att : atts) {
     		String val = instruction.getAttribute(att);
-    		if (val != null) {
+    		if (val.length() > 0) {
     			templates = tf.newTemplates(getSource(att, val));
     			break;
     		}
@@ -65,10 +66,10 @@ public class XSLTransformationParser {
 		}
 		List<Element> children = DomUtils.getChildElements(instruction);
 		for (Element e : children) {
-			if (e.getNodeName().equals("property")) {
+			if (e.getLocalName().equals("property") && e.getNamespaceURI().equals(Test.CTLP_NS)) {
 				properties.put(e.getAttribute("name"), e.getTextContent());
 			}
-			if (e.getNodeName().equals("param")) {
+			if (e.getLocalName().equals("param") && e.getNamespaceURI().equals(Test.CTLP_NS)) {
 				params.put(e.getAttribute("name"), e.getTextContent());
 			}
 		}
@@ -117,6 +118,12 @@ public class XSLTransformationParser {
 			t = defaultTemplates.newTransformer();
 		} else {
 			t = tf.newTransformer();
+		}
+		for (Entry<String, String> prop : properties.entrySet()) {
+			t.setOutputProperty(prop.getKey(), prop.getValue());
+		}
+		for (Entry<String, String> param : params.entrySet()) {
+			t.setParameter(param.getKey(), param.getValue());
 		}
     	XSLTransformationErrorHandler el = new XSLTransformationErrorHandler(logger, ignoreErrors, ignoreWarnings);
     	t.setErrorListener(el);

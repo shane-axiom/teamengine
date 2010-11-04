@@ -130,9 +130,6 @@ public class TECore implements Runnable {
     Map<String, Object>parserInstances = new HashMap<String, Object>();
     Map<String, Method>parserMethods = new HashMap<String, Method>();
 
-    int monitorSeq = 0;
-    Map<String, MonitorCall> monitors = new HashMap<String, MonitorCall>();
-
     volatile boolean threadComplete = false;
     volatile boolean stop = false;
     volatile ByteArrayOutputStream threadOutput;
@@ -786,63 +783,6 @@ public class TECore implements Runnable {
             }
         }
         throw new Exception("No function {" + namespaceURI + "}" + localName + " with a compatible signature.");
-    }
-
-    public Entry<String, MonitorCall> newMonitorEntry(String url) {
-        String monitorUrl = testServletURL + "/monitor/" + Integer.toString(monitorSeq);
-        monitorSeq++;
-        MonitorCall mc = new MonitorCall(url);
-        monitors.put(monitorUrl, mc);
-        return new SimpleEntry<String, MonitorCall>(monitorUrl, mc);
-    }
-
-    // Monitor without parser that doesn't trigger a test
-    public String createMonitor(String url) {
-        return createMonitor(url, null, "");
-    }
-
-    // Monitor that doesn't trigger a test
-    public String createMonitor(String url, Node parserInstruction, String passThrough) {
-        Entry<String, MonitorCall> entry = newMonitorEntry(url);
-        MonitorCall mc = entry.getValue();
-        if (parserInstruction != null) {
-        	mc.setParserInstruction(DomUtils.getElement(parserInstruction));
-        	mc.setPassThrough(Boolean.parseBoolean(passThrough));
-        }
-        return entry.getKey();
-    }
-
-    // Monitor without parser that triggers a test
-    public String createMonitor(XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, String callId) throws Exception {
-        return createMonitor(context, url, localName, namespaceURI, params, null, "", callId);
-    }
-
-    // Monitor that triggers a test
-    public String createMonitor(XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String passThrough, String callId) throws Exception {
-        Entry<String, MonitorCall> entry = newMonitorEntry(url);
-        MonitorCall mc = entry.getValue();
-        mc.setContext(context);
-        mc.setLocalName(localName);
-        mc.setNamespaceURI(namespaceURI);
-        if (params != null) {
-            Node node = (Node)NodeOverNodeInfo.wrap(params);
-            if (node.getNodeType() == Node.DOCUMENT_NODE) {
-                mc.setParams(((Document)node).getDocumentElement());
-            } else {
-                mc.setParams((Element)node);
-            }
-        }
-        if (parserInstruction != null) {
-            Node node = (Node)NodeOverNodeInfo.wrap(parserInstruction);
-            if (node.getNodeType() == Node.DOCUMENT_NODE) {
-                mc.setParserInstruction(((Document)node).getDocumentElement());
-            } else {
-                mc.setParserInstruction((Element)node);
-            }
-            mc.setPassThrough(Boolean.parseBoolean(passThrough));
-        }
-        mc.setCallId(callId);
-        return entry.getKey();
     }
 
     public void warning() {
@@ -1856,14 +1796,6 @@ public class TECore implements Runnable {
         return opts;
     }
 
-    public Map<String, MonitorCall> getMonitors() {
-        return monitors;
-    }
-
-    public void setMonitors(Map<String, MonitorCall> monitors) {
-        this.monitors = monitors;
-    }
-    
     public String getTestServletURL() {
         return testServletURL;
     }

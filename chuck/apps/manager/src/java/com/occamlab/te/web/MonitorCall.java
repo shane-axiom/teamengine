@@ -1,6 +1,8 @@
-package com.occamlab.te;
+package com.occamlab.te.web;
 
 import org.w3c.dom.Element;
+
+import com.occamlab.te.TECore;
 
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.om.NodeInfo;
@@ -14,6 +16,7 @@ public class MonitorCall {
     String callId;
     Element parserInstruction;
     boolean passThrough;
+    TECore core;
 
     MonitorCall(String url) {
         setUrl(url);
@@ -90,5 +93,13 @@ public class MonitorCall {
 
 	public void setPassThrough(boolean passThrough) {
 		this.passThrough = passThrough;
+	}
+
+	public TECore getCore() {
+		return core;
+	}
+
+	public void setCore(TECore core) {
+		this.core = core;
 	}
 }

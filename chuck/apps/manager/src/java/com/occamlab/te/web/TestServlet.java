@@ -58,6 +58,9 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.FeatureKeys;
+import net.sf.saxon.dom.NodeOverNodeInfo;
+import net.sf.saxon.expr.XPathContext;
+import net.sf.saxon.om.NodeInfo;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XdmNode;
@@ -71,10 +74,10 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.occamlab.te.Engine;
 import com.occamlab.te.Generator;
-import com.occamlab.te.MonitorCall;
 import com.occamlab.te.RuntimeOptions;
 import com.occamlab.te.SetupOptions;
 import com.occamlab.te.TEClassLoader;
@@ -99,7 +102,68 @@ public class TestServlet extends HttpServlet {
     Engine engine;
     Map<String, Index> indexes;
     Config conf;
-    int monitorCallSeq = 0;
+/*    
+    static String testServletURL;
+    static int monitorCallSeq = 0;
+    static int monitorUrlSeq = 0;
+    static Map<String, MonitorCall> monitors = new HashMap<String, MonitorCall>();
+
+    static public String allocateMonitorUrl(String url) {
+        String monitorUrl = testServletURL + "/monitor/" + Integer.toString(monitorUrlSeq);
+        monitorUrlSeq++;
+        MonitorCall mc = new MonitorCall(url);
+        monitors.put(monitorUrl, mc);
+        return monitorUrl;
+    }
+
+    // Monitor without parser that doesn't trigger a test
+    static public String createMonitor(TECore core, String monitorUrl) {
+        return createMonitor(core, monitorUrl, null, "");
+    }
+
+    // Monitor that doesn't trigger a test
+    static public String createMonitor(TECore core, String monitorUrl, Node parserInstruction, String passThrough) {
+        MonitorCall mc = monitors.get(monitorUrl);
+    	mc.setCore(core);
+        if (parserInstruction != null) {
+        	mc.setParserInstruction(DomUtils.getElement(parserInstruction));
+        	mc.setPassThrough(Boolean.parseBoolean(passThrough));
+        }
+        return "";
+    }
+
+    // Monitor without parser that triggers a test
+    static public String createMonitor(TECore core, XPathContext context, String url, String localName, String namespaceURI, NodeInfo params, String callId) throws Exception {
+        return createMonitor(core, context, url, localName, namespaceURI, params, null, "", callId);
+    }
+
+    // Monitor that triggers a test
+    static public String createMonitor(TECore core, XPathContext context, String monitorUrl, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String passThrough, String callId) throws Exception {
+        MonitorCall mc = monitors.get(monitorUrl);
+    	mc.setCore(core);
+        mc.setContext(context);
+        mc.setLocalName(localName);
+        mc.setNamespaceURI(namespaceURI);
+        if (params != null) {
+            Node node = (Node)NodeOverNodeInfo.wrap(params);
+            if (node.getNodeType() == Node.DOCUMENT_NODE) {
+                mc.setParams(((Document)node).getDocumentElement());
+            } else {
+                mc.setParams((Element)node);
+            }
+        }
+        if (parserInstruction != null) {
+            Node node = (Node)NodeOverNodeInfo.wrap(parserInstruction);
+            if (node.getNodeType() == Node.DOCUMENT_NODE) {
+                mc.setParserInstruction(((Document)node).getDocumentElement());
+            } else {
+                mc.setParserInstruction((Element)node);
+            }
+            mc.setPassThrough(Boolean.parseBoolean(passThrough));
+        }
+        mc.setCallId(callId);
+        return "";
+    }
 
 
 //    File getDir(String dirname) throws ServletException {
@@ -112,7 +176,7 @@ public class TestServlet extends HttpServlet {
 //        }
 //        return dir;
 //    }
-
+*/
     /**
      * Generates executable test suites from available CTL sources.
      */
@@ -220,28 +284,33 @@ public class TestServlet extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        String pathinfo = request.getPathInfo();
+/*
+    	String pathinfo = request.getPathInfo();
         if (pathinfo != null && request.getPathInfo().indexOf("/monitor/") >= 0) {
             processMonitor(request, response, false);
         } else {
             process(request, response);
         }
+*/
+        process(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException {
-        if (request.getPathInfo().indexOf("/monitor/") >= 0) {
+/*
+    	if (request.getPathInfo().indexOf("/monitor/") >= 0) {
             processMonitor(request, response, true);
         } else {
             process(request, response);
         }
+*/
+        process(request, response);
     }
-
+/*
     public void processMonitor(HttpServletRequest request, HttpServletResponse response, boolean post) throws ServletException {
         try {
-            HttpSession session = request.getSession();
-            TECore core = (TECore)session.getAttribute("testsession");
             String uri = request.getRequestURL().toString();
-            MonitorCall mc = core.getMonitors().get(uri);
+            MonitorCall mc = monitors.get(uri);
+            TECore core = mc.getCore();
 
             String url = mc.getUrl();
             String queryString = request.getQueryString();
@@ -327,7 +396,7 @@ public class TestServlet extends HttpServlet {
             throw new ServletException(t);
         }
     }
-
+*/
     public void process(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         try {
             FileItemFactory ffactory;
@@ -432,7 +501,9 @@ public class TestServlet extends HttpServlet {
 //                opts.setBaseURI(base);
 //System.out.println(opts.getSourcesName());
                 TECore core = new TECore(engine, indexes.get(opts.getSourcesName()), opts);
-                core.setTestServletURL(request.getRequestURL().toString());
+                String servletURL = request.getRequestURL().toString();
+                core.setTestServletURL(servletURL);
+                MonitorServlet.setBaseServletURL(servletURL.substring(0, servletURL.lastIndexOf('/')));
 //System.out.println(indexes.get(opts.getSourcesName()).toString());
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 PrintStream ps = new PrintStream(baos);
@@ -534,7 +605,7 @@ public class TestServlet extends HttpServlet {
             throw new ServletException(t);
         }
     }
-
+/*
     Element encodeRequest(HttpServletRequest request, Document doc, byte[] data) throws Exception {
         Element eRequest = doc.createElementNS(CTL_NS, "ctl:request");
         Element eURL = doc.createElementNS(CTL_NS, "ctl:url");
@@ -585,5 +656,5 @@ public class TestServlet extends HttpServlet {
 //      in.close();
 //      out.close();
     }
-
+*/
 }

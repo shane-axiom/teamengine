@@ -219,6 +219,7 @@
 			 xmlns:saxon="http://saxon.sf.net/"
 			 xmlns:xs="http://www.w3.org/2001/XMLSchema"
 			 xmlns:tec="java:com.occamlab.te.TECore"
+			 xmlns:tems="java:com.occamlab.te.web.MonitorServlet"
 			 version="{$xsl-ver}">
 				<xsl:namespace name="saxon" select="'http://saxon.sf.net/'"/>
 				<xsl:for-each select="namespace::*">
@@ -683,12 +684,19 @@
 		<txsl:copy-of select="tec:callFunction($te:core, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params)"/>
 	</xsl:template>
 
+	<xsl:template match="ctl:allocate-monitor-url">
+		<txsl:variable name="te:url">
+			<xsl:apply-templates select="*|text()"/>
+		</txsl:variable>
+		<txsl:value-of select="tems:allocateMonitorUrl($te:url)"/>
+	</xsl:template>
+
 	<!-- Calls parse-qname, make-params-var -->
 	<xsl:template match="ctl:create-monitor">
 		<txsl:variable name="te:url">
 			<xsl:apply-templates select="ctl:url/*"/>
 		</txsl:variable>
-		<xsl:for-each select="ctl:parser/*">
+		<xsl:for-each select="ctl:with-parser/*">
 			<txsl:variable name="te:parser-xml">
 				<xsl:copy>
 					<xsl:apply-templates select="@*"/>
@@ -697,17 +705,17 @@
 			</txsl:variable>
 		</xsl:for-each>
 		<xsl:variable name="parser-params">
-			<xsl:if test="ctl:parser">, $te:parser-xml, '<xsl:value-of select="string(@pass-through)"/>'</xsl:if>
+			<xsl:if test="ctl:with-parser">, $te:parser-xml, '<xsl:value-of select="string(ctl:with-parser/@pass-through)"/>'</xsl:if>
 		</xsl:variable>
 		<xsl:for-each select="ctl:triggers-test">
 			<xsl:variable name="qname">
 				<xsl:call-template name="parse-qname"/>
 			</xsl:variable>
 			<xsl:call-template name="make-params-var"/>
-			<txsl:value-of select="tec:createMonitor($te:core, $te:url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params{$parser-params}, concat('{generate-id()}_', position()))"/>
+			<txsl:value-of select="tems:createMonitor($te:url, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params{$parser-params}, concat('{generate-id()}_', position()), $te:core)"/>
 		</xsl:for-each>
 		<xsl:if test="not(ctl:triggers-test)">
-			<txsl:value-of select="tec:createMonitor($te:core, $te:url{$parser-params})"/>
+			<txsl:value-of select="tems:createMonitor($te:url{$parser-params}, $te:core)"/>
 		</xsl:if>
 	</xsl:template>
 
