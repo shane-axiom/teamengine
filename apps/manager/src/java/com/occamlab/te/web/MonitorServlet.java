@@ -64,12 +64,12 @@ public class MonitorServlet extends HttpServlet {
     }
 
     // Monitor that doesn't trigger a test
-    static public String createMonitor(String monitorUrl, Node parserInstruction, String passThrough, TECore core) {
+    static public String createMonitor(String monitorUrl, Node parserInstruction, String modifiesResponse, TECore core) {
         MonitorCall mc = monitors.get(monitorUrl);
     	mc.setCore(core);
         if (parserInstruction != null) {
         	mc.setParserInstruction(DomUtils.getElement(parserInstruction));
-        	mc.setPassThrough(Boolean.parseBoolean(passThrough));
+        	mc.setModifiesResponse(Boolean.parseBoolean(modifiesResponse));
         }
         return "";
     }
@@ -80,7 +80,7 @@ public class MonitorServlet extends HttpServlet {
     }
 
     // Monitor that triggers a test
-    static public String createMonitor(XPathContext context, String monitorUrl, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String passThrough, String callId, TECore core) throws Exception {
+    static public String createMonitor(XPathContext context, String monitorUrl, String localName, String namespaceURI, NodeInfo params, NodeInfo parserInstruction, String modifiesResponse, String callId, TECore core) throws Exception {
         MonitorCall mc = monitors.get(monitorUrl);
     	mc.setCore(core);
         mc.setContext(context);
@@ -101,7 +101,7 @@ public class MonitorServlet extends HttpServlet {
             } else {
                 mc.setParserInstruction((Element)node);
             }
-            mc.setPassThrough(Boolean.parseBoolean(passThrough));
+            mc.setModifiesResponse(Boolean.parseBoolean(modifiesResponse));
         }
         mc.setCallId(callId);
         return "";
@@ -167,8 +167,11 @@ public class MonitorServlet extends HttpServlet {
                 }
             }
             
-            if (mc.isPassThrough()) {
-            	identityTransformer.transform(new DOMSource(eResponse), new StreamResult(response.getOutputStream()));
+            if (mc.getModifiesResponse()) {
+            	Element content = DomUtils.getElementByTagName(eResponse, "content");
+            	Element root = DomUtils.getChildElement(content);
+//            	identityTransformer.transform(new DOMSource(root), new StreamResult(System.out));
+            	identityTransformer.transform(new DOMSource(root), new StreamResult(response.getOutputStream()));
 /*
             	ByteArrayOutputStream baos = new ByteArrayOutputStream();
             	identityTransformer.transform(new DOMSource(eResponse), new StreamResult(baos));
@@ -207,6 +210,15 @@ public class MonitorServlet extends HttpServlet {
                 XdmNode paramsNode = builder.build(new DOMSource(doc));
                 monitorCallSeq++;
                 String callId = mc.getCallId() + "_" + Integer.toString(monitorCallSeq);
+/*
+                while (!core.getTestPath().equals(mc.testPath)) {
+					try{
+						Thread.sleep((int)(Math.random() * 200));
+					}catch (Exception e){
+						e.printStackTrace();
+					}
+                }
+*/
                 core.callTest(mc.getContext(), mc.getLocalName(), mc.getNamespaceURI(), paramsNode.getUnderlyingNode(), callId);
             }
         } catch (Throwable t) {
@@ -216,7 +228,9 @@ public class MonitorServlet extends HttpServlet {
     
     public void init() throws ServletException {
         try {
-            DB = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        	dbf.setNamespaceAware(true);
+            DB = dbf.newDocumentBuilder();
             identityTransformer = TransformerFactory.newInstance().newTransformer();
             servletName = this.getServletName();
         } catch (Exception e) {
@@ -235,7 +249,7 @@ public class MonitorServlet extends HttpServlet {
     Element encodeRequest(HttpServletRequest request, Document doc, byte[] data) throws Exception {
         Element eRequest = doc.createElementNS(CTL_NS, "ctl:request");
         Element eURL = doc.createElementNS(CTL_NS, "ctl:url");
-        eURL.setTextContent(request.getRequestURL() + request.getPathInfo());
+        eURL.setTextContent(request.getRequestURL().toString());
         eRequest.appendChild(eURL);
         Element eMethod = doc.createElementNS(CTL_NS, "ctl:method");
         eMethod.setTextContent(request.getMethod());

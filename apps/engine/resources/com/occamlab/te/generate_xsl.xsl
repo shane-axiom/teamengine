@@ -705,7 +705,7 @@
 			</txsl:variable>
 		</xsl:for-each>
 		<xsl:variable name="parser-params">
-			<xsl:if test="ctl:with-parser">, $te:parser-xml, '<xsl:value-of select="string(ctl:with-parser/@pass-through)"/>'</xsl:if>
+			<xsl:if test="ctl:with-parser">, $te:parser-xml, '<xsl:value-of select="string(ctl:with-parser/@modifies-response)"/>'</xsl:if>
 		</xsl:variable>
 		<xsl:for-each select="ctl:triggers-test">
 			<xsl:variable name="qname">
