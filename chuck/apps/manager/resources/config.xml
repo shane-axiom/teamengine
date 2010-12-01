@@ -39,8 +39,8 @@
 				<version>
 					<name>1.0</name>
 					<suite>
-						<namespace-uri>urn:wms_client_test_suite</namespace-uri>
-						<prefix>wms_c</prefix>
+						<namespace-uri>urn:wms_client_test_suite/main</namespace-uri>
+						<prefix>main</prefix>
 						<local-name>suite</local-name>
 						<title>Example Client Test Suite</title>
 						<description>Validates Client Requests.</description>

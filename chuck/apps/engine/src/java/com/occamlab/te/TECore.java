@@ -118,7 +118,7 @@ public class TECore implements Runnable {
 //    int mode = Test.TEST_MODE;          // Test mode
     String testPath;                    // Uniquely identifies a test instance
     String fnPath = "";                 // Uniquely identifies an XSL function instance within a test instance
-    String indent = "";                 // Contains the appropriate number of spaces for the current indet level
+    String indent = "";                 // Contains the appropriate number of spaces for the current indent level
     String contextLabel = "";           // Current context label set by ctl:for-each
     int result;                         // Result for current test
     Document prevLog = null;            // Log document for current test from previous  test execution (resume and retest modes only)
@@ -554,7 +554,7 @@ public class TECore implements Runnable {
         return result;
     }
 
-    public void callTest(XPathContext context, String localName, String namespaceURI, NodeInfo params, String callId) throws Exception {
+    public synchronized void callTest(XPathContext context, String localName, String namespaceURI, NodeInfo params, String callId) throws Exception {
 //        System.out.println("call_test");
 //        System.out.println(params.getClass().getName());
         String key = "{" + namespaceURI + "}" + localName;

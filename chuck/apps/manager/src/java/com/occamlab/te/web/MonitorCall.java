@@ -15,7 +15,7 @@ public class MonitorCall {
     Element params;
     String callId;
     Element parserInstruction;
-    boolean passThrough;
+    boolean modifiesResponse;
     TECore core;
 
     MonitorCall(String url) {
@@ -87,12 +87,12 @@ public class MonitorCall {
         this.parserInstruction = parserInstruction;
     }
 
-	public boolean isPassThrough() {
-		return passThrough;
+	public boolean getModifiesResponse() {
+		return modifiesResponse;
 	}
 
-	public void setPassThrough(boolean passThrough) {
-		this.passThrough = passThrough;
+	public void setModifiesResponse(boolean modifiesResponse) {
+		this.modifiesResponse = modifiesResponse;
 	}
 
 	public TECore getCore() {

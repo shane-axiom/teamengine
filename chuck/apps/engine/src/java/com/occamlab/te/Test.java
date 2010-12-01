@@ -130,6 +130,8 @@ public class Test {
                 mode = RESUME_MODE;
             } else if (args[i].equals("-mode=doc")) {
                 mode = DOC_MODE;
+            } else if (args[i].equals("-mode=check")) {
+                mode = CHECK_MODE;
             } else if (args[i].equals("-mode=pplogs")){
             	mode = PRETTYLOG_MODE;
             } else if (args[i].startsWith("-mode=")) {

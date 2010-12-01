@@ -69,7 +69,7 @@ public class XSLTransformationParser {
 			if (e.getLocalName().equals("property") && e.getNamespaceURI().equals(Test.CTLP_NS)) {
 				properties.put(e.getAttribute("name"), e.getTextContent());
 			}
-			if (e.getLocalName().equals("param") && e.getNamespaceURI().equals(Test.CTLP_NS)) {
+			if (e.getLocalName().equals("with-param") && e.getNamespaceURI().equals(Test.CTLP_NS)) {
 				params.put(e.getAttribute("name"), e.getTextContent());
 			}
 		}
@@ -85,7 +85,9 @@ public class XSLTransformationParser {
 	}
 	
 	public XSLTransformationParser() throws Exception {
-		db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		db = dbf.newDocumentBuilder();
 		tf = TransformerFactory.newInstance();
 		defaultProperties = new HashMap<String, String>();
 		defaultParams = new HashMap<String, String>();
@@ -123,6 +125,7 @@ public class XSLTransformationParser {
 			t.setOutputProperty(prop.getKey(), prop.getValue());
 		}
 		for (Entry<String, String> param : params.entrySet()) {
+//System.out.println(param.getKey() + ": " + param.getValue());
 			t.setParameter(param.getKey(), param.getValue());
 		}
     	XSLTransformationErrorHandler el = new XSLTransformationErrorHandler(logger, ignoreErrors, ignoreWarnings);
@@ -130,6 +133,7 @@ public class XSLTransformationParser {
     	Document doc = db.newDocument();
     	try {
     		t.transform(new StreamSource(uc.getInputStream()), new DOMResult(doc));
+//t.transform(new StreamSource(uc.getInputStream()), new javax.xml.transform.stream.StreamResult(System.out));
     	} catch (Exception e) {
     	}
     	if (el.getErrorCount() > 0 && !ignoreErrors) {
