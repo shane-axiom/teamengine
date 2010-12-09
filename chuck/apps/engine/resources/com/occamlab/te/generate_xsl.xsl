@@ -326,6 +326,12 @@
 						<!-- Handle all the code nodes except any xsl:param elements which we already handled -->
 						<xsl:apply-templates select="ctl:code/node()[not(self::xsl:param)]"/>
 					</txsl:for-each>
+					
+					<xsl:if test="ctl:code//ctl:create-monitor">
+						<txsl:if test="tec:isWeb($te:core)">
+							<txsl:value-of select="substring(tems:destroyMonitors($te:core), 1, 0)"/>
+						</txsl:if>
+					</xsl:if>
 				</txsl:template>
 			</txsl:transform>
 		</xsl:result-document>
@@ -688,7 +694,9 @@
 		<txsl:variable name="te:url">
 			<xsl:apply-templates select="*|text()"/>
 		</txsl:variable>
-		<txsl:value-of select="tems:allocateMonitorUrl($te:url)"/>
+		<txsl:if test="tec:isWeb($te:core)">
+			<txsl:value-of select="tems:allocateMonitorUrl($te:url)"/>
+		</txsl:if>
 	</xsl:template>
 
 	<!-- Calls parse-qname, make-params-var -->
