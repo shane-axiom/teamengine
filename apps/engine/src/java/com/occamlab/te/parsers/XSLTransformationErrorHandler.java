@@ -12,7 +12,7 @@ public class XSLTransformationErrorHandler implements ErrorListener {
 	int errorCount;
 	int warningCount;
 	
-	XSLTransformationErrorHandler(PrintWriter logger, boolean ignoreErrors, boolean ignoreWarnings) {
+	public XSLTransformationErrorHandler(PrintWriter logger, boolean ignoreErrors, boolean ignoreWarnings) {
 		this.logger = logger;
 		this.ignoreErrors = ignoreErrors;
 		this.ignoreWarnings = ignoreWarnings;

@@ -49,64 +49,78 @@
                 </xsl:for-each>
             </xsl:variable>
             
-            <ctl:create-monitor>
-                <ctl:url>
-                    <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
-                </ctl:url>
-                <ctl:triggers-test name="gc:check-GetCapabilities-request">
-                    <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
-                </ctl:triggers-test>
-                <ctl:with-parser modifies-response="true">
-                    <ctlp:XSLTransformationParser resource="rewrite-capabilities.xsl">
-                        <ctlp:with-param name="GetCapabilities-proxy">
-                            <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
-                        </ctlp:with-param>
-                        <ctlp:with-param name="GetMap-proxy">
-                            <xsl:value-of select="$monitor-urls/wms:GetMap"/>
-                        </ctlp:with-param>
-                        <ctlp:with-param name="GetFeatureInfo-proxy">
-                            <xsl:value-of select="$monitor-urls/wms:GetFeatureInfo"/>
-                        </ctlp:with-param>
-                    </ctlp:XSLTransformationParser>
-                </ctl:with-parser>
-            </ctl:create-monitor>
+            <xsl:if test="string-length($monitor-urls/wms:GetCapabilities) gt 0">
+                <ctl:create-monitor>
+                    <ctl:url>
+                        <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
+                    </ctl:url>
+                    <ctl:triggers-test name="gc:check-GetCapabilities-request">
+                        <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
+                    </ctl:triggers-test>
+                    <ctl:with-parser modifies-response="true">
+                        <ctlp:XSLTransformationParser resource="rewrite-capabilities.xsl">
+                            <ctlp:with-param name="GetCapabilities-proxy">
+                                <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
+                            </ctlp:with-param>
+                            <ctlp:with-param name="GetMap-proxy">
+                                <xsl:value-of select="$monitor-urls/wms:GetMap"/>
+                            </ctlp:with-param>
+                            <ctlp:with-param name="GetFeatureInfo-proxy">
+                                <xsl:value-of select="$monitor-urls/wms:GetFeatureInfo"/>
+                            </ctlp:with-param>
+                        </ctlp:XSLTransformationParser>
+                    </ctl:with-parser>
+                </ctl:create-monitor>
+            </xsl:if>
 
-            <ctl:create-monitor>
-                <ctl:url>
-                    <xsl:value-of select="$monitor-urls/wms:GetMap"/>
-                </ctl:url>
-                <ctl:triggers-test name="gm:check-GetMap-request">
-                    <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
-                </ctl:triggers-test>
-                <ctl:with-parser>
-                    <ctlp:NullParser/>
-                </ctl:with-parser>
-            </ctl:create-monitor>
+            <xsl:if test="string-length($monitor-urls/wms:GetMap) gt 0">
+                <ctl:create-monitor>
+                    <ctl:url>
+                        <xsl:value-of select="$monitor-urls/wms:GetMap"/>
+                    </ctl:url>
+                    <ctl:triggers-test name="gm:check-GetMap-request">
+                        <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
+                    </ctl:triggers-test>
+                    <ctl:with-parser>
+                        <ctlp:NullParser/>
+                    </ctl:with-parser>
+                </ctl:create-monitor>
+            </xsl:if>
 
-            <ctl:create-monitor>
-                <ctl:url>
-                    <xsl:value-of select="$monitor-urls/wms:GetFeatureInfo"/>
-                </ctl:url>
-                <ctl:triggers-test name="gfi:check-GetFeatureInfo-request">
-                    <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
-                </ctl:triggers-test>
-                <ctl:with-parser>
-                    <ctlp:NullParser/>
-                </ctl:with-parser>
-            </ctl:create-monitor>
-
-            <ctl:form>
-                <xsl:text>Configure the Client to use this URL:</xsl:text>
-                <xhtml:br/>
-                <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
-                <xhtml:br/>
-                <xhtml:br/>
-                <xsl:text>Leave this form open while you use the client.</xsl:text>
-                <xhtml:br/>
-                <xsl:text>Press the button when you are finished.</xsl:text>
-                <xhtml:br/>
-                <xhtml:input type="submit" value="Done Testing"/>
-            </ctl:form>
+            <xsl:if test="string-length($monitor-urls/wms:GetFeatureInfo) gt 0">
+                <ctl:create-monitor>
+                    <ctl:url>
+                        <xsl:value-of select="$monitor-urls/wms:GetFeatureInfo"/>
+                    </ctl:url>
+                    <ctl:triggers-test name="gfi:check-GetFeatureInfo-request">
+                        <ctl:with-param name="capabilities" select="$capabilities/wms:WMS_Capabilities"/>
+                    </ctl:triggers-test>
+                    <ctl:with-parser>
+                        <ctlp:NullParser/>
+                    </ctl:with-parser>
+                </ctl:create-monitor>
+            </xsl:if>
+            
+            <xsl:choose>
+                <xsl:when test="string-length($monitor-urls/wms:GetCapabilities) gt 0 and string-length($monitor-urls/wms:GetMap) gt 0">
+                    <ctl:form>
+                        <xsl:text>Configure the client to use this proxy URL:</xsl:text>
+                        <xhtml:br/>
+                        <xsl:value-of select="$monitor-urls/wms:GetCapabilities"/>
+                        <xhtml:br/>
+                        <xhtml:br/>
+                        <xsl:text>Leave this form open while you use the client.</xsl:text>
+                        <xhtml:br/>
+                        <xsl:text>Press the button when you are finished.</xsl:text>
+                        <xhtml:br/>
+                        <xhtml:input type="submit" value="Done Testing"/>
+                    </ctl:form>
+                </xsl:when>
+                <xsl:otherwise>
+                    <ctl:message>Unable to create proxy URL.</ctl:message>
+                    <ctl:fail/>
+                </xsl:otherwise>
+            </xsl:choose>
         </ctl:code>
     </ctl:test>
     

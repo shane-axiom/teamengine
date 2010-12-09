@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -106,11 +107,32 @@ public class MonitorServlet extends HttpServlet {
         mc.setCallId(callId);
         return "";
     }
+    
+    public static String destroyMonitors(TECore core) {
+    	ArrayList<String> keysToDelete = new ArrayList<String>();
+    	for (Entry<String, MonitorCall> entry : monitors.entrySet()) {
+    		MonitorCall mc = entry.getValue();
+    		if (mc.getCore() == core) {
+    			if (mc.getTestPath().equals(core.getTestPath())) {
+    				keysToDelete.add(entry.getKey());
+    			}
+    		}
+    	}
+    	for (String key : keysToDelete) {
+    		monitors.remove(key);
+    	}
+    	return "";
+    }
 
     public void process(HttpServletRequest request, HttpServletResponse response, boolean post) throws ServletException {
         try {
             String uri = request.getRequestURL().toString();
             MonitorCall mc = monitors.get(uri);
+            if (mc == null) {
+            	response.sendError(410, "This URL is no longer valid");
+            	return;
+            }
+            
             TECore core = mc.getCore();
 
             String url = mc.getUrl();
@@ -130,13 +152,18 @@ public class MonitorServlet extends HttpServlet {
             uc.setRequestMethod(method);
             uc.setDoInput(true);
             uc.setDoOutput(post);
+/*            
+            for (String key : uc.getRequestProperties().keySet()) {
+            	System.out.println(key + ": " + uc.getRequestProperty(key));
+            }
 
             Enumeration requestHeaders = request.getHeaderNames();
             while (requestHeaders.hasMoreElements()) {
                 String key = (String)requestHeaders.nextElement();
-                uc.setRequestProperty(key, request.getHeader(key));
+System.out.println(key + ": " + request.getHeader(key));
+				uc.setRequestProperty(key, request.getHeader(key));
             }
-            
+*/          
             byte[] data = null;
             if (post) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -154,6 +181,7 @@ public class MonitorServlet extends HttpServlet {
             Map<String, List<String>> responseHeaders = uc.getHeaderFields();
             for (Entry<String, List<String>> entry : responseHeaders.entrySet()) {
             	String key = entry.getKey();
+//System.out.println(key + ": " + entry.getValue());
                 if (key != null) {
                 	if (key.length() == 0) {
                 		// do nothing
@@ -184,7 +212,7 @@ public class MonitorServlet extends HttpServlet {
             	response.setContentLength(uc.getLength());
             	copy_stream(uc.getInputStream(), response.getOutputStream());
             }
-
+            
             if (mc.getCallId() != null) {
             	identityTransformer.transform(new DOMSource(mc.getParams()), new DOMResult(doc));
                 Element eParams = DomUtils.getElementByTagName(doc, "params");

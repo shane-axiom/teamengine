@@ -12,6 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Source;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
@@ -41,8 +42,7 @@ public class XSLTransformationParser {
             return new StreamSource(ref);
 		} else if (reftype.equals("resource")) {
             ClassLoader cl = getClass().getClassLoader();
-            URL url = cl.getResource(ref);
-            return new StreamSource(url.getFile());
+            return new StreamSource(cl.getResourceAsStream(ref));
 		}
 		return null;
 	}
@@ -134,7 +134,8 @@ public class XSLTransformationParser {
     	try {
     		t.transform(new StreamSource(uc.getInputStream()), new DOMResult(doc));
 //t.transform(new StreamSource(uc.getInputStream()), new javax.xml.transform.stream.StreamResult(System.out));
-    	} catch (Exception e) {
+    	} catch (TransformerException e) {
+    		el.error(e);
     	}
     	if (el.getErrorCount() > 0 && !ignoreErrors) {
     		return null;

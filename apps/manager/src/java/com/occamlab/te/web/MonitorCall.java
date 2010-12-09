@@ -17,18 +17,10 @@ public class MonitorCall {
     Element parserInstruction;
     boolean modifiesResponse;
     TECore core;
+    String testPath;
 
     MonitorCall(String url) {
         setUrl(url);
-/*
-    MonitorCall(XPathContext context, String url, String localName, String NamespaceURI, String callId) {
-        setContext(context);
-        setLocalName(localName);
-        setNamespaceURI(NamespaceURI);
-        setCallId(callId);
-        setParams(null);
-        setParserInstruction(null);
-*/
     }
 
     public XPathContext getContext() {
@@ -101,5 +93,10 @@ public class MonitorCall {
 
 	public void setCore(TECore core) {
 		this.core = core;
+		testPath = core.getTestPath();
+	}
+
+	public String getTestPath() {
+		return testPath;
 	}
 }
