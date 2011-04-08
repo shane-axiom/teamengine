@@ -16,7 +16,8 @@
  Northrop Grumman Corporation are Copyright (C) 2005-2006, Northrop
  Grumman Corporation. All Rights Reserved.
 
- Contributor(s): No additional contributors to date
+ Contributor(s): Paul Daisey (Image Matters LLC) : 
+ 					enable ViewSessionLog.jsp to find listing files
 
  ****************************************************************************/
 package com.occamlab.te.web;
@@ -218,8 +219,11 @@ public class TestServlet extends HttpServlet {
                 
                 for (File ctlFile: index.getDependencies()) {
                     String encodedName = URLEncoder.encode(ctlFile.getAbsolutePath(), "UTF-8");
-                  //  encodedName = encodedName.replace('%', '~');  // In Java 5, the Document.parse function has trouble with the URL % encoding
-                    String basename = encodedName;
+                    // encodedName = encodedName.replace('%', '~');  // In Java 5, the Document.parse function has trouble with the URL % encoding
+                    // begin 2011-04-06 PwD  replace the following line because ViewSessionLog.jsp cannot find listing files
+                    // String basename = encodedName;
+                    String basename = encodedName.replace('%', '~');
+                    // end 2011-04-06 PwD
                     int i = basename.lastIndexOf('.');
                     if (i > 0) {
                         basename = basename.substring(0, i);
