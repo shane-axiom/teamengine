@@ -16,7 +16,14 @@
  Grumman Corporation. All Rights Reserved.
 
  Contributor(s): S. Gianfranceschi (Intecs): Added the SOAP suport
-
+ 
+				 Paul Daisey (Image Matters LLC): Added support for:
+				 test context specified via ctl:context;				 
+				 test types:  Mandatory, Mandatory if Implemented, Optional;
+				 test status: Best Practice, Not Tested, Skipped;
+				 no inheritance of Skipped status to/from Mandatory if Implemented tests; 
+				 no inheritance of Continue, Warning, Not Tested, 
+				   Skipped, Fail, or Inherited Failure status to/from Optional tests.
  ****************************************************************************/
 package com.occamlab.te;
 
@@ -39,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.LinkedList; // 2011-04-07 PwD
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -120,6 +128,9 @@ public class TECore implements Runnable {
     String fnPath = "";                 // Uniquely identifies an XSL function instance within a test instance
     String indent = "";                 // Contains the appropriate number of spaces for the current indent level
     String contextLabel = "";           // Current context label set by ctl:for-each
+    String testType = "Mandatory";      // Type of current test                     2011-04-07 PwD
+    String defaultResultName = "Pass";  // Default result name for current test     2011-04-01 PwD
+    int defaultResult = PASS;			// Default result for current test          2011-03-31 PwD
     int result;                         // Result for current test
     Document prevLog = null;            // Log document for current test from previous  test execution (resume and retest modes only)
     PrintWriter logger = null;          // Logger for current test
@@ -129,17 +140,24 @@ public class TECore implements Runnable {
     Map<Integer, Object>functionInstances = new HashMap<Integer, Object>();
     Map<String, Object>parserInstances = new HashMap<String, Object>();
     Map<String, Method>parserMethods = new HashMap<String, Method>();
-
+    LinkedList<TestEntry>testStack = new LinkedList<TestEntry>(); // 2011-04-07 PwD
     volatile boolean threadComplete = false;
     volatile boolean stop = false;
     volatile ByteArrayOutputStream threadOutput;
 
-    public static final int PASS = 0;
-    public static final int WARNING = 1;
-	public static final int CONTINUE = -1;
-    public static final int INHERITED_FAILURE = 2;
-    public static final int FAIL = 3;
+	public static final int CONTINUE = -1;  		// 2011-03-30 PwD moved
+    public static final int BEST_PRACTICE = 0; 		// 2011-03-31 PwD
+    public static final int PASS = 1;				// 2011-03-31 PwD was 0;
+    public static final int NOT_TESTED = 2; 		// 2011-03-30 PwD
+    public static final int SKIPPED = 3;			// 2011-03-30 PwD
+    public static final int WARNING = 4;			// 2011-03-30 PwD was 1;
+    public static final int INHERITED_FAILURE = 5; 	// 2011-03-30 PwD was 2;
+    public static final int FAIL = 6;				// 2011-03-30 PwD was 3;
 
+    public static final int MANDATORY = 0;					// 2011-03-31 PwD
+    public static final int MANDATORY_IF_IMPLEMENTED = 1; 	// 2011-03-31 PwD
+    public static final int OPTIONAL = 2;					// 2011-03-31 PwD
+    
     static final String XSL_NS = Test.XSL_NS;
     static final String CTL_NS = Test.CTL_NS;
     static final String TE_NS = Test.TE_NS;
@@ -175,6 +193,16 @@ public class TECore implements Runnable {
         out = System.out;
     }
 
+    // begin 2011-04-07 PwD
+    public TestEntry getParentTest() {
+    	if (testStack.size() < 2) {
+    		return testStack.peek();
+    	} else {
+    		return testStack.get(1);
+    	}
+    }
+    // end 2011-04-07 PwD
+    
     public String getParamsXML(List<String> params) throws Exception {
         String paramsXML = "<params>";
         for (int i = 0; i < params.size(); i++){
@@ -209,6 +237,11 @@ public class TECore implements Runnable {
     // Execute tests
     public void execute() throws Exception {
         try {
+        	// begin 2011-05-07 PwD
+        	TestEntry grandParent = new TestEntry();
+        	grandParent.setType("Mandatory");
+        	testStack.push(grandParent);
+        	// end 2011-05-07 PwD
             String sessionId = opts.getSessionId();
     //        File logDir = opts.getLogDir();
             int mode = opts.getMode();
@@ -224,8 +257,8 @@ public class TECore implements Runnable {
             } else if (mode == Test.TEST_MODE) {
                 String testName = opts.getTestName();
                 if (testName != null) {
-                    XdmNode contextNode = opts.getContextNode();
-                    execute_test(testName, params, contextNode);
+                    XdmNode contextNode = opts.getContextNode();  // 2011-03-30 this is null!  PwD
+                    execute_test(testName, params, contextNode);  // line 300
                 } else {
                     String suiteName = opts.getSuiteName();
                     List<String> profiles = opts.getProfiles();
@@ -265,7 +298,7 @@ public class TECore implements Runnable {
         XdmNode contextNode = LogUtils.getContextFromLog(builder, log);
         XPathContext context = getXPathContext(test, opts.getSourcesName(), contextNode);
         setTestPath(testPath);
-        executeTest(test, paramsNode, context);
+        executeTest(test, paramsNode, context);  // line 555
     }
 
     public int execute_test(String testName, List<String> params, XdmNode contextNode) throws Exception {
@@ -274,8 +307,14 @@ public class TECore implements Runnable {
             throw new Exception("Error: Test " + testName + " not found.");
         }
         XdmNode paramsNode = engine.getBuilder().build(new StreamSource(new StringReader(getParamsXML(params))));
+        // begin 2011-03-30 PwD
+        if (contextNode == null && test.usesContext()) {
+        	String contextNodeXML = "<context>" + test.getContext() + "</context>";
+        	contextNode = engine.getBuilder().build(new StreamSource(new StringReader(contextNodeXML)));
+        }
+        // end 2011-03-30 PwD
         XPathContext context = getXPathContext(test, opts.getSourcesName(), contextNode);
-        return executeTest(test, paramsNode, context);
+        return executeTest(test, paramsNode, context);  // line 555
     }
 
     public void execute_suite(String suiteName, List<String> params) throws Exception {
@@ -295,6 +334,14 @@ public class TECore implements Runnable {
                 throw new Exception("Error: Suite " + suiteName + " not found.");
             }
         }
+        // begin 2011-03-31 PwD
+        defaultResultName = suite.getDefaultResult();
+        defaultResult = defaultResultName.equals("BestPractice") ? BEST_PRACTICE : PASS;
+        // end 2011-03-31 PwD
+        // begin 2011-04-07 PwD
+    	testStack.peek().setDefaultResult(defaultResult);
+    	testStack.peek().setResult(defaultResult);
+        // end 2011-04-07 PwD
         ArrayList<String> kvps = new ArrayList<String>();
         kvps.addAll(params);
         Document form = suite.getForm();
@@ -305,13 +352,22 @@ public class TECore implements Runnable {
             }
         }
         String name = suite.getPrefix() + ":" + suite.getLocalName();
-        out.println("Testing suite " + name + "...");
+        // begin 2011-03-31 PwD
+        // was out.println("Testing suite " + name + "...");
+        out.println("Testing suite " + name + " with defaultResult of " + defaultResultName + " ...");
+        // end 2011-03-31 PwD
         setIndentLevel(1);
-        int result = execute_test(suite.getStartingTest().toString(), kvps, null);
+        int result = execute_test(suite.getStartingTest().toString(), kvps, null);  // line 303
         out.print("Suite " + suite.getPrefix() + ":" + suite.getLocalName() + " ");
         if (result == TECore.FAIL || result == TECore.INHERITED_FAILURE) {
             out.println("Failed");
-        } else {
+        } 
+        // begin 2011-03-31 PwD
+        else if (result == TECore.BEST_PRACTICE){
+        	out.println("Passed as Best Practice");
+        }
+        // end 2011-03-31 PwD
+        else {
             out.println("Passed");
         }
     }
@@ -364,16 +420,35 @@ public class TECore implements Runnable {
                 int baseResult = Integer.parseInt(baseTest.getAttribute("result"));
                 if (baseResult == TECore.FAIL || baseResult == TECore.INHERITED_FAILURE) {
                     summary = "Failed";
-                } else {
+                } 
+                // begin 2011-03-31 PwD
+                else if (result == TECore.BEST_PRACTICE){
+                	summary = "Passed as Best Practice";
+                }
+                // end 2011-03-31 PwD                
+                else {
                     summary = "Passed";
                 }
             }
             out.println(summary);
             setIndentLevel(1);
-            int result = execute_test(profile.getStartingTest().toString(), kvps, null);
+            // begin 2011-03-31 PwD
+            String defaultResultName = profile.getDefaultResult();
+            defaultResult = defaultResultName.equals("BestPractice") ? BEST_PRACTICE : PASS;
+            out.println("\nExecuting profile " + name + " with defaultResult of " + defaultResultName + "...");
+            // end 2011-03-31 PwD
+            int result = execute_test(profile.getStartingTest().toString(), kvps, null);  // line 284
             out.print("Profile " + profile.getPrefix() + ":" + profile.getLocalName() + " ");
             if (result == TECore.FAIL || result == TECore.INHERITED_FAILURE) {
                 summary = "Failed";
+            }
+            // begin 2011-03-31 PwD
+            else if (result == TECore.BEST_PRACTICE){
+            	summary = "Passed as Best Practice";
+            }
+            else {
+            // end 2011-03-31 PwD                
+                summary = "Passed";
             }
             out.println(summary);
         } else {
@@ -400,10 +475,11 @@ public class TECore implements Runnable {
         if (params != null) {
             xt.setParameter(TEPARAMS_QNAME, params);
         }
-        xt.transform();
+        xt.transform();  // test may set global result, e.g. by calling ctl:fail  2011-03-31 PwD
         XdmNode ret = dest.getXdmNode();
         return ret;
     }
+    
 
     static String getLabel(XdmNode n) {
         String label = n.getAttributeValue(LABEL_QNAME);
@@ -461,50 +537,86 @@ public class TECore implements Runnable {
     }
 
     static String getResultDescription(int result) {
-        if (result == PASS) {
+    	
+    	if (result == CONTINUE){					// 2011-03-30 PwD Moved
+			return "Inconclusive! Continue Test";
+        } else if (result == BEST_PRACTICE) {		// 2011-03-30 PwD Added
+        	return "Passed as Best Practice";
+    	} else if (result == PASS) {
             return "Passed";
-        } else if (result == WARNING) {
+        } else if (result == NOT_TESTED) {			// 2011-03-30 PwD Added
+    		return "Not Tested";
+    	} else if (result == SKIPPED) {				// 2011-03-30 PwD Added
+    		return "Skipped - Prerequisites Not Met"; 
+    	} else if (result == WARNING) {
             return ("generated a Warning.");
         } else if (result == INHERITED_FAILURE){
             return "Failed (Inherited failure)";
-		}else if (result == CONTINUE){
-			return "Inconclusive! Continue Test";
-        } else {
+		}else  {
             return "Failed";
         }
     }
 
     public int executeTest(TestEntry test, XdmNode params, XPathContext context) throws Exception {
+        // begin 2011-04-07 PwD
+    	testStack.push(test);
+    	testType = test.getType();
+        defaultResult = test.getDefaultResult();
+        defaultResultName = (defaultResult == BEST_PRACTICE) ? "BestPractice" : "Pass";
+        // end 2011-04-07 PwD
         Document oldPrevLog = prevLog;
         if (opts.getMode() == Test.RESUME_MODE) {
             prevLog = readLog();
         } else {
             prevLog = null;
         }
-
         String assertion = getAssertionValue(test.getAssertion(), params);
         out.print(indent + (prevLog == null ? "Testing " : "Resuming Test "));
-        out.println(test.getName() + " (" + testPath + ")...");
+        // begin 2011-04-01 PwD
+        // out.println(test.getName() + " (" + testPath + ")...");
+        out.print(test.getName() + " " + test.getType() + " with defaultResult " + defaultResultName + " ");
+        out.println("(" + testPath + ")...");
+        // end 2011-04-01 PwD
 
         String oldIndent = indent;
         indent += INDENT;
-
+        // begin 2011-03-30 PwD
+        if (test.usesContext()) {
+        	out.println(indent + "Context: " + test.getContext());
+        }
+        // end 2011-03-30 PwD
         out.println(indent + "Assertion: " + assertion);
 
         PrintWriter oldLogger = logger;
         if (opts.getLogDir() != null) {
             logger = createLog();
             logger.println("<log>");
+            // begin 2011-04-01 PwD
+            /* was
             logger.println("<starttest local-name=\"" + test.getLocalName() + "\" " +
                                       "prefix=\"" + test.getPrefix() + "\" " +
                                       "namespace-uri=\"" + test.getNamespaceURI() + "\" " +
                                       "path=\"" + testPath + "\" " +
                                       "file=\"" + test.getTemplateFile().getAbsolutePath() + "\">");
+            */
+            logger.print("<starttest ");
+            logger.print("local-name=\"" + test.getLocalName() + "\" ");
+            logger.print("prefix=\"" + test.getPrefix() + "\" ");
+            logger.print("namespace-uri=\"" + test.getNamespaceURI() + "\" ");
+            logger.print("type=\"" + test.getType() + "\" ");
+            logger.print("defaultResult=\"" + Integer.toString(test.getDefaultResult()) + "\" ");
+            logger.print("path=\"" + testPath + "\" ");
+            logger.println("file=\"" + test.getTemplateFile().getAbsolutePath() + "\">");     
+            // end 2011-04-01 PwD
             logger.println("<assertion>" + StringUtils.escapeXML(assertion) + "</assertion>");
             if (params != null) {
                 logger.println(params.toString());
             }
             if (test.usesContext()) {
+                // begin 2011-04-01 PwD
+                // the code below reuses global test suite context for all tests in tree.
+                // I really don't understand how that is useful.
+                /* was
                 logger.println("<context label=\"" + StringUtils.escapeXML(contextLabel) + "\">");
                 NodeInfo contextNode = (NodeInfo)context.getContextItem();
                 int kind = contextNode.getNodeKind();
@@ -518,6 +630,10 @@ public class TECore implements Runnable {
                     logger.println(DomUtils.serializeSource(engine.getBuilder().build(contextNode).asSource()));
                     logger.println("</value>");
                 }
+                */
+                logger.print("<context label=\"" + StringUtils.escapeXML(contextLabel) + "\">");
+                logger.print(test.getContext());
+                // end 2011-04-01 PwD
                 logger.println("</context>");
 
             }
@@ -525,9 +641,10 @@ public class TECore implements Runnable {
             logger.flush();
         }
 
-        result = PASS;
+        result = defaultResult;  // 2011-03-31 PwD   was PASS;
+      
         try {
-            executeTemplate(test, params, context);
+            executeTemplate(test, params, context);  // May set worse result  2011-03-31 PwD
         } catch (SaxonApiException e) {
             jlogger.log(Level.SEVERE,"SaxonApiException",e);
 
@@ -535,7 +652,22 @@ public class TECore implements Runnable {
             if (logger != null) {
                 logger.println("<exception><![CDATA[" + e.getMessage() + "]]></exception>");
             }
-            result = FAIL;
+            // begin 2011-04-07 PwD
+            // was result = FAIL;
+            TestEntry parentTest = getParentTest();
+            if (result == CONTINUE) {
+	            if ("Optional".equals(testType)) {
+	            	result = parentTest.getResult();
+	            } else {
+	            	result = INHERITED_FAILURE;
+	            	parentTest.setResult(result);
+	            }
+            } else {
+            	result = FAIL;  // all other exceptions
+            	parentTest.setResult(result);
+            }
+            testStack.pop();
+            // end 2011-04-07 PwD
         }
 
         if (logger != null) {
@@ -550,7 +682,9 @@ public class TECore implements Runnable {
         indent = oldIndent;
 
         out.println(indent + "Test " + test.getName() + " " + getResultDescription(result));
-
+        // begin 2011-04-07 PwD
+        test.setResult(result);
+        // end 2011-04-07 PwD
         return result;
     }
 
@@ -567,6 +701,7 @@ public class TECore implements Runnable {
         if (opts.getMode() == Test.RESUME_MODE) {
             Document doc = LogUtils.readLog(opts.getLogDir(), testPath + "/" + callId);
             int result = LogUtils.getResultFromLog(doc);
+            // TODO revise the following if
             if (result >= 0) {
                 out.println(indent + "Test " + test.getName() + " " + getResultDescription(result));
                 if (result == WARNING) {
@@ -581,15 +716,24 @@ public class TECore implements Runnable {
         }
 
         String oldTestPath = testPath;
-        int oldResult = result;
+        // begin 2011-04-07 PwD
+        // int oldResult = result;  // This is the parent result   2011-03-31 PwD  
+        // end 2011-04-07 PwD
         testPath += "/" + callId;
-        executeTest(test, S9APIUtils.makeNode(params), context);
+        executeTest(test, S9APIUtils.makeNode(params), context);  // line 555 
         testPath = oldTestPath;
-
+        // called test result has been set; now setting parent result
 		if (result == CONTINUE){
 			throw new Exception("Error: 'continue' is not allowed when a test is called using 'call-test' instruction");
-			
-		}else if (result < oldResult) {
+			// parent result set in catch clause at line 693
+		}
+		// begin 2011-04-07 PwD
+        TestEntry parentTest = getParentTest();
+        int oldResult = parentTest.getResult();
+        // end 2011-04-07 PwD
+		// begin 2011-03-31 PwD
+		/* was
+		else if (result < oldResult) {
             // Restore parent result if the child results aren't worse
             result = oldResult;
         } else if (result == FAIL && oldResult != FAIL) {
@@ -598,6 +742,69 @@ public class TECore implements Runnable {
         } else {
             // Keep child result as parent result
         }
+        */
+		String testTypeName = test.getType();
+		int testType = (parentTest.getType().equals("Optional") ? OPTIONAL : // 2011-04-08 PwD
+						testTypeName.equals("Optional") ? OPTIONAL :
+						testTypeName.equals("MandatoryIfImplemented") ? MANDATORY_IF_IMPLEMENTED :
+						MANDATORY);
+		if (result == BEST_PRACTICE) {
+			result = oldResult;  // leave the parent result unchanged
+		} else if (result == PASS) {
+			if (oldResult == BEST_PRACTICE) {
+				result = PASS; // Best Practice must be universal
+			} else {
+				result = oldResult; // leave the parent result unchanged
+			}
+		} else if (result == NOT_TESTED || result == WARNING) {
+			switch(testType) {
+				case MANDATORY:
+				case MANDATORY_IF_IMPLEMENTED:
+				{
+					result = INHERITED_FAILURE;
+					break;
+				}
+				case OPTIONAL:
+				default:
+				{
+					result = oldResult;  // leave the parent result unchanged
+				}
+			}	
+		} else if (result == SKIPPED) {
+			switch(testType) {
+				case MANDATORY:
+				{
+					result = INHERITED_FAILURE;
+					break;
+				}
+				case MANDATORY_IF_IMPLEMENTED:
+				case OPTIONAL:
+				default:
+				{
+					result = oldResult;  // leave the parent result unchanged
+					
+				}
+			}
+		} else if (result == FAIL || result == INHERITED_FAILURE) {
+			switch(testType) {
+				case MANDATORY:
+				case MANDATORY_IF_IMPLEMENTED:
+				{
+					result = INHERITED_FAILURE;
+					break;
+				}
+				case OPTIONAL:
+				default:
+				{
+					result = oldResult;  // leave the parent result unchanged
+				}
+			}	
+		}
+		// end 2011-03-31 PwD
+		// begin 2011-04-07 PwD
+		parentTest.setResult(result);
+		testStack.pop();
+		// end 2011-04-07 PwD
     }
 
 	public void repeatTest(XPathContext context, String localName,
@@ -634,7 +841,7 @@ public class TECore implements Runnable {
 		for (int i = 0; i < count; i++) {
                        
 			
-			executeTest(test, S9APIUtils.makeNode(params), context);
+			executeTest(test, S9APIUtils.makeNode(params), context); // line 535
 			
 			testPath = oldTestPath;
 			
@@ -785,6 +992,41 @@ public class TECore implements Runnable {
         throw new Exception("No function {" + namespaceURI + "}" + localName + " with a compatible signature.");
     }
 
+	public void _continue() { // 2011-03-30 PwD moved
+		result = CONTINUE;
+	}
+	
+	// 2011-03-30 PwD begin
+	// for use by test with defaultResult of BEST_PRACTICE
+	public void bestPractice() {
+		if (result < BEST_PRACTICE) {
+			result = BEST_PRACTICE;
+		}
+	}
+	
+	// not attempted
+	public void notTested() {
+		if (result < NOT_TESTED) {
+			result = NOT_TESTED;
+		}
+	}
+	
+	// abandoned during attempt
+	public void skipped() {
+		if (result < SKIPPED) {
+			result = SKIPPED;
+		}
+	}
+	// 2011-03-30 PwD end
+	// 2011-03-31 PwD begin
+	// for use by test with defaultResult of BEST_PRACTICE
+	public void pass() {  
+		if (result < PASS) {
+			result = PASS;
+		}
+	}
+	// 2011-03-31 PwD end
+	
     public void warning() {
         if (result < WARNING) {
             result = WARNING;
@@ -802,10 +1044,6 @@ public class TECore implements Runnable {
             result = FAIL;
         }
     }
-
-	public void _continue() {
-		result = CONTINUE;
-	}
 
     public void setContextLabel(String label) {
         contextLabel = label;
