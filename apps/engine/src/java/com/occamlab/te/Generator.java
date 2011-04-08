@@ -15,7 +15,7 @@
  Northrop Grumman Corporation are Copyright (C) 2005-2006, Northrop
  Grumman Corporation. All Rights Reserved.
 
- Contributor(s): No additional contributors to date
+ Contributor(s): Paul Daisey (Image Matters LLC) Add support for BestPractice results
  */
 
 package com.occamlab.te;
@@ -48,6 +48,19 @@ import com.occamlab.te.util.Misc;
 public class Generator {
     // Generates XSL template files from CTL sources and a master index
     // of metadata about the CTL objects
+	
+	// begin 2011-04-07 PwD
+	private static String suiteDefaultResult = "Pass";
+	
+	public static void setSuiteDefaultResult(String resultName) {
+		suiteDefaultResult = resultName.equals("BestPractice") ? "BestPractice" : "Pass";
+	}
+	
+	public static String getSuiteDefaultResult() {
+		return suiteDefaultResult;
+	}
+	// end 2011-04-07 PwD
+	
     private static Logger logger = Logger.getLogger("com.occamlab.te.Generator");
 
     public static Index generateXsl(SetupOptions opts) throws Exception {
