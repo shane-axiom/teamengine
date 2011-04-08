@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctl:package
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:ctl="http://www.occamlab.com/ctl" 
+	xmlns:html="http://www.w3.org/1999/xhtml" 	
+	xmlns:ogc="http://www.opengis.net/ogc"
+	xmlns:ows="http://www.opengis.net/ows/1.1" 
+	xmlns:parsers="http://www.occamlab.com/te/parsers"
+	xmlns:saxon="http://saxon.sf.net/" 
+	xmlns:tep="http://teamengine.sourceforge.net/parsers" 
+	xmlns:xi="http://www.w3.org/2001/XInclude" 
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	xmlns:xml="http://www.w3.org/XML/1998/namespace"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:wmts="http://www.opengis.net/wmts/1.0" 
+>
+
+<ctl:suite name="wmts:te-status-dev-suite">
+	<ctl:title>TEAM Engine Test Status Development Test</ctl:title>
+	<ctl:description>Lots of tests of test status</ctl:description>
+	<ctl:defaultResult>Pass</ctl:defaultResult>
+	<ctl:starting-test>wmts:Start</ctl:starting-test> 
+</ctl:suite>
+
+<ctl:test name="wmts:Start" type="Mandatory">
+	<ctl:context>wmts:te-status-dev-suite</ctl:context>
+	<ctl:assertion>All TEAM Engine Test Status Inheritance Conditions are tested</ctl:assertion>
+	<ctl:code>
+		<ctl:message>Start</ctl:message>
+		<ctl:call-test name="wmts:MandatoryTests"/>
+		<ctl:call-test name="wmts:MandatoryIfImplementedTests"/>
+		<ctl:call-test name="wmts:OptionalTests"/>
+	</ctl:code>
+</ctl:test>
+
+<ctl:package>
+	<ctl:test name="wmts:MandatoryTests" type="Mandatory">
+		<ctl:context>wmts:start</ctl:context>
+		<ctl:assertion>All Mandatory Test Status Inheritance Conditions are tested</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Tests</ctl:message>
+			<ctl:call-test name="wmts:MandatoryContinueParent"/>
+			<ctl:call-test name="wmts:MandatoryBestPracticeParent"/>
+			<ctl:call-test name="wmts:MandatoryPassedParent"/>
+			<ctl:call-test name="wmts:MandatoryNotTestedParent"/>
+			<ctl:call-test name="wmts:MandatoryWarningParent"/>
+			<ctl:call-test name="wmts:MandatorySkippedParent"/>
+			<ctl:call-test name="wmts:MandatoryFailedParent"/>
+			
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryContinueParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>Continue status of Mandatory test causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Continue Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryContinueChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryContinueChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryContinueParent</ctl:context>
+		<ctl:assertion>Continue status of Mandatory test causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Continue Child</ctl:message>
+			<ctl:continue/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryBestPracticeParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>BestPractice status of Mandatory tests causes no change in status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Mandatory BestPractice Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryBestPracticeChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryBestPracticeChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryBestPracticeParent</ctl:context>
+		<ctl:assertion>BestPractice status of Mandatory tests causes no change in status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Mandatory BestPracticeChild</ctl:message>
+			<ctl:bestPractice/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryPassedParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>Pass status of Mandatory tests causes Pass status of parent test with BestPractice default status</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Mandatory Passed Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryPassedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryPassedChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryPassedParent</ctl:context>
+		<ctl:assertion>Pass status of Mandatory tests causes Pass status of parent test with BestPractice default status</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Mandatory Passed Child</ctl:message>
+			<ctl:pass/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryNotTestedParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>NotTested status of Mandatory tests causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory NotTested Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryNotTestedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryNotTestedChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryNotTestedParent</ctl:context>
+		<ctl:assertion>NotTested status of Mandatory tests causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory NotTested Child</ctl:message>
+			<ctl:notTested/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryWarningParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>Warning status of Mandatory tests causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Warning Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryWarningChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryWarningChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryWarningParent</ctl:context>
+		<ctl:assertion>Warning status of Mandatory tests causes Inherited Failure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Warning Child</ctl:message>
+			<ctl:warning/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatorySkippedParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>Skipped status of Mandatory tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Skipped Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatorySkippedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatorySkippedChild" type="Mandatory">
+		<ctl:context>wmts:MandatorySkippedParent</ctl:context>
+		<ctl:assertion>Skipped status of Mandatory tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Skipped Child</ctl:message>
+			<ctl:skipped/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryFailedParent" type="Mandatory">
+		<ctl:context>wmts:MandatoryTests</ctl:context>
+		<ctl:assertion>Failed status of Mandatory tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Failed Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryFailedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryFailedChild" type="Mandatory">
+		<ctl:context>wmts:MandatoryFailedParent</ctl:context>
+		<ctl:assertion>Failed status of Mandatory tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Failed Child</ctl:message>
+			<ctl:fail/>
+		</ctl:code>
+	</ctl:test>
+	
+</ctl:package>
+
+<ctl:package>
+	<ctl:test name="wmts:MandatoryIfImplementedTests" type="MandatoryIfImplemented">
+		<ctl:context>wmts:Start</ctl:context>
+		<ctl:assertion>All MandatoryIfImplemented Test Status Inheritance Conditions are tested</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Tests</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedContinueParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedBestPracticeParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedPassedParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedNotTestedParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedWarningParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedSkippedParent"/>
+			<ctl:call-test name="wmts:MandatoryIfImplementedFailedParent"/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedContinueParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>Continue status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Continue Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedContinueChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedContinueChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedContinueParent</ctl:context>
+		<ctl:assertion>Continue status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Continue Child</ctl:message>
+			<ctl:continue/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedBestPracticeParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>BestPractice status of MandatoryIfImplemented tests causes no change in status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented BestPractice Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedBestPracticeChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedBestPracticeChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedBestPracticeParent</ctl:context>
+		<ctl:assertion>BestPractice status of MandatoryIfImplemented tests causes no change in status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented BestPractice Child</ctl:message>
+			<ctl:bestPractice/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedPassedParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>Passed status of MandatoryIfImplemented tests causes Passed status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Passed Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedPassedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedPassedChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedPassedParent</ctl:context>
+		<ctl:assertion>Passed status of MandatoryIfImplemented tests causes Passed status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Passed Child</ctl:message>
+			<ctl:pass/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedNotTestedParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>NotTested status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented NotTested Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedNotTestedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedNotTestedChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedNotTestedParent</ctl:context>
+		<ctl:assertion>NotTested status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented NotTested Child</ctl:message>
+			<ctl:notTested/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedWarningParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>Warning status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Warning Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedWarningChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedWarningChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedWarningParent</ctl:context>
+		<ctl:assertion>Warning status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Warning Child</ctl:message>
+			<ctl:warning/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedSkippedParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>Skipped status of MandatoryIfImplemented tests causes no change in status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Skipped Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedSkippedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedSkippedChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedSkippedParent</ctl:context>
+		<ctl:assertion>Skipped status of MandatoryIfImplemented tests causes no change in status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Skipped Child</ctl:message>
+			<ctl:skipped/>
+		</ctl:code>
+	</ctl:test>
+
+	<ctl:test name="wmts:MandatoryIfImplementedFailedParent" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedTests</ctl:context>
+		<ctl:assertion>Failed status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Failed Parent</ctl:message>
+			<ctl:call-test name="wmts:MandatoryIfImplementedFailedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:MandatoryIfImplementedFailedChild" type="MandatoryIfImplemented">
+		<ctl:context>wmts:MandatoryIfImplementedFailedParent</ctl:context>
+		<ctl:assertion>Failed status of MandatoryIfImplemented tests causes InheritedFailure status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>MandatoryIfImplemented Failed Child</ctl:message>
+			<ctl:fail/>
+		</ctl:code>
+	</ctl:test>
+
+</ctl:package>
+	
+<ctl:package>
+	<ctl:test name="wmts:OptionalTests" type="Optional">
+		<ctl:context>wmts:Start</ctl:context>
+		<ctl:assertion>All Optional Test Status Inheritance Conditions are tested</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Tests</ctl:message>
+			<ctl:call-test name="wmts:OptionalContinueParent"/>
+			<ctl:call-test name="wmts:OptionalBestPracticeParent"/>
+			<ctl:call-test name="wmts:OptionalPassedParent"/>
+			<ctl:call-test name="wmts:OptionalNotTestedParent"/>
+			<ctl:call-test name="wmts:OptionalWarningParent"/>
+			<ctl:call-test name="wmts:OptionalSkippedParent"/>
+			<ctl:call-test name="wmts:OptionalFailedParent"/>	
+			<ctl:call-test name="wmts:OTMandatoryFailedParent"/>		
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalContinueParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Continue status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Continue Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalContinueChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalContinueChild" type="Optional">
+		<ctl:context>wmts:OptionalContinueParent</ctl:context>
+		<ctl:assertion>Continue status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Continue Child</ctl:message>
+			<ctl:continue/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalBestPracticeParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>BestPractice status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Optional BestPractice Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalBestPracticeChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalBestPracticeChild" type="Optional">
+		<ctl:context>wmts:OptionalBestPracticeParent</ctl:context>
+		<ctl:assertion>BestPractice status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Optional BestPractice Child</ctl:message>
+			<ctl:bestPractice/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalPassedParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Passed status of Optional tests causes Passed status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Optional Passed Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalPassedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalPassedChild" type="Optional">
+		<ctl:context>wmts:OptionalPassedParent</ctl:context>
+		<ctl:assertion>Passed status of Optional tests causes Passed status of parent test with default status of BestPractice</ctl:assertion>
+		<ctl:defaultResult>BestPractice</ctl:defaultResult>
+		<ctl:code>
+			<ctl:message>Optional Passed Child</ctl:message>
+			<ctl:pass/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalNotTestedParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>NotTested status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional NotTestedParent</ctl:message>
+			<ctl:call-test name="wmts:OptionalNotTestedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalNotTestedChild" type="Optional">
+		<ctl:context>wmts:OptionalNotTestedParent</ctl:context>
+		<ctl:assertion>NotTested status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional NotTested Child</ctl:message>
+			<ctl:notTested/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalWarningParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Warning status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Warning Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalWarningChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalWarningChild" type="Optional">
+		<ctl:context>wmts:OptionalWarningParent</ctl:context>
+		<ctl:assertion>Warning status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Warning Child</ctl:message>
+			<ctl:warning/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalSkippedParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Skipped status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Skipped Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalSkippedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalSkippedChild" type="Optional">
+		<ctl:context>wmts:OptionalSkippedParent</ctl:context>
+		<ctl:assertion>Skipped status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Skipped Child</ctl:message>
+			<ctl:skipped/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalFailedParent" type="Optional">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Failed status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Failed Parent</ctl:message>
+			<ctl:call-test name="wmts:OptionalFailedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OptionalFailedChild" type="Optional">
+		<ctl:context>wmts:OptionalFailedParent</ctl:context>
+		<ctl:assertion>Failed status of Optional tests causes no change to status of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Optional Failed Child</ctl:message>
+			<ctl:fail/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OTMandatoryFailedParent" type="Mandatory">
+		<ctl:context>wmts:OptionalTests</ctl:context>
+		<ctl:assertion>Failed status of Mandatory tests causes Inherited Failure of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Failed Parent With Optional Parent</ctl:message>
+			<ctl:call-test name="wmts:OTMandatoryFailedChild"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:OTMandatoryFailedChild" type="Mandatory">
+		<ctl:context>wmts:OTMandatoryFailedParent</ctl:context>
+		<ctl:assertion>Failed status of Mandatory tests causes Inherited Failure of parent test</ctl:assertion>
+		<ctl:code>
+			<ctl:message>Mandatory Failed Child</ctl:message>
+			<ctl:fail/>
+		</ctl:code>
+	</ctl:test>
+	
+</ctl:package>	
+
+</ctl:package>
+
