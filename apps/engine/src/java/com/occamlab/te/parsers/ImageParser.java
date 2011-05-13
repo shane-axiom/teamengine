@@ -16,7 +16,8 @@
  Northrop Grumman Corporation are Copyright (C) 2005-2006, Northrop
  Grumman Corporation. All Rights Reserved.
 
- Contributor(s): No additional contributors to date
+ Contributor(s): 
+ 		2011-05-13 Paul Daisey (Image Matters LLC) added getImageWidth(), getImageHeight()
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
@@ -272,6 +273,104 @@ public class ImageParser {
         }
     }
 
+    /**
+     * Determines the width of the first image in an image file in pixels.
+     * 
+     * @param imageLoc
+     *            the string location of the image (uri syntax expected)
+     * @return int the image width in pixels, or -1 if unable.
+     * @author Paul Daisey
+     * added 2011-05-13 to support WMTS ETS
+     */
+    public static int getImageWidth (String imageLoc) {
+
+    	// Get the image as an InputStream
+        InputStream is = null;
+        try {
+            URI imageUri = new URI(imageLoc);
+            URL imageUrl = imageUri.toURL();
+            is = imageUrl.openStream();
+        } catch (Exception e) {
+            jlogger.log(Level.SEVERE,"getImageWidth",e);
+
+            return -1;
+        }
+    	// Determine the image width
+	    try {
+	        // Create an image input stream on the image
+	        ImageInputStream iis = ImageIO.createImageInputStream(is);
+	        
+            // Find all image readers that recognize the image format
+            Iterator iter = ImageIO.getImageReaders(iis);
+
+            // No readers found
+            if (!iter.hasNext()) {
+                return -1;
+            }
+
+            // Use the first reader
+            ImageReader reader = (ImageReader) iter.next();
+            reader.setInput(iis, true);
+            int width = reader.getWidth(0);
+            iis.close();
+            
+            return width;
+	    } catch (IOException e) {
+	        jlogger.log(Level.SEVERE,"getImageWidth",e);
+	    // The image could not be read
+	    }
+    return -1;
+    }
+    
+    /**
+     * Determines the height of the first image in an image file in pixels.
+     * 
+     * @param imageLoc
+     *            the string location of the image (uri syntax expected)
+     * @return int the image width in pixels, or -1 if unable.
+     * @author Paul Daisey
+     * added 2011-05-13 to support WMTS ETS
+     */
+    public static int getImageHeight (String imageLoc) {
+
+    	// Get the image as an InputStream
+        InputStream is = null;
+        try {
+            URI imageUri = new URI(imageLoc);
+            URL imageUrl = imageUri.toURL();
+            is = imageUrl.openStream();
+        } catch (Exception e) {
+            jlogger.log(Level.SEVERE,"getImageWidth",e);
+
+            return -1;
+        }
+    	// Determine the image width
+	    try {
+	        // Create an image input stream on the image
+	        ImageInputStream iis = ImageIO.createImageInputStream(is);
+	        
+            // Find all image readers that recognize the image format
+            Iterator iter = ImageIO.getImageReaders(iis);
+
+            // No readers found
+            if (!iter.hasNext()) {
+                return -1;
+            }
+
+            // Use the first reader
+            ImageReader reader = (ImageReader) iter.next();
+            reader.setInput(iis, true);
+            int height = reader.getHeight(0);
+            iis.close();
+            
+            return height;
+	    } catch (IOException e) {
+	        jlogger.log(Level.SEVERE,"getImageWidth",e);
+	    // The image could not be read
+	    }
+    return -1;
+    }
+    
     /**
      * Determines the type of image, or null if not a valid image type
      * 
