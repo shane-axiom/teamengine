@@ -24,6 +24,7 @@
 				 no inheritance of Skipped status to/from Mandatory if Implemented tests; 
 				 no inheritance of Continue, Warning, Not Tested, 
 				   Skipped, Fail, or Inherited Failure status to/from Optional tests.
+				 Add getResult()
  ****************************************************************************/
 package com.occamlab.te;
 
@@ -535,7 +536,6 @@ public class TECore implements Runnable {
         newText = StringUtils.replaceAll(newText, "{$context}", contextLabel);
         return newText;
     }
-
     static String getResultDescription(int result) {
     	
     	if (result == CONTINUE){					// 2011-03-30 PwD Moved
@@ -1045,6 +1045,12 @@ public class TECore implements Runnable {
         }
     }
 
+    // begin 2011-05-06 PwD
+    public String getResult() {
+    	return getResultDescription(result);
+    }
+    // end 2011-05-06 PwD
+    
     public void setContextLabel(String label) {
         contextLabel = label;
     }
