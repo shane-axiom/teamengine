@@ -23,6 +23,21 @@
 			method="getBeginningInstant" />
 	</ctl:function>
    
+  <!-- start PwD additions 2011-06-07 --> 
+  <ctl:function name="ctl:startStopwatch">
+  	<ctl:param name="watchName"/>
+  	<ctl:description>Starts a stopwatch with the supplied name (identifier)</ctl:description>
+  	<ctl:java class="com.occamlab.te.util.Stopwatch" method="start"/>
+  </ctl:function>
+  
+  <ctl:function name="ctl:elapsedTime">
+  	<ctl:param name="watchName"/>
+ 	<ctl:description>Returns elapsed time in milliseconds for stopwatich with the supplied name (identifier) 
+ 	if it was started, or 0 if not. </ctl:description>	
+ 	<ctl:java class="com.occamlab.te.util.Stopwatch" method="elapsedTime"/>
+  </ctl:function>
+  <!-- end PwD additions 2011-06-07 -->
+  
   <ctl:function name="ctl:addDomAttr">
 	  <ctl:param name="doc"/>
 	  <ctl:param name="tag.name"/>
