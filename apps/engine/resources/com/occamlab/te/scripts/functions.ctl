@@ -38,6 +38,29 @@
   </ctl:function>
   <!-- end PwD additions 2011-06-07 -->
   
+  <!-- start PwD additions 2011-06-09 -->
+  <ctl:function name="ctl:putLogCache">
+  	<ctl:param name="id"/>
+  	<ctl:param name="xmlToCache"/>
+  	<ctl:description>puts the xmlToCache in the current log file with the specified id</ctl:description>
+  	<!--<ctl:java class="com.occamlab.te.TECore" method="putLogCache" initialized="true"/> -->
+  	<ctl:code>
+		<xsl:variable name="xmlToCacheDoc">
+			<xsl:copy-of select="$xmlToCache"/>
+		</xsl:variable>
+  		<xsl:copy-of select="tec:putLogCache($te:core, $id, $xmlToCache)" xmlns:tec="java:com.occamlab.te.TECore"/>
+  	</ctl:code>
+  </ctl:function>
+  
+  <ctl:function name="ctl:getLogCache">
+  	<ctl:param name="id"/>
+    <ctl:description>returns the contents of the previous log cache element with the specified id</ctl:description>
+  	<ctl:code>
+  		<xsl:copy-of select="tec:getLogCache($te:core, $id)" xmlns:tec="java:com.occamlab.te.TECore"/>
+  	</ctl:code>
+  </ctl:function>
+   <!--  end PwD additions 2011-06-09  -->
+     
   <ctl:function name="ctl:addDomAttr">
 	  <ctl:param name="doc"/>
 	  <ctl:param name="tag.name"/>
