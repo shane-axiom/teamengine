@@ -25,6 +25,8 @@
 				 no inheritance of Continue, Warning, Not Tested, 
 				   Skipped, Fail, or Inherited Failure status to/from Optional tests.
 				 Add getResult()
+				 Add putLogCache(), getLogCache(), getMode()
+				 Make changes for Test.REDO_FROM_CACHE_MODE
  ****************************************************************************/
 package com.occamlab.te;
 
@@ -251,6 +253,10 @@ public class TECore implements Runnable {
     
             if (mode == Test.RESUME_MODE) {
                 reexecute_test(sessionId);
+            // begin 2011-06-09 PwD
+            } else if (mode == Test.REDO_FROM_CACHE_MODE) {
+                reexecute_test(sessionId);
+            // end 2011-06-09 PwD
             } else if (mode == Test.RETEST_MODE) {
                 for (String testPath : opts.getTestPaths()) {
                     reexecute_test(testPath);
@@ -299,7 +305,7 @@ public class TECore implements Runnable {
         XdmNode contextNode = LogUtils.getContextFromLog(builder, log);
         XPathContext context = getXPathContext(test, opts.getSourcesName(), contextNode);
         setTestPath(testPath);
-        executeTest(test, paramsNode, context);  // line 555
+        executeTest(test, paramsNode, context); 
     }
 
     public int execute_test(String testName, List<String> params, XdmNode contextNode) throws Exception {
@@ -310,7 +316,10 @@ public class TECore implements Runnable {
         XdmNode paramsNode = engine.getBuilder().build(new StreamSource(new StringReader(getParamsXML(params))));
         // begin 2011-03-30 PwD
         if (contextNode == null && test.usesContext()) {
-        	String contextNodeXML = "<context>" + test.getContext() + "</context>";
+        	// begin 2011-06-07 PwD
+        	// String contextNodeXML = "<context>" + test.getContext() + "</context>";
+        	String contextNodeXML = "<context><value><context>" + test.getContext() + "</context></value></context>";
+        	// end 2011-06-07 PwD
         	contextNode = engine.getBuilder().build(new StreamSource(new StringReader(contextNodeXML)));
         }
         // end 2011-03-30 PwD
@@ -353,10 +362,11 @@ public class TECore implements Runnable {
             }
         }
         String name = suite.getPrefix() + ":" + suite.getLocalName();
-        // begin 2011-03-31 PwD
+        // begin 2011-06-09 PwD
         // was out.println("Testing suite " + name + "...");
-        out.println("Testing suite " + name + " with defaultResult of " + defaultResultName + " ...");
-        // end 2011-03-31 PwD
+        // 2011-03-31 was out.println("Testing suite " + name + " with defaultResult of " + defaultResultName + " ...");
+        out.println("Testing suite " + name + " in " + getMode() + " with defaultResult of " + defaultResultName + " ...");
+        // end 2011-06-09 PwD
         setIndentLevel(1);
         int result = execute_test(suite.getStartingTest().toString(), kvps, null);  // line 303
         out.print("Suite " + suite.getPrefix() + ":" + suite.getLocalName() + " ");
@@ -567,16 +577,22 @@ public class TECore implements Runnable {
         Document oldPrevLog = prevLog;
         if (opts.getMode() == Test.RESUME_MODE) {
             prevLog = readLog();
+        // begin 2011-06-09 PwD
+        } else if (opts.getMode() == Test.REDO_FROM_CACHE_MODE) {
+        	prevLog = readLog();
+        // end 2011-06-09 PwD
         } else {
             prevLog = null;
         }
         String assertion = getAssertionValue(test.getAssertion(), params);
-        out.print(indent + (prevLog == null ? "Testing " : "Resuming Test "));
-        // begin 2011-04-01 PwD
+        // begin 2011-06-09 PwD
+        // out.print(indent + (prevLog == null ? "Testing " : "Resuming Test "));
+        out.print("Testing ");
         // out.println(test.getName() + " (" + testPath + ")...");
-        out.print(test.getName() + " " + test.getType() + " with defaultResult " + defaultResultName + " ");
+        out.print(test.getName() + " type " + test.getType()); 
+        out.print(" in " + getMode() + " with defaultResult " + defaultResultName + " ");
         out.println("(" + testPath + ")...");
-        // end 2011-04-01 PwD
+        // end 2011-06-09 PwD
 
         String oldIndent = indent;
         indent += INDENT;
@@ -632,8 +648,16 @@ public class TECore implements Runnable {
                 }
                 */
                 logger.print("<context label=\"" + StringUtils.escapeXML(contextLabel) + "\">");
+                // start 2011-06-08 PwD
+                logger.print("<value>");
+                logger.print("<context>");
+                // end 2011-06-08 PwD
                 logger.print(test.getContext());
-                // end 2011-04-01 PwD
+                // start 2011-06-08 PwD
+                logger.print("</context>");
+                logger.print("</value>");
+                // end 2011-06-08 PwD
+               // end 2011-04-01 PwD
                 logger.println("</context>");
 
             }
@@ -720,7 +744,7 @@ public class TECore implements Runnable {
         // int oldResult = result;  // This is the parent result   2011-03-31 PwD  
         // end 2011-04-07 PwD
         testPath += "/" + callId;
-        executeTest(test, S9APIUtils.makeNode(params), context);  // line 555 
+        executeTest(test, S9APIUtils.makeNode(params), context); 
         testPath = oldTestPath;
         // called test result has been set; now setting parent result
 		if (result == CONTINUE){
@@ -1050,6 +1074,12 @@ public class TECore implements Runnable {
     	return getResultDescription(result);
     }
     // end 2011-05-06 PwD
+    
+    // begin 2011-06-09 PwD
+    public String getMode() {
+    	return Test.getModeName(opts.getMode());
+    }
+    // end 2011-06-09 PwD
     
     public void setContextLabel(String label) {
         contextLabel = label;
@@ -1831,6 +1861,27 @@ public class TECore implements Runnable {
         return null;
     }
 
+    // start 2011-06-09 PwD
+    public void putLogCache(String id, Document xmlToCache) {
+    	if (logger != null) {
+    		String xmlString = DomUtils.serializeNode(xmlToCache);
+    		logger.println("<cache id=\"" + id + "\">" + xmlString + "</cache>");
+    	}
+    }
+    
+    public Element getLogCache(String id) {
+    	Element child_e = null;
+        if (prevLog != null) {
+            for (Element cache_e : DomUtils.getElementsByTagName(prevLog, "cache")) {
+                if (cache_e.getAttribute("id").equals(id)) {
+                    child_e = DomUtils.getChildElement(cache_e);
+                }
+            }
+        }
+        return (child_e == null) ? null : child_e;
+    }
+    // end 2011-06-09 PwD
+    
     /**
      * Converts CTL input form data to generate a Swing-based or XHTML form and
      * reports the results of processing the submitted form. The results document
