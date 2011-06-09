@@ -23,7 +23,7 @@
   					test types:  Mandatory, Mandatory if Implemented, Optional;
   					ctl:context in tests; 
   					ctl:bestPractice, ctl:pass, ctl:notTested, ctl:skipped
-
+  					ctl:getMode
  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <xsl:transform
  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -601,12 +601,25 @@
 			</xsl:for-each>
 			<!-- begin 2011-03-30 PwD -->
 			<!-- <xsl:message>Context? <xsl:value-of select="ctl:context"/></xsl:message> -->
+			<!--  
 			<xsl:if test="boolean(ctl:context)">
 				<context>
 					<xsl:value-of select="ctl:context"/>
 				</context>
 			</xsl:if>
+			-->
 			<!-- end 2011-03-30 PwD -->
+			<!--  begin 2011-06-07 PwD -->
+			<xsl:if test="boolean(ctl:context)">
+				<context>
+					<value>
+						<context>
+							<xsl:value-of select="ctl:context"/>
+						</context>
+					</value>
+				</context>
+			</xsl:if>
+			<!--  end 2011-06-07 PwD -->
 			<!-- begin 2011-03-31 PwD -->
 				<type>
 					<xsl:value-of select="$type"/>
@@ -872,6 +885,18 @@
 		<txsl:value-of select="tec:skipped($te:core)"/>
 	</xsl:template>
 	<!-- end 2011-03-30 PwD -->
+	
+	<!-- begin 2011-05-06 PwD -->
+	<xsl:template match="ctl:getResult">
+		<txsl:value-of select="tec:getResult($te:core)"/>
+	</xsl:template>
+	<!-- end 2011-05-06 PwD -->
+	
+	<!--  begin 2011-06-09 PwD -->
+	<xsl:template match="ctl:getMode">
+		<txsl:value-of select="tec:getMode($te:core)"/>
+	</xsl:template>
+	<!--  end 2011-06-09 PwD -->
 	
 	<xsl:template match="ctl:form">
 		<!-- Expand any child CTL instructions into XSL instructions and store in generated variable -->
