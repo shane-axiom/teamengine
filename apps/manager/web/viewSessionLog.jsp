@@ -35,7 +35,7 @@ public void jspInit() {
   Northrop Grumman Corporation are Copyright (C) 2005-2006, Northrop
   Grumman Corporation. All Rights Reserved.
 
-  Contributor(s): No additional contributors to date
+  Contributor(s): Paul Daisey (Image Matters LLC) add cache mode
 
  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <%@page import="java.net.URLEncoder"%>
@@ -134,6 +134,9 @@ public void jspInit() {
 --%>
 		<br/>
 		<input type="button" value="Execute this session again" onclick="window.location = 'test.jsp?mode=retest&amp;session=<%=request.getParameter("session")%><%=profileParams%>'"/>
+		<!-- begin 2011-06-10 PwD -->
+		<input type="button" value="Redo using cached values" onclick="window.location = 'test.jsp?mode=cache&amp;session=<%=request.getParameter("session")%>'"/>
+		<!-- end 2011-06-10 PwD -->
 		<input type="button" value="Delete this session" onclick="deleteSession()"/>
 		<input type="button" value="Download log Files" onclick="window.location = 'downloadLog?session=<%=request.getParameter("session")%>'"/>
 		<input type="button" value="Create execution log report file" onclick="window.location = 'prettyPrintLogs?session=<%=request.getParameter("session")%>'"/>
