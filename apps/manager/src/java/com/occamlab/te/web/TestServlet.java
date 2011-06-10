@@ -18,7 +18,7 @@
 
  Contributor(s): Paul Daisey (Image Matters LLC) : 
  					enable ViewSessionLog.jsp to find listing files
-
+					add cache mode
  ****************************************************************************/
 package com.occamlab.te.web;
 
@@ -466,6 +466,14 @@ public class TestServlet extends HttpServlet {
                     opts.setSessionId(sessionid);
                     s.load(logdir, sessionid);
                     opts.setSourcesName(s.getSourcesName());
+// begin 2011-06-10 PwD
+                } else if (mode.equals("cache")) {
+                    opts.setMode(Test.REDO_FROM_CACHE_MODE);
+                    String sessionid = params.get("session");
+                    opts.setSessionId(sessionid);
+                    s.load(logdir, sessionid);
+                    opts.setSourcesName(s.getSourcesName());
+// end 2011-06-10 PwD
                 } else {
                     opts.setMode(Test.TEST_MODE);
                     String sessionid = LogUtils.generateSessionId(logdir);
