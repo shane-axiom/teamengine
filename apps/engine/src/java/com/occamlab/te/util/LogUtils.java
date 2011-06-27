@@ -181,6 +181,7 @@ public class LogUtils {
         String type = "Mandatory"; // 2011-03-07 PwD
         boolean complete = false;
         boolean childrenFailed = false;
+        boolean hasCache = false; // 2011-06-27 PwD
         for (Element e : DomUtils.getChildElements(log_e)) {
             if (e.getNodeName().equals("starttest")) {
                 NamedNodeMap atts = e.getAttributes();
@@ -233,10 +234,16 @@ public class LogUtils {
                     }
                     test.appendChild(child);
                 }
+            } 
+            // start 2011-06-27 PwD
+              else if (e.getNodeName().equals("cache")) {
+            	hasCache = true;
             }
+            // end 2011-06-27 PwD
         }
         test.setAttribute("result", Integer.toString(result));
         test.setAttribute("complete", complete ? "yes" : "no");
+        test.setAttribute("hasCache", hasCache ? "yes" : "no"); // 2011-06-27 PwD
         return test;
     }
 
