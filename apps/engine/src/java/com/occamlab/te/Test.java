@@ -29,7 +29,14 @@ import java.io.InputStream;
 
 import com.occamlab.te.index.Index;
 import com.occamlab.te.util.DocumentationHelper;
-import com.occamlab.te.util.LogUtils;
+import com.occamlab.te.util.LogUtils; 
+
+import java.io.*;                    // 2011-06-27 PwD
+import java.util.*;                  // 2011-06-27 PwD
+import javax.xml.transform.*;        // 2011-06-27 PwD
+import javax.xml.transform.stream.*; // 2011-06-27 PwD
+import com.occamlab.te.util.Misc;    // 2011-06-27 PwD
+
 
 /**
  * 
@@ -299,6 +306,22 @@ public class Test {
             }
         }
 
+        // begin 2011-06-27 PwD
+        if (mode == REDO_FROM_CACHE_MODE) {
+    		File stylesheet = Misc.getResourceAsFile("com/occamlab/te/web/viewlog.xsl");
+    		Templates ViewLogTemplates = ViewLog.transformerFactory.newTemplates(new StreamSource(stylesheet));
+    	    ArrayList tests = new ArrayList();
+    	    File userlog = logDir;
+    	    StringWriter sw= new StringWriter();
+    	    boolean complete = ViewLog.view_log(userlog, session, tests, ViewLogTemplates, sw);     
+    	    boolean hasCache = ViewLog.hasCache();
+    	    if (!hasCache) {
+                File dir = new File(logDir, runOpts.getSessionId());
+    	    	throw new Exception("Error: no cache for " + dir.getAbsolutePath());
+    	    }
+        }
+        // end 2011-06-27 PwD
+        
         masterIndex.setElements(null);
         
         TEClassLoader cl = new TEClassLoader(null); 
