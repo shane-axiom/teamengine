@@ -263,7 +263,7 @@ public class Test {
 
         Thread.currentThread().setName("TEAM Engine");
         
-        Index masterIndex;
+        Index masterIndex = null;  // 2011-06-30 PwD
         File indexFile = null;
         if (logDir != null && session != null) {
             File dir = new File(logDir, runOpts.getSessionId());
@@ -295,6 +295,27 @@ public class Test {
             if (indexFile != null) {
                 masterIndex.persist(indexFile);
             }
+        // begin 2011-06-30 PwD 
+        } else if (mode == REDO_FROM_CACHE_MODE) {
+        	boolean regenerate = false;
+        	if (indexFile.canRead()) {
+        		masterIndex = new Index(indexFile);
+        		if (masterIndex.outOfDate()) {
+        			System.out.println("Warning: Scripts have changed since this session was first executed.");
+        			regenerate = true;
+        		}
+        	} else {
+        		System.out.println("Error: Can't read index file.");
+        		regenerate = true;
+        	}
+        	if (regenerate) {
+        		System.out.println("Regenerating masterIndex from source scripts");
+                masterIndex = Generator.generateXsl(setupOpts);
+                if (indexFile != null) {
+                    masterIndex.persist(indexFile);
+                }		
+        	}
+        // end 2011-06-30 PwD
         } else {
             if (!indexFile.canRead()) {
               System.out.println("Error: Can't read index file.");
