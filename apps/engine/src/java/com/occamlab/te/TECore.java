@@ -27,6 +27,8 @@
 				 Add getResult()
 				 Add putLogCache(), getLogCache(), getMode()
 				 Make changes for Test.REDO_FROM_CACHE_MODE
+				 Add support for ctl:dynamicParam inside ctl:request
+				 
  ****************************************************************************/
 package com.occamlab.te;
 
