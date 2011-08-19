@@ -1473,6 +1473,26 @@ public class TECore implements Runnable {
                     if (sParams.length() > 0) sParams += "&";
                     sParams += ((Element) n).getAttribute("name") + "="
                             + n.getTextContent();
+                // begin 2011-08-19 PwD
+                } else if (n.getLocalName().equals("dynamicParam")) {
+                	String name = null;
+                	String val = null;
+                	NodeList dpnl = n.getChildNodes();
+                	for (int j = 0; j < dpnl.getLength(); j++) {
+                		Node dpn = (Node)dpnl.item(j);
+                		if (dpn.getNodeType() == Node.ELEMENT_NODE) {
+                			if (dpn.getLocalName().equals("name")) {
+                				name = dpn.getTextContent();
+                			} else if (dpn.getLocalName().equals("value")) {
+                				val = dpn.getTextContent();
+                			}
+                		}
+                	}
+                	if (name != null && val != null) {
+                        if (sParams.length() > 0) sParams += "&";
+                		sParams += name + "=" + val;
+                	}
+                // end 2011-08-19 PwD
                 } else if (n.getLocalName().equals("body")) {
                     body = n;
                 } else if (n.getLocalName().equals("part")) {
