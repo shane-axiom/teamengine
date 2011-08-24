@@ -18,6 +18,8 @@
 
  Contributor(s): 
  		2011-05-13 Paul Daisey (Image Matters LLC) added getImageWidth(), getImageHeight()
+ 		2011-08-23 Paul Daisey (Image Matters LLC) add try/catch block to processFrame() 
+ 													to return image format
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
@@ -51,7 +53,6 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
-
 import org.w3c.dom.*;
 
 /**
@@ -468,17 +469,29 @@ public class ImageParser {
                 } else if (node.getLocalName().equals("width")) {
                     node.setTextContent(Integer.toString(image.getWidth()));
                 } else if (node.getLocalName().equals("metadata")) {
-                    IIOMetadata metadata = reader.getImageMetadata(frame);
-                    if (metadata != null) {
-                        String format = ((Element)node).getAttribute("format");
-                        if (format.length() == 0) {
-                            format = metadata.getNativeMetadataFormatName();
-                        }
-                        Node tree = metadata.getAsTree(format);
+                	try {  // 2011--08-23 PwD
+	                	IIOMetadata metadata = reader.getImageMetadata(frame);
+	                    if (metadata != null) {
+	                        String format = ((Element)node).getAttribute("format");
+	                        if (format.length() == 0) {
+	                            format = metadata.getNativeMetadataFormatName();
+	                        }
+	                        Node tree = metadata.getAsTree(format);
+	                        TransformerFactory tf = TransformerFactory.newInstance();
+	                        Transformer t = tf.newTransformer();
+	                        t.transform(new DOMSource(tree), new DOMResult(node));
+	                    }
+                	} catch (javax.imageio.IIOException e) { // 2011--08-23 PwD
+                		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                        DocumentBuilder db = dbf.newDocumentBuilder();
+                        Document doc = db.newDocument();
+                        String format = reader.getFormatName().toLowerCase();
+                        String formatEltName = "javax_imageio_" + format + "_1.0";
+                        Element formatElt = doc.createElement(formatEltName);
                         TransformerFactory tf = TransformerFactory.newInstance();
                         Transformer t = tf.newTransformer();
-                        t.transform(new DOMSource(tree), new DOMResult(node));
-                    }
+                		t.transform(new DOMSource(formatElt), new DOMResult(node));
+                	}
                 } else if (node.getLocalName().equals("model")) {
                     int imagetype = -1;
                     String model = ((Element) node).getAttribute("value");
