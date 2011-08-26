@@ -18,9 +18,9 @@
 
  Contributor(s): 
  		2011-05-13 Paul Daisey (Image Matters LLC) added getImageWidth(), getImageHeight()
- 		2011-08-23 Paul Daisey (Image Matters LLC) add try/catch block to processFrame() 
- 													to return image format
-
+ 		2011-08-23 Paul Daisey (Image Matters LLC) add try/catch block to processFrame()to return image format
+		2011-08-24 Paul Daisey (Image Matters LLC) add case to processFrame() to return image transparency for parsers:transparency tag
+		2011-08-24 Paul Daisey (Image Matters LLC) add checkTransparentNodata(); call from processBufferedImage() for parsers:model/parsers:transparentNodata tag
  ****************************************************************************/
 package com.occamlab.te.parsers;
 
@@ -44,6 +44,8 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.ImageObserver;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.awt.image.ColorModel;  // 2011-08-24 PwD
+import java.awt.Transparency;      // 2011-08-24 PwD
 
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
@@ -101,6 +103,48 @@ public class ImageParser {
         }
     }
 
+    /* 2011-08-24 PwD
+     * check that all pixels in image with no data are transparent 
+     * @return NA if all pixels contain data
+     * @return true if all pixels with no data are transparent (alpha channel value 0)
+     * @return false if any pixel with no data is non-transparent
+     */
+    private static String checkTransparentNodata(BufferedImage buffImage, Node node) throws Exception {
+    	String transparentNodata = "NA";
+    	boolean noData = false;
+    	boolean transparent = true;
+    	int[] bandIndexes = new int[4];
+    	bandIndexes[0] = 3;  // A
+    	bandIndexes[1] = 2;  // B
+    	bandIndexes[2] = 1;  // G
+    	bandIndexes[3] = 0;  // R
+        Raster raster = buffImage.getRaster();
+        int minx = raster.getMinX();
+        int maxx = minx + raster.getWidth();
+        int miny = raster.getMinY();
+        int maxy = miny + raster.getHeight();
+        int bands[][] = new int[bandIndexes.length][raster.getWidth()];
+        for (int y = miny; y < maxy; y++) {
+            for (int i = 0; i < bandIndexes.length; i++) {
+                raster.getSamples(minx, y, maxx, 1, bandIndexes[i], bands[i]);
+            }
+            for (int x = minx; x < maxx; x++) {
+            	int a = bands[0][x];
+            	int b = bands[1][x];
+            	int g = bands[2][x];
+            	int r = bands[3][x];
+            	if (b == 0 && g == 0 && r ==0) {
+            		noData = true;
+            		if (a != 0) {
+            			transparent = false;
+            		}
+            	}
+            }
+        }
+        transparentNodata = (noData) ? (transparent) ? "true" : "false" : "NA";
+    	return transparentNodata;
+    }
+    
     private static void processBufferedImage(BufferedImage buffimage, NodeList nodes) throws Exception {
         HashMap<Object, Object> bandMap = new HashMap<Object, Object>();
 
@@ -146,6 +190,9 @@ public class ImageParser {
                         }
                         sampleMap.put(Integer.decode(sample), new Integer(0));
                     }
+                } else if (node.getLocalName().equals("transparentNodata")) { // 2011-08-24 PwD
+                	String transparentNodata = checkTransparentNodata(buffimage, node);
+                	node.setTextContent(transparentNodata);
                 }
             }
         }
@@ -520,6 +567,29 @@ public class ImageParser {
                         }
                     }
                     processBufferedImage(buffImage, node.getChildNodes());
+                } else if (node.getLocalName().equals("transparency")) { // 2011-08-24 PwD
+                	int transparency = image.getTransparency();
+                	String transparencyName = null;
+                	switch (transparency) {
+	                	case Transparency.OPAQUE: {
+	                		transparencyName = "Opaque";
+	                		break;
+	                	}
+	                	case Transparency.BITMASK: {
+	                		transparencyName = "Bitmask";
+	                		break;
+	                	}
+	                	case Transparency.TRANSLUCENT: {
+	                		transparencyName = "Translucent";
+	                		break;
+	                	}
+	                	default: {
+	                		transparencyName = "Unknown";
+	                	}
+                	}
+                	node.setTextContent(transparencyName);
+                    
+                	
                 } else {
                     logger.println("ImageParser Error: Invalid tag " + node.getNodeName());
                 }
