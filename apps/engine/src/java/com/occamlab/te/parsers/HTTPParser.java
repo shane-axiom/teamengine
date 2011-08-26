@@ -16,7 +16,8 @@
  Northrop Grumman Corporation are Copyright (C) 2005-2006, Northrop
  Grumman Corporation. All Rights Reserved.
 
- Contributor(s): No additional contributors to date
+ Contributor(s): Paul Daisey Image Matters LLC
+ 	2011-08-12  modify parse() to avoid NullPointerException when server resets connection
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
@@ -168,6 +169,7 @@ public class HTTPParser {
         Element root = doc.createElement(multipart ? "multipart-response" : "response");
 
         if (uc.getHeaderFieldKey(0) == null) {
+        	/*  2011-08-12 PwD was
             String status_line = uc.getHeaderField(0);
             String status_array[] = status_line.split("\\s");
             Element status = doc.createElement("status");
@@ -180,6 +182,21 @@ public class HTTPParser {
             if (status_array.length > 2) {
                 status.appendChild(doc.createTextNode(status_array[2]));
             }
+            */
+        	Element status = doc.createElement("status");
+        	String status_line = uc.getHeaderField(0);
+        	if (status_line != null) {
+                String status_array[] = status_line.split("\\s");
+                if (status_array.length > 0) {
+                    status.setAttribute("protocol", status_array[0]);
+                }
+                if (status_array.length > 1) {
+                    status.setAttribute("code", status_array[1]);
+                }
+                if (status_array.length > 2) {
+                    status.appendChild(doc.createTextNode(status_array[2]));
+                }       		
+        	}
             root.appendChild(status);
         }
 
