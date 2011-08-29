@@ -18,12 +18,15 @@
 
  Contributor(s): Paul Daisey Image Matters LLC
  	2011-08-12  modify parse() to avoid NullPointerException when server resets connection
+ 	2011-08-28  Use URLConnectionUtils.getInputStream(uc);
+ 	2011-08-28  Return complete HTTP status message
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
@@ -43,6 +46,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.occamlab.te.TECore;
+import com.occamlab.te.util.URLConnectionUtils;
 
 
 /**
@@ -179,7 +183,7 @@ public class HTTPParser {
             if (status_array.length > 1) {
                 status.setAttribute("code", status_array[1]);
             }
-            if (status_array.length > 2) {
+            if (status_array.length > 2) {  
                 status.appendChild(doc.createTextNode(status_array[2]));
             }
             */
@@ -193,9 +197,20 @@ public class HTTPParser {
                 if (status_array.length > 1) {
                     status.setAttribute("code", status_array[1]);
                 }
-                if (status_array.length > 2) {
+/*  2011-08-29 Pwd was              
+                if (status_array.length > 2) {  // this truncates multi-word descriptions
                     status.appendChild(doc.createTextNode(status_array[2]));
-                }       		
+                }      
+*/ 		
+                if (status_array.length > 2) {
+                	StringBuilder sb = new StringBuilder();
+                	for (int i = 2; i < status_array.length; i++) {
+                		sb.append(status_array[i]);
+                		sb.append(" ");
+                	}
+                	status.appendChild(doc.createTextNode(sb.toString()));
+        		}
+                // end 2011-08-29 PwD
         	}
             root.appendChild(status);
         }
@@ -214,7 +229,11 @@ public class HTTPParser {
             }
             int end = mime2.indexOf(endchar, start);
             String boundary = mime2.substring(start, end);
-            BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+            // begin 2022-08-29 PwD  
+            // was BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()));
+    		InputStream is = URLConnectionUtils.getInputStream(uc);
+    		BufferedReader in = new BufferedReader(new InputStreamReader(is));
+    		// end 2011-08-29 PwD 
             File temp = create_part_file(in, boundary);
             temp.delete();
             String line = in.readLine();
