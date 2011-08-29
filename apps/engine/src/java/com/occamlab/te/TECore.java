@@ -28,6 +28,7 @@
 				 Add putLogCache(), getLogCache(), getMode()
 				 Make changes for Test.REDO_FROM_CACHE_MODE
 				 Add support for ctl:dynamicParam inside ctl:request
+				 Use URLConnectionUtils.getInputStream(uc);
 				 
  ****************************************************************************/
 package com.occamlab.te;
@@ -109,6 +110,8 @@ import com.occamlab.te.util.LogUtils;
 import com.occamlab.te.util.Misc;
 import com.occamlab.te.util.StringUtils;
 import com.occamlab.te.util.SoapUtils;
+import com.occamlab.te.util.URLConnectionUtils;
+
 import java.util.Date;
 import org.w3c.dom.Comment;
 
@@ -1794,7 +1797,8 @@ public class TECore implements Runnable {
         Element content_e = response_doc.createElement("content");
         if (instruction == null) {
             try {
-                InputStream is = uc.getInputStream();
+            	// 2011-08-29 PwD  was InputStream is = uc.getInputStream();
+        		InputStream is = URLConnectionUtils.getInputStream(uc);     // 2011-08-29 PwD           
                 t.transform(new StreamSource(is), new DOMResult(content_e));
             } catch (Exception e) {
                 jlogger.log(Level.SEVERE,"parse Error",e);
