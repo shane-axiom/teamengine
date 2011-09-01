@@ -46,7 +46,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.occamlab.te.TECore;
-import com.occamlab.te.util.URLConnectionUtils;
+import com.occamlab.te.util.URLConnectionUtils;  // 2011-08-29 PwD
 
 
 /**
