@@ -20,6 +20,7 @@
  	2011-08-12  modify parse() to avoid NullPointerException when server resets connection
  	2011-08-28  Use URLConnectionUtils.getInputStream(uc);
  	2011-08-28  Return complete HTTP status message
+ 	2011-09-01  trim() HTTP status message
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
@@ -208,7 +209,7 @@ public class HTTPParser {
                 		sb.append(status_array[i]);
                 		sb.append(" ");
                 	}
-                	status.appendChild(doc.createTextNode(sb.toString()));
+                	status.appendChild(doc.createTextNode(sb.toString().trim()));
         		}
                 // end 2011-08-29 PwD
         	}
