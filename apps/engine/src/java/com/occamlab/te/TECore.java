@@ -29,6 +29,7 @@
 				 Make changes for Test.REDO_FROM_CACHE_MODE
 				 Add support for ctl:dynamicParam inside ctl:request
 				 Use URLConnectionUtils.getInputStream(uc);
+				 URLEncode request parameters
 				 
  ****************************************************************************/
 package com.occamlab.te;
@@ -47,6 +48,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,7 +112,12 @@ import com.occamlab.te.util.LogUtils;
 import com.occamlab.te.util.Misc;
 import com.occamlab.te.util.StringUtils;
 import com.occamlab.te.util.SoapUtils;
-import com.occamlab.te.util.URLConnectionUtils;
+import com.occamlab.te.util.URLConnectionUtils; // PwD
+// PwD
+import java.io.InputStreamReader;
+import java.io.CharArrayWriter;
+import java.io.StringBufferInputStream;
+
 
 import java.util.Date;
 import org.w3c.dom.Comment;
@@ -1477,7 +1484,8 @@ public class TECore implements Runnable {
                 } else if (n.getLocalName().equals("param")) {
                     if (sParams.length() > 0) sParams += "&";
                     sParams += ((Element) n).getAttribute("name") + "="
-                            + n.getTextContent();
+                    	+ URLEncoder.encode(n.getTextContent(), "UTF-8"); // 2011-09-01 PwD
+                    // 2011-09-01 PwD was + n.getTextContent();
                 // begin 2011-08-19 PwD
                 } else if (n.getLocalName().equals("dynamicParam")) {
                 	String name = null;
@@ -1489,7 +1497,8 @@ public class TECore implements Runnable {
                 			if (dpn.getLocalName().equals("name")) {
                 				name = dpn.getTextContent();
                 			} else if (dpn.getLocalName().equals("value")) {
-                				val = dpn.getTextContent();
+                				val = URLEncoder.encode(dpn.getTextContent(),"UTF-8"); // 2011-09-01 PwD
+                	// 2011-09-01 Pwd was			val = dpn.getTextContent();
                 			}
                 		}
                 	}
@@ -1798,11 +1807,10 @@ public class TECore implements Runnable {
         if (instruction == null) {
             try {
             	// 2011-08-29 PwD  was InputStream is = uc.getInputStream();
-        		InputStream is = URLConnectionUtils.getInputStream(uc);     // 2011-08-29 PwD           
-                t.transform(new StreamSource(is), new DOMResult(content_e));
+            	InputStream is = URLConnectionUtils.getInputStream(uc);     // 2011-08-29 PwD
+            	t.transform(new StreamSource(is), new DOMResult(content_e));
             } catch (Exception e) {
                 jlogger.log(Level.SEVERE,"parse Error",e);
-
                 parser_e.setTextContent(e.getClass().getName() + ": " + e.getMessage());
             }
         } else {
