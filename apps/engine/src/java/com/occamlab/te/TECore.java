@@ -30,7 +30,7 @@
 				 Add support for ctl:dynamicParam inside ctl:request
 				 Use URLConnectionUtils.getInputStream(uc);
 				 URLEncode request parameters
-				 
+				 Add some JavaDoc
  ****************************************************************************/
 package com.occamlab.te;
 
@@ -124,6 +124,10 @@ import org.w3c.dom.Comment;
 
 /**
  * Provides various utility methods to support test execution and logging.
+ * Primary ones include implementation and execution of 
+ * ctl:suite, ctl:profile, ctl:test, ctl:function,
+ * ctl:request and ctl:soap-request instructions, 
+ * and invocation of any parsers specified therein.
  *
  */
 public class TECore implements Runnable {
@@ -1370,6 +1374,12 @@ public class TECore implements Runnable {
 
     }
 
+    /*
+     * Implement ctl:request:
+     *  Create and send an HTTP request then return an HttpResponse.
+     *  Invoke any specified parsers on the response to validate it, 
+     *  change its format or derive specific information from it.
+     */
     public NodeList request(Document ctlRequest, String id) throws Throwable {
         Element request = (Element)ctlRequest.getElementsByTagNameNS(Test.CTL_NS, "request").item(0);
         if (opts.getMode() == Test.RESUME_MODE && prevLog != null) {
@@ -1396,6 +1406,7 @@ public class TECore implements Runnable {
         Element response = null;
         Element parserInstruction = null;
         NodeList nl = request.getChildNodes();
+        // find parsers to apply to response, and put their instructions in an Element
         for (int i = 0; i < nl.getLength(); i++) {
             Node n = nl.item(i);
             if (n.getNodeType() == Node.ELEMENT_NODE && !n.getNamespaceURI().equals(CTL_NS)) {
@@ -1785,15 +1796,23 @@ public class TECore implements Runnable {
         temp.delete();
         return result;
     }
-
+    /* Build a Document to hold parser result content, and invoke specified parsers.
+     * @return selected info from uc as specified by instruction Element and children.
+     */
     public Element parse(URLConnection uc, Node instruction) throws Throwable {
+    	// DomUtils.displayNode(instruction); // 2011-09-08 PwD education
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document response_doc = db.newDocument();
         return parse(uc, instruction, response_doc);
     }
-    
+    /* Invoke a parser or chain of parsers as specified by instruction element and children.
+     * Parsers in chain share uc, strip off their own instructions, and pass child instructions
+     * to next parser in chain. Final parser in chain modifies content.  All parsers in chain can 
+     * return info in attributes and child elements of instructions.
+     * If parser specified in instruction, call it to return specified info from uc.
+     */
     public Element parse(URLConnection uc, Node instruction, Document response_doc) throws Throwable {
 //        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 //        dbf.setNamespaceAware(true);
@@ -1854,6 +1873,7 @@ public class TECore implements Runnable {
             }
             Object return_object;
             try {
+            	// invoke parser specified in instruction
                 return_object = method.invoke(instance, args);
             } catch (java.lang.reflect.InvocationTargetException e) {
                 Throwable cause = e.getCause();
