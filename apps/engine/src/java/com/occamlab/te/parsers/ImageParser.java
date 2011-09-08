@@ -17,19 +17,26 @@
  Grumman Corporation. All Rights Reserved.
 
  Contributor(s): 
- 		2011-05-13 Paul Daisey (Image Matters LLC) added getImageWidth(), getImageHeight()
- 		2011-08-23 Paul Daisey (Image Matters LLC) add try/catch block to processFrame()to return image format
-		2011-08-24 Paul Daisey (Image Matters LLC) add case to processFrame() to return image transparency for parsers:transparency tag
-		2011-08-24 Paul Daisey (Image Matters LLC) add checkTransparentNodata(); call from processBufferedImage() for parsers:model/parsers:transparentNodata tag
+ 		Paul Daisey (Image Matters LLC)
+ 		2011-05-13 add getImageWidth(), getImageHeight()
+ 		2011-08-23 add try/catch block to processFrame()to return image format
+		2011-08-24 add case to processFrame() to return image transparency for parsers:transparency tag
+		2011-08-24 add checkTransparentNodata(); call from processBufferedImage() for parsers:model/parsers:transparentNodata tag
+		2011-09-08 add getBase64Data(), parseBase64(), formatName param to processBufferedImage()
+		
  ****************************************************************************/
 package com.occamlab.te.parsers;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.ArrayList;
@@ -55,6 +62,9 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
+
+import org.apache.commons.codec.binary.Base64;
 import org.w3c.dom.*;
 
 /**
@@ -103,6 +113,24 @@ public class ImageParser {
         }
     }
 
+    /* 2011-09-08 PwD
+     * @return image data as a base64 encoded string
+     */
+    private static String getBase64Data(BufferedImage buffImage, String formatName, Node node) throws Exception {
+    	int numBytes = buffImage.getWidth() * buffImage.getHeight() * 4;
+    	ByteArrayOutputStream baos = new ByteArrayOutputStream(numBytes);
+    	ImageOutputStream ios = ImageIO.createImageOutputStream(baos);
+    	boolean status = ImageIO.write(buffImage, formatName, ios);
+    	if (!status) {
+    		throw new Exception("No suitable ImageIO writer found by ImageParser.getBase64Data() for image format " + formatName);
+    	}
+    	byte[] imageData = baos.toByteArray();
+    	// String base64String = Base64.encodeBase64String(imageData); this is unchunked (no line breaks) which is unwieldy
+    	byte[] base64Data = Base64.encodeBase64Chunked(imageData);
+    	String base64String = new String(base64Data, StandardCharsets.UTF_8);
+    	return base64String;
+    }
+    
     /* 2011-08-24 PwD
      * check that all pixels in image with no data are transparent 
      * @return NA if all pixels contain data
@@ -144,8 +172,11 @@ public class ImageParser {
         transparentNodata = (noData) ? (transparent) ? "true" : "false" : "NA";
     	return transparentNodata;
     }
-    
-    private static void processBufferedImage(BufferedImage buffimage, NodeList nodes) throws Exception {
+    /*
+     * Process buffered image obtained from Reader
+     * 2011-09-08 PwD added formatName param to support getBase64Data()
+     */
+    private static void processBufferedImage(BufferedImage buffimage, String formatName, NodeList nodes) throws Exception {
         HashMap<Object, Object> bandMap = new HashMap<Object, Object>();
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -157,7 +188,7 @@ public class ImageParser {
                     int y = Integer.parseInt(e.getAttribute("y"));
                     int w = Integer.parseInt(e.getAttribute("width"));
                     int h = Integer.parseInt(e.getAttribute("height"));
-                    processBufferedImage(buffimage.getSubimage(x, y, w, h), e.getChildNodes());
+                    processBufferedImage(buffimage.getSubimage(x, y, w, h), formatName, e.getChildNodes());
                 } else if (node.getLocalName().equals("checksum")) {
                     CRC32 checksum = new CRC32();
                     Raster raster = buffimage.getRaster();
@@ -193,7 +224,7 @@ public class ImageParser {
                 } else if (node.getLocalName().equals("transparentNodata")) { // 2011-08-24 PwD
                 	String transparentNodata = checkTransparentNodata(buffimage, node);
                 	node.setTextContent(transparentNodata);
-                }
+                 }
             }
         }
 
@@ -502,7 +533,7 @@ public class ImageParser {
         if (nodes.getLength() == 0) {
             return null;
         }
-
+        String formatName = reader.getFormatName().toLowerCase(); // 2011-09-08 PwD
         BufferedImage image = reader.read(frame);
 
         for (int i = 0; i < nodes.getLength(); i++) {
@@ -510,7 +541,7 @@ public class ImageParser {
             if (node.getNodeType() == Node.ELEMENT_NODE) {
                 // System.out.println(node.getLocalName());
                 if (node.getLocalName().equals("type")) {
-                    node.setTextContent(reader.getFormatName().toLowerCase());
+                    node.setTextContent(formatName); // 2011-09-08 PwD  was reader.getFormatName().toLowerCase()
                 } else if (node.getLocalName().equals("height")) {
                     node.setTextContent(Integer.toString(image.getHeight()));
                 } else if (node.getLocalName().equals("width")) {
@@ -566,7 +597,7 @@ public class ImageParser {
                             }
                         }
                     }
-                    processBufferedImage(buffImage, node.getChildNodes());
+                    processBufferedImage(buffImage, formatName, node.getChildNodes());
                 } else if (node.getLocalName().equals("transparency")) { // 2011-08-24 PwD
                 	int transparency = image.getTransparency();
                 	String transparencyName = null;
@@ -589,7 +620,9 @@ public class ImageParser {
                 	}
                 	node.setTextContent(transparencyName);
                     
-                	
+                } else if (node.getLocalName().equals("base64Data")) { // 2011-09-08 PwD
+                 	String base64Data = getBase64Data(image, formatName, node);
+                	node.setTextContent(base64Data);
                 } else {
                     logger.println("ImageParser Error: Invalid tag " + node.getNodeName());
                 }
@@ -598,6 +631,18 @@ public class ImageParser {
         return null;
     }
 
+    /*
+     * Parse a string of base64 encoded image data.
+     * 2011-09-08 PwD
+     */
+    public static Document parseBase64(String base64Data, Element instruction) throws Exception {
+    	byte[] imageData = Base64.decodeBase64(base64Data);
+    	ByteArrayInputStream bais = new ByteArrayInputStream(imageData);
+        StringWriter swLogger = new StringWriter();
+        PrintWriter pwLogger = new PrintWriter(swLogger);
+        return parse(bais, instruction, pwLogger);
+    }
+    
     private static Document parse(InputStream source, Element instruction, PrintWriter logger) throws Exception {
         ImageReader reader;
         try {
