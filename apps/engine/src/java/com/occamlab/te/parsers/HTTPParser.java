@@ -21,6 +21,7 @@
  	2011-08-28  Use URLConnectionUtils.getInputStream(uc);
  	2011-08-28  Return complete HTTP status message
  	2011-09-01  trim() HTTP status message
+ 	2011-09-08  Correct / add JavaDoc and comments
 
  ****************************************************************************/
 package com.occamlab.te.parsers;
@@ -47,12 +48,15 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.occamlab.te.TECore;
+import com.occamlab.te.util.DomUtils;
 import com.occamlab.te.util.URLConnectionUtils;  // 2011-08-29 PwD
 
 
 /**
- * Parses an HTTP response message and produces a DOM Document representation of
- * the message content.
+ * HTTPParser returns HTTP status and header information.
+ * It uses other parser(s) to parse the content; TECore by default if others are not specified. 
+ * It supports multipart messages.
+ * It returns a DOM Document representation of the message status, headers, and content.
  * 
  */
 public class HTTPParser {
@@ -79,6 +83,10 @@ public class HTTPParser {
         }
     }
 
+    /*
+     * Select a parser for message part based on part number and MIME format type, 
+     * if supplied in instructions.
+     */
     private static Node select_parser(int partnum, String mime, Element instruction) {
         NodeList instructions = instruction.getElementsByTagNameNS(PARSERS_NS, "parse");
         for (int i = 0; i < instructions.getLength(); i++) {
@@ -162,8 +170,12 @@ public class HTTPParser {
         return temp;
     }
 
+    /**
+     * Invocation point: Method called by TECore for request or soap-request.
+     */
     public static Document parse(URLConnection uc, Element instruction,
             PrintWriter logger, TECore core) throws Throwable {
+    	// DomUtils.displayNode(instruction); // 2011-09-08 PwD education
         uc.connect();
         String mime = uc.getContentType();
         boolean multipart = (mime != null && mime.startsWith("multipart"));
@@ -263,6 +275,7 @@ public class HTTPParser {
                 URLConnection pc = temp.toURI().toURL().openConnection();
                 pc.setRequestProperty("Content-type", mime);
                 Node parser = select_parser(num, contentType, instruction);
+                // use TECore to invoke any chained parsers
                 Element response_e = core.parse(pc, parser);
                 temp.delete();
                 Element parser_e = (Element) (response_e.getElementsByTagName("parser").item(0));
@@ -277,6 +290,7 @@ public class HTTPParser {
             }
         } else {
             Node parser = select_parser(0, uc.getContentType(), instruction);
+            // use TECore to invoke any chained parsers
             Element response_e = core.parse(uc, parser);
             Element parser_e = (Element) (response_e.getElementsByTagName("parser").item(0));
             if (parser_e != null) {
