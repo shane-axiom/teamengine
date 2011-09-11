@@ -51,7 +51,6 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.ImageObserver;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
-import java.awt.image.ColorModel;  // 2011-08-24 PwD
 import java.awt.Transparency;      // 2011-08-24 PwD
 
 import javax.xml.transform.*;
