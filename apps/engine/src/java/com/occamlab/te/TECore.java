@@ -340,7 +340,7 @@ public class TECore implements Runnable {
         }
         // end 2011-03-30 PwD
         XPathContext context = getXPathContext(test, opts.getSourcesName(), contextNode);
-        return executeTest(test, paramsNode, context);  // line 555
+        return executeTest(test, paramsNode, context);  // line 586
     }
 
     public void execute_suite(String suiteName, List<String> params) throws Exception {
@@ -384,7 +384,7 @@ public class TECore implements Runnable {
         out.println("Testing suite " + name + " in " + getMode() + " with defaultResult of " + defaultResultName + " ...");
         // end 2011-06-09 PwD
         setIndentLevel(1);
-        int result = execute_test(suite.getStartingTest().toString(), kvps, null);  // line 303
+        int result = execute_test(suite.getStartingTest().toString(), kvps, null);  // line 327
         out.print("Suite " + suite.getPrefix() + ":" + suite.getLocalName() + " ");
         if (result == TECore.FAIL || result == TECore.INHERITED_FAILURE) {
             out.println("Failed");
