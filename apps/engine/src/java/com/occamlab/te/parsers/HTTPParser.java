@@ -184,7 +184,8 @@ public class HTTPParser {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.newDocument();
         Element root = doc.createElement(multipart ? "multipart-response" : "response");
-
+        String httpStatusCode = "200"; // 2011-10-07 PwD
+        
         if (uc.getHeaderFieldKey(0) == null) {
         	/*  2011-08-12 PwD was
             String status_line = uc.getHeaderField(0);
@@ -209,6 +210,7 @@ public class HTTPParser {
                 }
                 if (status_array.length > 1) {
                     status.setAttribute("code", status_array[1]);
+                    httpStatusCode = status_array[1]; // 2011-10-07 PwD
                 }
 /*  2011-08-29 Pwd was              
                 if (status_array.length > 2) {  // this truncates multi-word descriptions
@@ -230,6 +232,14 @@ public class HTTPParser {
 
         append_headers(uc, root);
 
+        /* begin 2011-10-07 PwD
+        if (httpStatusCode.equals("404")) {
+        	// chained parser will fail; don't bother; return status code for ctl:script to check / report
+            doc.appendChild(root);
+            return doc;
+        }
+        end 2011-10-07 PwD */
+        
         Transformer t = TransformerFactory.newInstance().newTransformer();
 
         if (multipart) {
