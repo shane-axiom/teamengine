@@ -1,0 +1,9 @@
+<Context>
+  <Listener className="org.apache.catalina.mbeans.ServerLifecycleListener"
+            descriptors="/com/occamlab/te/realm/mbean-descriptor.xml" />
+  <Realm className="com.occamlab.te.realm.UserFilesRealm"
+         root="../teamEngine/users"/>
+<!-- From http://tomcat.apache.org/tomcat-5.5-doc/config/realm.html, root should be 
+Absolute or relative (to $CATALINA_HOME) pathname to the XML file 
+containing our user information.  -->
+</Context>

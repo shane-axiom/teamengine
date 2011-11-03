@@ -1,0 +1,70 @@
+<config>
+  <home></home>
+  <scriptsdir>webapps/teamengine/WEB-INF/scripts</scriptsdir>
+  <resourcesdir>webapps/teamengine/WEB-INF/scripts</resourcesdir>
+  <usersdir>C:\sw\apache-tomcat-5.5.29\teamEngine\users</usersdir>
+  <workdir>C:\sw\apache-tomcat-5.5.29\teamEngine\work</workdir>
+  <scripts>
+    <organization>
+      <name>OGC</name>
+      <standard>
+        <name>SOS</name>
+        <version>
+          <name>1.0.0</name>
+          <suite>
+            <namespace-uri>http://www.opengis.net/sos/1.0</namespace-uri>
+            <prefix>sos</prefix>
+            <local-name>suite</local-name>
+            <title>OGC SOS 1.0.0 Test Suite</title>
+          </suite>
+          <revision>
+            <name>2011-04-01</name>
+            <sources>
+              <source>sos-1.0.0/ctl</source>
+            </sources>
+            <webdir>sos-1.0.0</webdir>
+          </revision>
+        </version>
+      </standard>
+      <standard>
+        <name>WMS Client</name>
+        <version>
+          <name>1.3.0</name>
+          <suite>
+            <namespace-uri>urn:wms_client_test_suite/main</namespace-uri>
+            <prefix>main</prefix>
+            <local-name>suite</local-name>
+            <title>Example Client Test Suite</title>
+          </suite>
+          <revision>
+            <name>r0</name>
+            <sources>
+              <source>wms_client-r0/ctl</source>
+            </sources>
+            <resources>wms_client-r0/resources</resources>
+            <webdir>wms_client-r0</webdir>
+          </revision>
+        </version>
+      </standard>
+      <standard>
+        <name>WMTS</name>
+        <version>
+          <name>1.0.0</name>
+          <suite>
+            <namespace-uri>http://www.opengis.net/wmts/1.0</namespace-uri>
+            <prefix>wmts</prefix>
+            <local-name>suite</local-name>
+            <title>OGC WMTS 1.0.0 Test Suite</title>
+          </suite>
+          <revision>
+            <name>2011-04-01</name>
+            <sources>
+              <source>wmts-1.0.0-dev/ctl</source>
+            </sources>
+            <webdir>wmts-1.0.0-dev</webdir>
+          </revision>
+        </version>
+      </standard>
+    </organization>
+  </scripts>
+</config>
