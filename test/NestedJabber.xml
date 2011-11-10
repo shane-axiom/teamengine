@@ -1,0 +1,89 @@
+<ctl:package
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:ctl="http://www.occamlab.com/ctl" 
+xmlns:wmts="http://www.opengis.net/wmts/1.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.occamlab.com/ctl C:\sw\eclipse362\ws\TeamEngineWMTS\apps\engine\resources\com\occamlab\te\schemas\ctl.xsd">
+
+<ctl:suite name="wmts:nestedJabberSuite">
+	<ctl:title>WMTS NESTED JABBER SUITE</ctl:title>
+	<ctl:description>Lots of talk about test status</ctl:description>
+	<ctl:defaultResult>BestPractice</ctl:defaultResult>
+	<ctl:starting-test>wmts:Start</ctl:starting-test> 
+</ctl:suite>
+
+<ctl:test name="wmts:Start" type="Mandatory">
+	<ctl:context>wmts:nestedJabberSuite</ctl:context>
+	<ctl:assertion>WMTS client and/or server tests are executed.</ctl:assertion>
+	<ctl:code>
+		<ctl:message>WMTS Start</ctl:message>
+		<ctl:call-test name="wmts:Bootstrap"/>
+		<ctl:call-test name="wmts:GetCapabilitiesKVPGET"/>
+	</ctl:code>
+</ctl:test>
+
+<ctl:package>
+	<ctl:test name="wmts:Bootstrap" type="Mandatory">
+		<ctl:context>wmts:start</ctl:context>
+		<ctl:assertion>The WMTS Server supports either or both KVP GET or RESTful GetCapabilities mandatory Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>WMTS Bootstrap</ctl:message>
+			<ctl:call-test name="wmts:BootstrapKVPGET"/>
+			<ctl:call-test name="wmts:BootstrapRESTful"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:BootstrapKVPGET" type="Mandatory">
+		<ctl:context>wmts:Bootstrap</ctl:context>
+		<ctl:assertion>The WMTS Server supports KVP GET GetCapabilities mandatory Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>KVP GET is pass</ctl:message>
+			<ctl:pass/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:BootstrapRESTful" type="MandatoryIfImplemented">
+		<ctl:context>wmts:Bootstrap</ctl:context>
+		<ctl:assertion>The WMTS Server supports RESTful GETCapabilities mandatory Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>RESTful is Skipped</ctl:message>
+			<ctl:skipped/>
+		</ctl:code>
+	</ctl:test>
+</ctl:package>
+
+<ctl:package>
+	<ctl:test name="wmts:GetCapabilitiesKVPGET" type="Optional">
+		<ctl:context>wmts:Start</ctl:context>
+		<ctl:assertion>The WMTS Server supports KVP GET GetCapabilities mandatory and optional Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>GetCapabilitiesKVPGET</ctl:message>
+			<ctl:call-test name="wmts:GetCapabilitiesMandatoryKVPGET"/>
+			<ctl:call-test name="wmts:GetCapabilitiesOptionalKVPGET"/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:GetCapabilitiesMandatoryKVPGET" type="Mandatory">
+		<ctl:context>wmts:GetCapabilitiesKVPGET</ctl:context>
+		<ctl:assertion>The WMTS Server supports KVP GET GetCapabilities mandatory and optional Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>GetCapabilitiesMandatoryKVPGET</ctl:message>
+			<ctl:fail/>
+		</ctl:code>
+	</ctl:test>
+	
+	<ctl:test name="wmts:GetCapabilitiesOptionalKVPGET" type="MandatoryIfImplemented">
+		<ctl:context>wmts:GetCapabilitiesKVPGET</ctl:context>
+		<ctl:assertion>The WMTS Server supports KVP GET GetCapabilities mandatory and optional Requests</ctl:assertion>
+		<ctl:code>
+			<ctl:message>GetCapabilitiesOptionalKVPGET</ctl:message>
+			<ctl:notTested/>
+		</ctl:code>
+	</ctl:test>
+	
+	
+</ctl:package>
+	
+	
+</ctl:package>
+
