@@ -50,6 +50,17 @@ public class Generator {
     private static final Logger LOGR = Logger.getLogger(Generator.class
             .getName());
 
+    private static String suiteDefaultResult = "Pass";
+
+    public static void setSuiteDefaultResult(String resultName) {
+        suiteDefaultResult = resultName.equals("BestPractice") ? "BestPractice"
+                : "Pass";
+    }
+
+    public static String getSuiteDefaultResult() {
+        return suiteDefaultResult;
+    }
+
     public static Index generateXsl(SetupOptions opts) throws Exception {
         Index masterIndex = new Index();
 

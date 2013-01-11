@@ -2,9 +2,7 @@ package com.occamlab.te.util;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.net.URLConnection;
-import sun.net.www.protocol.http.HttpURLConnection;
 
 /*
  * sun.net.www.protocol.http.HttpURLConnection is not accessible from the 

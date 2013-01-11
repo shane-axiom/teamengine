@@ -23,6 +23,7 @@ package com.occamlab.te.parsers;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
@@ -42,11 +43,16 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.occamlab.te.TECore;
+import com.occamlab.te.util.URLConnectionUtils;
 
 /**
  * Parses an HTTP response message and produces a DOM Document representation of
  * the message content.
  * 
+ * HTTPParser returns HTTP status and header information. It uses other
+ * parser(s) to parse the content; TECore by default if others are not
+ * specified. It supports multipart messages. It returns a DOM Document
+ * representation of the message status, headers, and content.
  */
 public class HTTPParser {
     public static final String PARSERS_NS = "http://www.occamlab.com/te/parsers";
@@ -72,6 +78,10 @@ public class HTTPParser {
         }
     }
 
+    /**
+     * Select a parser for message part based on part number and MIME format
+     * type, if supplied in instructions.
+     */
     private static Node select_parser(int partnum, String mime,
             Element instruction) {
         NodeList instructions = instruction.getElementsByTagNameNS(PARSERS_NS,
@@ -145,18 +155,24 @@ public class HTTPParser {
             }
         }
         int qPos = 0;
-        while (!queue_equals(queue, qPos, qLen, boundary_queue)) {
-            raf.write(queue[qPos]);
-            queue[qPos] = in.read();
-            if (queue[qPos] == -1) {
-                throw new Exception(EOS_ERR);
+        try {
+            while (!queue_equals(queue, qPos, qLen, boundary_queue)) {
+                raf.write(queue[qPos]);
+                queue[qPos] = in.read();
+                if (queue[qPos] == -1) {
+                    throw new Exception(EOS_ERR);
+                }
+                qPos = (qPos + 1) % qLen;
             }
-            qPos = (qPos + 1) % qLen;
+        } finally {
+            raf.close();
         }
-        raf.close();
         return temp;
     }
 
+    /**
+     * Invocation point: Method called by TECore for request or soap-request.
+     */
     public static Document parse(URLConnection uc, Element instruction,
             PrintWriter logger, TECore core) throws Throwable {
         uc.connect();
@@ -168,24 +184,42 @@ public class HTTPParser {
         Document doc = db.newDocument();
         Element root = doc.createElement(multipart ? "multipart-response"
                 : "response");
-
+        String httpStatusCode = "200";
         if (uc.getHeaderFieldKey(0) == null) {
-            String status_line = uc.getHeaderField(0);
-            String status_array[] = status_line.split("\\s");
             Element status = doc.createElement("status");
-            if (status_array.length > 0) {
-                status.setAttribute("protocol", status_array[0]);
-            }
-            if (status_array.length > 1) {
-                status.setAttribute("code", status_array[1]);
-            }
-            if (status_array.length > 2) {
-                status.appendChild(doc.createTextNode(status_array[2]));
+            String status_line = uc.getHeaderField(0);
+            if (status_line != null) {
+                String status_array[] = status_line.split("\\s");
+                if (status_array.length > 0) {
+                    status.setAttribute("protocol", status_array[0]);
+                }
+                if (status_array.length > 1) {
+                    status.setAttribute("code", status_array[1]);
+                    httpStatusCode = status_array[1];
+                }
+                if (status_array.length > 2) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 2; i < status_array.length; i++) {
+                        sb.append(status_array[i]);
+                        sb.append(" ");
+                    }
+                    status.appendChild(doc.createTextNode(sb.toString().trim()));
+                }
             }
             root.appendChild(status);
         }
 
         append_headers(uc, root);
+
+        // 2011-10-07 PwD
+        /*
+        if (httpStatusCode.equals("404")) {
+            // chained parser will fail; don't bother; return status code for
+            // ctl:script to check / report
+            doc.appendChild(root);
+            return doc;
+        }
+        */
 
         Transformer t = TransformerFactory.newInstance().newTransformer();
 
@@ -199,8 +233,8 @@ public class HTTPParser {
             }
             int end = mime2.indexOf(endchar, start);
             String boundary = mime2.substring(start, end);
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    uc.getInputStream()));
+            InputStream is = URLConnectionUtils.getInputStream(uc);
+            BufferedReader in = new BufferedReader(new InputStreamReader(is));
             File temp = create_part_file(in, boundary);
             temp.delete();
             String line = in.readLine();
@@ -229,6 +263,7 @@ public class HTTPParser {
                 URLConnection pc = temp.toURI().toURL().openConnection();
                 pc.setRequestProperty("Content-type", mime);
                 Node parser = select_parser(num, contentType, instruction);
+                // use TECore to invoke any chained parsers
                 Element response_e = core.parse(pc, parser);
                 temp.delete();
                 Element parser_e = (Element) (response_e
@@ -245,6 +280,7 @@ public class HTTPParser {
             }
         } else {
             Node parser = select_parser(0, uc.getContentType(), instruction);
+            // use TECore to invoke any chained parsers
             Element response_e = core.parse(uc, parser);
             Element parser_e = (Element) (response_e
                     .getElementsByTagName("parser").item(0));

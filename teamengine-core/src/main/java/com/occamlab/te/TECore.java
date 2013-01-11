@@ -35,9 +35,11 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -72,8 +74,6 @@ import net.sf.saxon.s9api.XdmSequenceIterator;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
-import net.sf.saxon.type.Type;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -95,11 +95,16 @@ import com.occamlab.te.util.LogUtils;
 import com.occamlab.te.util.Misc;
 import com.occamlab.te.util.StringUtils;
 import com.occamlab.te.util.SoapUtils;
+import com.occamlab.te.util.URLConnectionUtils;
+
 import java.util.Date;
 import org.w3c.dom.Comment;
 
 /**
  * Provides various utility methods to support test execution and logging.
+ * Primary ones include implementation and execution of ctl:suite, ctl:profile,
+ * ctl:test, ctl:function, ctl:request and ctl:soap-request instructions, and
+ * invocation of any parsers specified therein.
  * 
  */
 public class TECore implements Runnable {
@@ -120,9 +125,14 @@ public class TECore implements Runnable {
     String indent = ""; // Contains the appropriate number of spaces for the
                         // current indent level
     String contextLabel = ""; // Current context label set by ctl:for-each
+    String testType = "Mandatory"; // Type of current test
+    String defaultResultName = "Pass"; // Default result name for current test
+    int defaultResult = PASS; // Default result for current test
     int result; // Result for current test
     Document prevLog = null; // Log document for current test from previous test
                              // execution (resume and retest modes only)
+    // Log document for suite to enable use of getLogCache by profile test
+    Document suiteLog = null;
     PrintWriter logger = null; // Logger for current test
     volatile String formHtml; // HTML representation for an active form
     volatile Document formResults; // Holds form results until they are
@@ -131,14 +141,28 @@ public class TECore implements Runnable {
     Map<Integer, Object> functionInstances = new HashMap<Integer, Object>();
     Map<String, Object> parserInstances = new HashMap<String, Object>();
     Map<String, Method> parserMethods = new HashMap<String, Method>();
+    LinkedList<TestEntry> testStack = new LinkedList<TestEntry>();
     volatile boolean threadComplete = false;
     volatile boolean stop = false;
     volatile ByteArrayOutputStream threadOutput;
-    public static final int PASS = 0;
-    public static final int WARNING = 1;
+    /*
+     * public static final int PASS = 0; public static final int WARNING = 1;
+     * public static final int CONTINUE = -1; public static final int
+     * INHERITED_FAILURE = 2; public static final int FAIL = 3;
+     */
     public static final int CONTINUE = -1;
-    public static final int INHERITED_FAILURE = 2;
-    public static final int FAIL = 3;
+    public static final int BEST_PRACTICE = 0;
+    public static final int PASS = 1;
+    public static final int NOT_TESTED = 2;
+    public static final int SKIPPED = 3;
+    public static final int WARNING = 4;
+    public static final int INHERITED_FAILURE = 5;
+    public static final int FAIL = 6;
+
+    public static final int MANDATORY = 0;
+    public static final int MANDATORY_IF_IMPLEMENTED = 1;
+    public static final int OPTIONAL = 2;
+
     static final String XSL_NS = Test.XSL_NS;
     static final String CTL_NS = Test.CTL_NS;
     static final String TE_NS = Test.TE_NS;
@@ -156,9 +180,16 @@ public class TECore implements Runnable {
         this.opts = opts;
         // this.sessionId = opts.getSessionId();
         // this.sourcesName = opts.getSourcesName();
-
         testPath = opts.getSessionId();
         out = System.out;
+    }
+
+    public TestEntry getParentTest() {
+        if (testStack.size() < 2) {
+            return testStack.peek();
+        } else {
+            return testStack.get(1);
+        }
     }
 
     public String getParamsXML(List<String> params) throws Exception {
@@ -198,6 +229,9 @@ public class TECore implements Runnable {
     // Execute tests
     public void execute() throws Exception {
         try {
+            TestEntry grandParent = new TestEntry();
+            grandParent.setType("Mandatory");
+            testStack.push(grandParent);
             String sessionId = opts.getSessionId();
             // File logDir = opts.getLogDir();
             int mode = opts.getMode();
@@ -205,6 +239,8 @@ public class TECore implements Runnable {
             ArrayList<String> params = opts.getParams();
 
             if (mode == Test.RESUME_MODE) {
+                reexecute_test(sessionId);
+            } else if (mode == Test.REDO_FROM_CACHE_MODE) {
                 reexecute_test(sessionId);
             } else if (mode == Test.RETEST_MODE) {
                 for (String testPath : opts.getTestPaths()) {
@@ -223,11 +259,21 @@ public class TECore implements Runnable {
                     }
                     if (profiles.contains("*")) {
                         for (String profile : index.getProfileKeys()) {
-                            execute_profile(profile, params, false);
+                            try {
+                                execute_profile(profile, params, false);
+                            } catch (Exception e) {
+                                jlogger.log(Level.WARNING, e.getMessage(),
+                                        e.getCause());
+                            }
                         }
                     } else {
                         for (String profile : profiles) {
-                            execute_profile(profile, params, true);
+                            try {
+                                execute_profile(profile, params, true);
+                            } catch (Exception e) {
+                                jlogger.log(Level.WARNING, e.getMessage(),
+                                        e.getCause());
+                            }
                         }
                     }
                 }
@@ -257,6 +303,29 @@ public class TECore implements Runnable {
                 contextNode);
         setTestPath(testPath);
         executeTest(test, paramsNode, context);
+        if (testPath.equals(opts.getSessionId())) {
+            // Profile not executed in retest mode
+            suiteLog = LogUtils.readLog(opts.getLogDir(), testPath);
+            ArrayList<String> params = opts.getParams();
+            List<String> profiles = opts.getProfiles();
+            if (profiles.contains("*")) {
+                for (String profile : index.getProfileKeys()) {
+                    try {
+                        execute_profile(profile, params, false);
+                    } catch (Exception e) {
+                        jlogger.log(Level.WARNING, e.getMessage(), e.getCause());
+                    }
+                }
+            } else {
+                for (String profile : profiles) {
+                    try { // 2011-12-21 PwD
+                        execute_profile(profile, params, true);
+                    } catch (Exception e) {
+                        jlogger.log(Level.WARNING, e.getMessage(), e.getCause());
+                    }
+                }
+            }
+        }
     }
 
     public int execute_test(String testName, List<String> params,
@@ -273,6 +342,12 @@ public class TECore implements Runnable {
         }
         XdmNode paramsNode = engine.getBuilder().build(
                 new StreamSource(new StringReader(getParamsXML(params))));
+        if (contextNode == null && test.usesContext()) {
+            String contextNodeXML = "<context><value>" + test.getContext()
+                    + "</value></context>";
+            contextNode = engine.getBuilder().build(
+                    new StreamSource(new StringReader(contextNodeXML)));
+        }
         XPathContext context = getXPathContext(test, opts.getSourcesName(),
                 contextNode);
         return executeTest(test, paramsNode, context);
@@ -297,6 +372,12 @@ public class TECore implements Runnable {
                 throw new Exception("Error: Suite " + suiteName + " not found.");
             }
         }
+        defaultResultName = suite.getDefaultResult();
+        defaultResult = defaultResultName.equals("BestPractice") ? BEST_PRACTICE
+                : PASS;
+        testStack.peek().setDefaultResult(defaultResult);
+        testStack.peek().setResult(defaultResult);
+
         ArrayList<String> kvps = new ArrayList<String>();
         kvps.addAll(params);
         Document form = suite.getForm();
@@ -309,7 +390,8 @@ public class TECore implements Runnable {
             }
         }
         String name = suite.getPrefix() + ":" + suite.getLocalName();
-        out.println("Testing suite " + name + "...");
+        out.println("Testing suite " + name + " in " + getMode()
+                + " with defaultResult of " + defaultResultName + " ...");
         setIndentLevel(1);
         int result = execute_test(suite.getStartingTest().toString(), kvps,
                 null);
@@ -317,6 +399,8 @@ public class TECore implements Runnable {
                 + " ");
         if (result == TECore.FAIL || result == TECore.INHERITED_FAILURE) {
             out.println("Failed");
+        } else if (result == TECore.BEST_PRACTICE) {
+            out.println("Passed as Best Practice");
         } else {
             out.println("Passed");
         }
@@ -328,7 +412,6 @@ public class TECore implements Runnable {
         if (profile == null) {
             throw new Exception("Error: Profile " + profileName + " not found.");
         }
-
         SuiteEntry suite = index.getSuite(profile.getBaseSuite());
         if (suite == null) {
             throw new Exception("Error: The base suite ("
@@ -341,6 +424,7 @@ public class TECore implements Runnable {
             execute_suite(suite.getId(), params);
             log = LogUtils.readLog(opts.getLogDir(), sessionId);
         }
+        suiteLog = log;
         String testId = LogUtils.getTestIdFromLog(log);
         List<String> baseParams = LogUtils.getParamListFromLog(
                 engine.getBuilder(), log);
@@ -374,18 +458,29 @@ public class TECore implements Runnable {
                 if (baseResult == TECore.FAIL
                         || baseResult == TECore.INHERITED_FAILURE) {
                     summary = "Failed";
+                } else if (result == TECore.BEST_PRACTICE) {
+                    summary = "Passed as Best Practice";
                 } else {
                     summary = "Passed";
                 }
             }
             out.println(summary);
             setIndentLevel(1);
+            String defaultResultName = profile.getDefaultResult();
+            defaultResult = defaultResultName.equals("BestPractice") ? BEST_PRACTICE
+                    : PASS;
+            out.println("\nExecuting profile " + name
+                    + " with defaultResult of " + defaultResultName + "...");
             int result = execute_test(profile.getStartingTest().toString(),
                     kvps, null);
             out.print("Profile " + profile.getPrefix() + ":"
                     + profile.getLocalName() + " ");
             if (result == TECore.FAIL || result == TECore.INHERITED_FAILURE) {
                 summary = "Failed";
+            } else if (result == TECore.BEST_PRACTICE) {
+                summary = "Passed as Best Practice";
+            } else {
+                summary = "Passed";
             }
             out.println(summary);
         } else {
@@ -416,6 +511,7 @@ public class TECore implements Runnable {
         if (params != null) {
             xt.setParameter(TEPARAMS_QNAME, params);
         }
+        // test may set global result, e.g. by calling ctl:fail
         xt.transform();
         XdmNode ret = dest.getXdmNode();
         return ret;
@@ -478,14 +574,20 @@ public class TECore implements Runnable {
     }
 
     static String getResultDescription(int result) {
-        if (result == PASS) {
+        if (result == CONTINUE) {
+            return "Inconclusive! Continue Test";
+        } else if (result == BEST_PRACTICE) {
+            return "Passed as Best Practice";
+        } else if (result == PASS) {
             return "Passed";
+        } else if (result == NOT_TESTED) {
+            return "Not Tested";
+        } else if (result == SKIPPED) {
+            return "Skipped - Prerequisites Not Met";
         } else if (result == WARNING) {
             return ("generated a Warning.");
         } else if (result == INHERITED_FAILURE) {
             return "Failed (Inherited failure)";
-        } else if (result == CONTINUE) {
-            return "Inconclusive! Continue Test";
         } else {
             return "Failed";
         }
@@ -493,62 +595,66 @@ public class TECore implements Runnable {
 
     public int executeTest(TestEntry test, XdmNode params, XPathContext context)
             throws Exception {
+        testStack.push(test);
+        testType = test.getType();
+        defaultResult = test.getDefaultResult();
+        defaultResultName = (defaultResult == BEST_PRACTICE) ? "BestPractice"
+                : "Pass";
         Document oldPrevLog = prevLog;
         if (opts.getMode() == Test.RESUME_MODE) {
+            prevLog = readLog();
+        } else if (opts.getMode() == Test.REDO_FROM_CACHE_MODE) {
             prevLog = readLog();
         } else {
             prevLog = null;
         }
-
         String assertion = getAssertionValue(test.getAssertion(), params);
-        out.print(indent + (prevLog == null ? "Testing " : "Resuming Test "));
-        out.println(test.getName() + " (" + testPath + ")...");
-
+        out.print("Testing ");
+        out.print(test.getName() + " type " + test.getType());
+        out.print(" in " + getMode() + " with defaultResult "
+                + defaultResultName + " ");
+        out.println("(" + testPath + ")...");
         String oldIndent = indent;
         indent += INDENT;
-
+        if (test.usesContext()) {
+            out.println(indent + "Context: " + test.getContext());
+        }
         out.println(indent + "Assertion: " + assertion);
 
         PrintWriter oldLogger = logger;
         if (opts.getLogDir() != null) {
             logger = createLog();
             logger.println("<log>");
-            logger.println("<starttest local-name=\"" + test.getLocalName()
-                    + "\" " + "prefix=\"" + test.getPrefix() + "\" "
-                    + "namespace-uri=\"" + test.getNamespaceURI() + "\" "
-                    + "path=\"" + testPath + "\" " + "file=\""
-                    + test.getTemplateFile().getAbsolutePath() + "\">");
+            logger.print("<starttest ");
+            logger.print("local-name=\"" + test.getLocalName() + "\" ");
+            logger.print("prefix=\"" + test.getPrefix() + "\" ");
+            logger.print("namespace-uri=\"" + test.getNamespaceURI() + "\" ");
+            logger.print("type=\"" + test.getType() + "\" ");
+            logger.print("defaultResult=\""
+                    + Integer.toString(test.getDefaultResult()) + "\" ");
+            logger.print("path=\"" + testPath + "\" ");
+            logger.println("file=\"" + test.getTemplateFile().getAbsolutePath()
+                    + "\">");
             logger.println("<assertion>" + StringUtils.escapeXML(assertion)
                     + "</assertion>");
             if (params != null) {
                 logger.println(params.toString());
             }
             if (test.usesContext()) {
-                logger.println("<context label=\""
+                logger.print("<context label=\""
                         + StringUtils.escapeXML(contextLabel) + "\">");
-                NodeInfo contextNode = (NodeInfo) context.getContextItem();
-                int kind = contextNode.getNodeKind();
-                if (kind == Type.ATTRIBUTE) {
-                    logger.print("<value " + contextNode.getDisplayName()
-                            + "=\"" + contextNode.getStringValue() + "\"");
-                    // TODO: set namespace
-                    logger.println("/>");
-                } else if (kind == Type.ELEMENT || kind == Type.DOCUMENT) {
-                    logger.println("<value>");
-                    logger.println(DomUtils.serializeSource(engine.getBuilder()
-                            .build(contextNode).asSource()));
-                    logger.println("</value>");
-                }
+                logger.print("<value>");
+                logger.print(test.getContext());
+                logger.print("</value>");
                 logger.println("</context>");
-
             }
             logger.println("</starttest>");
             logger.flush();
         }
 
-        result = PASS;
+        result = defaultResult;
         try {
-            executeTemplate(test, params, context);
+            executeTemplate(test, params, context); // May set worse result
         } catch (SaxonApiException e) {
             jlogger.log(Level.SEVERE, e.getMessage(), e.getCause());
             out.println(e.getMessage());
@@ -556,7 +662,19 @@ public class TECore implements Runnable {
                 logger.println("<exception><![CDATA[" + e.getMessage()
                         + "]]></exception>");
             }
-            result = FAIL;
+            TestEntry parentTest = getParentTest();
+            if (result == CONTINUE) {
+                if ("Optional".equals(testType)) {
+                    result = parentTest.getResult();
+                } else {
+                    result = INHERITED_FAILURE;
+                    parentTest.setResult(result);
+                }
+            } else {
+                result = FAIL; // all other exceptions
+                parentTest.setResult(result);
+            }
+            testStack.pop();
         }
 
         if (logger != null) {
@@ -573,15 +691,13 @@ public class TECore implements Runnable {
 
         out.println(indent + "Test " + test.getName() + " "
                 + getResultDescription(result));
-
+        test.setResult(result);
         return result;
     }
 
     public synchronized void callTest(XPathContext context, String localName,
             String namespaceURI, NodeInfo params, String callId)
             throws Exception {
-        // System.out.println("call_test");
-        // System.out.println(params.getClass().getName());
         String key = "{" + namespaceURI + "}" + localName;
         TestEntry test = index.getTest(key);
 
@@ -594,6 +710,7 @@ public class TECore implements Runnable {
             Document doc = LogUtils.readLog(opts.getLogDir(), testPath + "/"
                     + callId);
             int result = LogUtils.getResultFromLog(doc);
+            // TODO revise the following
             if (result >= 0) {
                 out.println(indent + "Test " + test.getName() + " "
                         + getResultDescription(result));
@@ -610,25 +727,70 @@ public class TECore implements Runnable {
         }
 
         String oldTestPath = testPath;
-        int oldResult = result;
         testPath += "/" + callId;
         executeTest(test, S9APIUtils.makeNode(params), context);
         testPath = oldTestPath;
-
+        // called test result has been set; now setting parent result
         if (result == CONTINUE) {
             throw new Exception(
                     "Error: 'continue' is not allowed when a test is called using 'call-test' instruction");
-
-        } else if (result < oldResult) {
-            // Restore parent result if the child results aren't worse
-            result = oldResult;
-        } else if (result == FAIL && oldResult != FAIL) {
-            // If the child result was FAIL and parent hasn't directly failed,
-            // set parent result to INHERITED_FAILURE
-            result = INHERITED_FAILURE;
-        } else {
-            // Keep child result as parent result
         }
+        TestEntry parentTest = getParentTest();
+        int oldResult = parentTest.getResult();
+        String testTypeName = test.getType();
+        int testType = (parentTest.getType().equals("Optional") ? OPTIONAL
+                : // 2011-04-08 PwD
+                testTypeName.equals("Optional") ? OPTIONAL
+                        : testTypeName.equals("MandatoryIfImplemented") ? MANDATORY_IF_IMPLEMENTED
+                                : MANDATORY);
+        if (result == BEST_PRACTICE) {
+            result = oldResult; // leave the parent result unchanged
+        } else if (result == PASS) {
+            if (oldResult == BEST_PRACTICE) {
+                result = PASS; // Best Practice must be universal
+            } else {
+                result = oldResult; // leave the parent result unchanged
+            }
+        } else if (result == NOT_TESTED || result == WARNING) {
+            switch (testType) {
+            case MANDATORY:
+            case MANDATORY_IF_IMPLEMENTED: {
+                result = INHERITED_FAILURE;
+                break;
+            }
+            case OPTIONAL:
+            default: {
+                result = oldResult; // leave the parent result unchanged
+            }
+            }
+        } else if (result == SKIPPED) {
+            switch (testType) {
+            case MANDATORY: {
+                result = INHERITED_FAILURE;
+                break;
+            }
+            case MANDATORY_IF_IMPLEMENTED:
+            case OPTIONAL:
+            default: {
+                result = oldResult; // leave the parent result unchanged
+
+            }
+            }
+        } else if (result == FAIL || result == INHERITED_FAILURE) {
+            switch (testType) {
+            case MANDATORY:
+            case MANDATORY_IF_IMPLEMENTED: {
+                result = INHERITED_FAILURE;
+                break;
+            }
+            case OPTIONAL:
+            default: {
+                result = oldResult; // leave the parent result unchanged
+            }
+            }
+        }
+        parentTest.setResult(result);
+        testStack.pop();
     }
 
     public void repeatTest(XPathContext context, String localName,
@@ -659,15 +821,11 @@ public class TECore implements Runnable {
         }
         int oldResult = result;
         String oldTestPath = testPath;
-
         testPath += "/" + callId;
 
         for (int i = 0; i < count; i++) {
-
             executeTest(test, S9APIUtils.makeNode(params), context);
-
             testPath = oldTestPath;
-
             if (result == FAIL && oldResult != FAIL) {
                 // If the child result was FAIL and parent hasn't directly
                 // failed,
@@ -834,6 +992,37 @@ public class TECore implements Runnable {
                 + " with a compatible signature.");
     }
 
+    public void _continue() {
+        result = CONTINUE;
+    }
+
+    public void bestPractice() {
+        if (result < BEST_PRACTICE) {
+            result = BEST_PRACTICE;
+        }
+    }
+
+    public void notTested() {
+        if (result < NOT_TESTED) {
+            result = NOT_TESTED;
+        }
+    }
+
+    public void skipped() {
+        if (result < SKIPPED) {
+            result = SKIPPED;
+        }
+    }
+
+    /**
+     * A test with defaultResult of BEST_PRACTICE.
+     */
+    public void pass() {
+        if (result < PASS) {
+            result = PASS;
+        }
+    }
+
     public void warning() {
         if (result < WARNING) {
             result = WARNING;
@@ -852,8 +1041,12 @@ public class TECore implements Runnable {
         }
     }
 
-    public void _continue() {
-        result = CONTINUE;
+    public String getResult() {
+        return getResultDescription(result);
+    }
+
+    public String getMode() {
+        return Test.getModeName(opts.getMode());
     }
 
     public void setContextLabel(String label) {
@@ -886,31 +1079,8 @@ public class TECore implements Runnable {
 
     public PrintWriter createLog() throws Exception {
         return LogUtils.createLog(opts.getLogDir(), testPath);
-        // if (logDir != null) {
-        // File dir = new File(logDir, testPath);
-        // dir.mkdir();
-        // File f = new File(dir, "log.xml");
-        // f.delete();
-        // BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-        // new FileOutputStream(f), "UTF-8"));
-        // logger = new PrintWriter(writer);
-        // }
-        // return logger;
     }
 
-    // public static Node reset_log(String logdir, String callpath)
-    // throws Exception {
-    // if (logdir.length() > 0) {
-    // File dir = new File(logdir, callpath);
-    // dir.mkdir();
-    // File f = new File(dir, "log.xml");
-    // RandomAccessFile raf = new RandomAccessFile(f, "rw");
-    // raf.setLength(0);
-    // raf.writeBytes("<log>\n</log>\n");
-    // raf.close();
-    // }
-    // return null;
-    // }
     // Get a File pointer to a file reference (in XML)
     public static File getFile(NodeList fileNodes) {
         File file = null;
@@ -1148,6 +1318,11 @@ public class TECore implements Runnable {
 
     }
 
+    /**
+     * Implements ctl:request. Create and send an HTTP request then return an
+     * HttpResponse. Invoke any specified parsers on the response to validate
+     * it, change its format or derive specific information from it.
+     */
     public NodeList request(Document ctlRequest, String id) throws Throwable {
         Element request = (Element) ctlRequest.getElementsByTagNameNS(
                 Test.CTL_NS, "request").item(0);
@@ -1272,7 +1447,27 @@ public class TECore implements Runnable {
                         sParams += "&";
                     }
                     sParams += ((Element) n).getAttribute("name") + "="
-                            + n.getTextContent();
+                            + URLEncoder.encode(n.getTextContent(), "UTF-8");
+                } else if (n.getLocalName().equals("dynamicParam")) {
+                    String name = null;
+                    String val = null;
+                    NodeList dpnl = n.getChildNodes();
+                    for (int j = 0; j < dpnl.getLength(); j++) {
+                        Node dpn = (Node) dpnl.item(j);
+                        if (dpn.getNodeType() == Node.ELEMENT_NODE) {
+                            if (dpn.getLocalName().equals("name")) {
+                                name = dpn.getTextContent();
+                            } else if (dpn.getLocalName().equals("value")) {
+                                val = URLEncoder.encode(dpn.getTextContent(),
+                                        "UTF-8");
+                            }
+                        }
+                    }
+                    if (name != null && val != null) {
+                        if (sParams.length() > 0)
+                            sParams += "&";
+                        sParams += name + "=" + val;
+                    }
                 } else if (n.getLocalName().equals("body")) {
                     body = n;
                 } else if (n.getLocalName().equals("part")) {
@@ -1561,6 +1756,13 @@ public class TECore implements Runnable {
         return result;
     }
 
+    /**
+     * Build a Document to hold parser result content, and invoke specified
+     * parsers.
+     * 
+     * @return selected info from uc as specified by instruction Element and
+     *         children.
+     */
     public Element parse(URLConnection uc, Node instruction) throws Throwable {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setNamespaceAware(true);
@@ -1569,24 +1771,27 @@ public class TECore implements Runnable {
         return parse(uc, instruction, response_doc);
     }
 
+    /**
+     * Invoke a parser or chain of parsers as specified by instruction element
+     * and children. Parsers in chain share uc, strip off their own
+     * instructions, and pass child instructions to next parser in chain. Final
+     * parser in chain modifies content. All parsers in chain can return info in
+     * attributes and child elements of instructions. If parser specified in
+     * instruction, call it to return specified info from uc.
+     */
     public Element parse(URLConnection uc, Node instruction,
             Document response_doc) throws Throwable {
-        // DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        // dbf.setNamespaceAware(true);
-        // DocumentBuilder db = dbf.newDocumentBuilder();
-        //
         Transformer t = TransformerFactory.newInstance().newTransformer();
-        // Document response_doc = db.newDocument();
         Element parser_e = response_doc.createElement("parser");
         Element response_e = response_doc.createElement("response");
         Element content_e = response_doc.createElement("content");
         if (instruction == null) {
             try {
-                InputStream is = uc.getInputStream();
+                // InputStream is = uc.getInputStream();
+                InputStream is = URLConnectionUtils.getInputStream(uc);
                 t.transform(new StreamSource(is), new DOMResult(content_e));
             } catch (Exception e) {
                 jlogger.log(Level.SEVERE, "parse Error", e);
-
                 parser_e.setTextContent(e.getClass().getName() + ": "
                         + e.getMessage());
             }
@@ -1677,6 +1882,34 @@ public class TECore implements Runnable {
                     + "]]></message>");
         }
         return null;
+    }
+
+    public void putLogCache(String id, Document xmlToCache) {
+        if (logger != null) {
+            String xmlString = DomUtils.serializeNode(xmlToCache);
+            logger.println("<cache id=\"" + id + "\">" + xmlString + "</cache>");
+        }
+    }
+
+    public Element getLogCache(String id) {
+        Element child_e = null;
+        if (prevLog != null) {
+            for (Element cache_e : DomUtils.getElementsByTagName(prevLog,
+                    "cache")) {
+                if (cache_e.getAttribute("id").equals(id)) {
+                    child_e = DomUtils.getChildElement(cache_e);
+                }
+            }
+        }
+        if (suiteLog != null && child_e == null) {
+            for (Element cache_e : DomUtils.getElementsByTagName(suiteLog,
+                    "cache")) {
+                if (cache_e.getAttribute("id").equals(id)) {
+                    child_e = DomUtils.getChildElement(cache_e);
+                }
+            }
+        }
+        return (child_e == null) ? null : child_e;
     }
 
     /**
