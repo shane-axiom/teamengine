@@ -233,7 +233,8 @@
 <body onload="fillOrganization()" >
 <%@ include file="header.jsp"%>
 <form name="standardsForm" action="test.jsp" method="post" >
-Select test suite:
+
+Select a test suite:
 <table border="1" width="60%" >
 	<tr>
 		<th width="15%">Organization</th>
