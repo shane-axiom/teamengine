@@ -56,7 +56,6 @@ public class Index {
     }
 
     public Index(File indexFile) throws Exception {
-        System.out.println("Processing index file at " + indexFile.getAbsolutePath());
         if (null == indexFile || !indexFile.exists()) {
             throw new IllegalArgumentException(
                     "indexFile is null or does not exist.");
