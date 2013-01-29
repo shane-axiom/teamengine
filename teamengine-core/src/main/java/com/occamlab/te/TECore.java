@@ -128,7 +128,8 @@ public class TECore implements Runnable {
     String testType = "Mandatory"; // Type of current test
     String defaultResultName = "Pass"; // Default result name for current test
     int defaultResult = PASS; // Default result for current test
-    int result; // Result for current test
+    /** Test verdict for current test */
+    int verdict;
     Document prevLog = null; // Log document for current test from previous test
                              // execution (resume and retest modes only)
     // Log document for suite to enable use of getLogCache by profile test
@@ -145,11 +146,6 @@ public class TECore implements Runnable {
     volatile boolean threadComplete = false;
     volatile boolean stop = false;
     volatile ByteArrayOutputStream threadOutput;
-    /*
-     * public static final int PASS = 0; public static final int WARNING = 1;
-     * public static final int CONTINUE = -1; public static final int
-     * INHERITED_FAILURE = 2; public static final int FAIL = 3;
-     */
     public static final int CONTINUE = -1;
     public static final int BEST_PRACTICE = 0;
     public static final int PASS = 1;
@@ -209,9 +205,6 @@ public class TECore implements Runnable {
         paramsXML += "</params>";
         // System.out.println("paramsXML: "+paramsXML);
         return paramsXML;
-
-        // return Globals.builder.build(new StreamSource(new
-        // StringReader(paramsXML)));
     }
 
     XPathContext getXPathContext(TestEntry test, String sourcesName,
@@ -331,7 +324,7 @@ public class TECore implements Runnable {
     public int execute_test(String testName, List<String> params,
             XdmNode contextNode) throws Exception {
         if (LOGR.isLoggable(Level.FINE)) {
-            final String logMsg = String.format(
+            String logMsg = String.format(
                     "Preparing test %s for execution, using params:%n %s",
                     testName, params);
             LOGR.fine(logMsg);
@@ -458,8 +451,10 @@ public class TECore implements Runnable {
                 if (baseResult == TECore.FAIL
                         || baseResult == TECore.INHERITED_FAILURE) {
                     summary = "Failed";
-                } else if (result == TECore.BEST_PRACTICE) {
+                } else if (verdict == TECore.BEST_PRACTICE) {
                     summary = "Passed as Best Practice";
+                } else if (verdict == TECore.SKIPPED) {
+                    summary = "Skipped";
                 } else {
                     summary = "Passed";
                 }
@@ -479,6 +474,8 @@ public class TECore implements Runnable {
                 summary = "Failed";
             } else if (result == TECore.BEST_PRACTICE) {
                 summary = "Passed as Best Practice";
+            } else if (verdict == TECore.SKIPPED) {
+                summary = "Skipped";
             } else {
                 summary = "Passed";
             }
@@ -511,7 +508,7 @@ public class TECore implements Runnable {
         if (params != null) {
             xt.setParameter(TEPARAMS_QNAME, params);
         }
-        // test may set global result, e.g. by calling ctl:fail
+        // test may set global verdict, e.g. by calling ctl:fail
         xt.transform();
         XdmNode ret = dest.getXdmNode();
         return ret;
@@ -652,7 +649,7 @@ public class TECore implements Runnable {
             logger.flush();
         }
 
-        result = defaultResult;
+        verdict = defaultResult;
         try {
             executeTemplate(test, params, context); // May set worse result
         } catch (SaxonApiException e) {
@@ -663,36 +660,38 @@ public class TECore implements Runnable {
                         + "]]></exception>");
             }
             TestEntry parentTest = getParentTest();
-            if (result == CONTINUE) {
+            if (verdict == CONTINUE) {
                 if ("Optional".equals(testType)) {
-                    result = parentTest.getResult();
+                    verdict = parentTest.getResult();
                 } else {
-                    result = INHERITED_FAILURE;
-                    parentTest.setResult(result);
+                    verdict = INHERITED_FAILURE;
+                    parentTest.setResult(verdict);
                 }
             } else {
-                result = FAIL; // all other exceptions
-                parentTest.setResult(result);
+                verdict = FAIL; // all other exceptions
+                parentTest.setResult(verdict);
             }
             testStack.pop();
         }
 
         if (logger != null) {
-            logger.println("<endtest result=\"" + Integer.toString(result)
+            logger.println("<endtest result=\"" + Integer.toString(verdict)
                     + "\"/>");
             logger.println("</log>");
             logger.close();
         }
         logger = oldLogger;
-
         prevLog = oldPrevLog;
-
         indent = oldIndent;
-
         out.println(indent + "Test " + test.getName() + " "
-                + getResultDescription(result));
-        test.setResult(result);
-        return result;
+                + getResultDescription(verdict));
+        test.setResult(verdict);
+        if (LOGR.isLoggable(Level.FINER)) {
+            String msg = String.format("Executed test %s - Verdict: %s",
+                    test.getLocalName(), getResultDescription(verdict));
+            LOGR.log(Level.FINER, msg);
+        }
+        return verdict;
     }
 
     public synchronized void callTest(XPathContext context, String localName,
@@ -731,7 +730,7 @@ public class TECore implements Runnable {
         executeTest(test, S9APIUtils.makeNode(params), context);
         testPath = oldTestPath;
         // called test result has been set; now setting parent result
-        if (result == CONTINUE) {
+        if (verdict == CONTINUE) {
             throw new Exception(
                     "Error: 'continue' is not allowed when a test is called using 'call-test' instruction");
         }
@@ -743,53 +742,53 @@ public class TECore implements Runnable {
                 testTypeName.equals("Optional") ? OPTIONAL
                         : testTypeName.equals("MandatoryIfImplemented") ? MANDATORY_IF_IMPLEMENTED
                                 : MANDATORY);
-        if (result == BEST_PRACTICE) {
-            result = oldResult; // leave the parent result unchanged
-        } else if (result == PASS) {
+        if (verdict == BEST_PRACTICE) {
+            verdict = oldResult; // leave the parent result unchanged
+        } else if (verdict == PASS) {
             if (oldResult == BEST_PRACTICE) {
-                result = PASS; // Best Practice must be universal
+                verdict = PASS; // Best Practice must be universal
             } else {
-                result = oldResult; // leave the parent result unchanged
+                verdict = oldResult; // leave the parent result unchanged
             }
-        } else if (result == NOT_TESTED || result == WARNING) {
+        } else if (verdict == NOT_TESTED || verdict == WARNING) {
             switch (testType) {
             case MANDATORY:
             case MANDATORY_IF_IMPLEMENTED: {
-                result = INHERITED_FAILURE;
+                verdict = INHERITED_FAILURE;
                 break;
             }
             case OPTIONAL:
             default: {
-                result = oldResult; // leave the parent result unchanged
+                verdict = oldResult; // leave the parent result unchanged
             }
             }
-        } else if (result == SKIPPED) {
+        } else if (verdict == SKIPPED) {
             switch (testType) {
             case MANDATORY: {
-                result = INHERITED_FAILURE;
+                verdict = INHERITED_FAILURE;
                 break;
             }
             case MANDATORY_IF_IMPLEMENTED:
             case OPTIONAL:
             default: {
-                result = oldResult; // leave the parent result unchanged
+                verdict = oldResult; // leave the parent result unchanged
 
             }
             }
-        } else if (result == FAIL || result == INHERITED_FAILURE) {
+        } else if (verdict == FAIL || verdict == INHERITED_FAILURE) {
             switch (testType) {
             case MANDATORY:
             case MANDATORY_IF_IMPLEMENTED: {
-                result = INHERITED_FAILURE;
+                verdict = INHERITED_FAILURE;
                 break;
             }
             case OPTIONAL:
             default: {
-                result = oldResult; // leave the parent result unchanged
+                verdict = oldResult; // leave the parent result unchanged
             }
             }
         }
-        parentTest.setResult(result);
+        parentTest.setResult(verdict);
         testStack.pop();
     }
 
@@ -819,21 +818,21 @@ public class TECore implements Runnable {
                 return;
             }
         }
-        int oldResult = result;
+        int oldResult = verdict;
         String oldTestPath = testPath;
         testPath += "/" + callId;
 
         for (int i = 0; i < count; i++) {
             executeTest(test, S9APIUtils.makeNode(params), context);
             testPath = oldTestPath;
-            if (result == FAIL && oldResult != FAIL) {
+            if (verdict == FAIL && oldResult != FAIL) {
                 // If the child result was FAIL and parent hasn't directly
                 // failed,
                 // set parent result to INHERITED_FAILURE
-                result = INHERITED_FAILURE;
+                verdict = INHERITED_FAILURE;
 
                 return;
-            } else if (result == CONTINUE) {
+            } else if (verdict == CONTINUE) {
                 // System.out.println("Pausing for..."+pause);
                 if (pause > 0 && i < count - 1) {
 
@@ -845,18 +844,18 @@ public class TECore implements Runnable {
                     }
                 }
 
-            } else if (result <= oldResult) {
+            } else if (verdict <= oldResult) {
                 // Restore parent result if the child results aren't worse
-                result = oldResult;
+                verdict = oldResult;
                 return;
 
             }
         }
-        result = FAIL;
+        verdict = FAIL;
         if (oldResult != FAIL) {
             // If the child result was FAIL and parent hasn't directly failed,
             // set parent result to INHERITED_FAILURE
-            result = INHERITED_FAILURE;
+            verdict = INHERITED_FAILURE;
         }
 
     }
@@ -993,24 +992,24 @@ public class TECore implements Runnable {
     }
 
     public void _continue() {
-        result = CONTINUE;
+        verdict = CONTINUE;
     }
 
     public void bestPractice() {
-        if (result < BEST_PRACTICE) {
-            result = BEST_PRACTICE;
+        if (verdict < BEST_PRACTICE) {
+            verdict = BEST_PRACTICE;
         }
     }
 
     public void notTested() {
-        if (result < NOT_TESTED) {
-            result = NOT_TESTED;
+        if (verdict < NOT_TESTED) {
+            verdict = NOT_TESTED;
         }
     }
 
     public void skipped() {
-        if (result < SKIPPED) {
-            result = SKIPPED;
+        if (verdict < SKIPPED) {
+            verdict = SKIPPED;
         }
     }
 
@@ -1018,31 +1017,31 @@ public class TECore implements Runnable {
      * A test with defaultResult of BEST_PRACTICE.
      */
     public void pass() {
-        if (result < PASS) {
-            result = PASS;
+        if (verdict < PASS) {
+            verdict = PASS;
         }
     }
 
     public void warning() {
-        if (result < WARNING) {
-            result = WARNING;
+        if (verdict < WARNING) {
+            verdict = WARNING;
         }
     }
 
     public void inheritedFailure() {
-        if (result < INHERITED_FAILURE) {
-            result = INHERITED_FAILURE;
+        if (verdict < INHERITED_FAILURE) {
+            verdict = INHERITED_FAILURE;
         }
     }
 
     public void fail() {
-        if (result < FAIL) {
-            result = FAIL;
+        if (verdict < FAIL) {
+            verdict = FAIL;
         }
     }
 
     public String getResult() {
-        return getResultDescription(result);
+        return getResultDescription(verdict);
     }
 
     public String getMode() {

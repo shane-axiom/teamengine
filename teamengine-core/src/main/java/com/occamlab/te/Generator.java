@@ -106,7 +106,7 @@ public class Generator {
         Iterator<File> it = sources.iterator();
         while (it.hasNext()) {
             File source = it.next();
-            LOGR.log(Level.CONFIG, "Processing CTL source files in {0}",
+            LOGR.log(Level.FINE, "Processing CTL source files in {0}",
                     source.getAbsolutePath());
             String encodedName = createEncodedName(source);
             File workingDir = new File(opts.getWorkDir(), encodedName);
@@ -171,7 +171,7 @@ public class Generator {
                 boolean validationErrors = false;
                 if (opts.isValidate()) {
                     int old_count = validation_eh.getErrorCount();
-                    LOGR.log(Level.INFO, "Validating " + sourceFile);
+                    LOGR.log(Level.CONFIG, "Validating " + sourceFile);
                     ctl_validator.validate(new StreamSource(sourceFile));
                     validationErrors = (validation_eh.getErrorCount() > old_count);
                 }
