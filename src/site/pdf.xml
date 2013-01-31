@@ -12,6 +12,8 @@
   <toc name="Table of Contents" depth="2">
     <item name="Overview" ref="index.xhtml"/>
     <item name="Installation" ref="installation.xhtml.vm"/>
+    <item name="User's Guide" ref="users.xhtml"/>
+    <item name="Tester's Guide" ref="testers.xhtml"/>
   </toc>
 
   <cover>
@@ -19,5 +21,7 @@
     <coverSubTitle>Version: ${project.version}</coverSubTitle>
     <coverType>User Guide</coverType>
     <coverdate>${date}</coverdate>
+    <companyName>The Open Geospatial Consortium</companyName>
+    <companyLogo>images/ogc-logo-149x75.png</companyLogo>
   </cover>
 </document>

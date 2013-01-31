@@ -46,25 +46,25 @@
 
     <pre>
 TE_BASE
-  |-- config.xml
-  |-- resources/
-  |-- scripts/
-  |-- work/
+  |-- config.xml        # main configuration file
+  |-- resources/        # shared test suite resources
+  |-- scripts/          # CTL test scripts
+  |-- work/             # teamengine work directory
   +-- users/
-     |-- {user1}/
+     |-- {user1}/       # user account details and test runs
      |-- {user2}/
      +-- ...
     </pre>
 
-    <p>Some OGC test suites make use of an embedded Apache Derby database containing 
-    the <a href="http://www.epsg.org/Geodetic.html" target="_blank">EPSG geodetic 
-    parameters</a>. While not strictly necessary, it may be convenient to create a 
-    Derby system directory to contain one or more databases (e.g. DERBY_DATA, at 
-    /srv/derby).</p>
+    <p><img src="./images/info-16px.png"/> <strong>Note:</strong> Some OGC test suites 
+    make use of an embedded Apache Derby database containing the <a href="http://www.epsg.org/Geodetic.html" 
+    target="_blank">EPSG geodetic parameters</a>. While not strictly necessary, it may be 
+    convenient to create a Derby system directory to contain one or more databases (e.g. 
+    DERBY_DATA, at /srv/derby).</p>
 
     <p>CTL test scripts are placed in the TE_BASE/scripts directory and the TE_BASE/config.xml 
     file is updated accordingly. A new installation already contains an entry for a sample 
-    test script ("XML Note"). Every test suite should include a configuration file--simply 
+    test script ("XML Note"). Every test suite requires an entry in the configuration file--simply 
     insert the &lt;standard&gt; element into the file under the matching organization (name). 
     The following listing includes a sample entry.</p>
 
@@ -105,6 +105,7 @@ TE_BASE
     </pre>
 
     <h2>Web application deployment</h2>
+
     <p>Apache Tomcat 7.0 (with JDK 6 or later) is a supported servlet container. It is 
     strongly recommended that a dedicated Tomcat instance be created to host the teamengine 
     application. Create one as suggested below.</p>

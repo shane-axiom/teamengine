@@ -382,7 +382,8 @@ public class TestServlet extends HttpServlet {
                     while (iter.hasNext()) {
                         FileItem item = (FileItem) iter.next();
                         if (!item.isFormField() && !item.getName().equals("")) {
-                            File uploadedFile = new File(core.getLogDir(),
+                            File tempDir = core.getLogDir();
+                            File uploadedFile = new File(tempDir,
                                     StringUtils.getFilenameFromString(item
                                             .getName()));
                             item.write(uploadedFile);

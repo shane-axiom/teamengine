@@ -5,7 +5,7 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   targetNamespace="http://www.occamlab.com/ctl" 
   elementFormDefault="qualified" 
-  version="2011.04">
+  version="2013.01.30">
   <!-- CTL supports XSLT 1.0 instructions, but since the W3C has not published an XSLT 1.0 schema
 	     and 1.0 instructions are forwards-compatible with 2.0 instructions, include the XSLT 2.0 schema -->
   <xs:import namespace="http://www.w3.org/1999/XSL/Transform" schemaLocation="xslt20.xsd"/>
@@ -82,13 +82,7 @@
       <xs:element name="link" type="ctl:linkType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="defaultResult" type="ctl:DefaultResultStatusType" minOccurs="0"/>
       <xs:element name="starting-test" type="xs:QName"/>
-      <xs:element name="form" minOccurs="0">
-        <xs:complexType mixed="true">
-          <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:any processContents="lax"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element name="form" minOccurs="0" type="ctl:formType" />
     </xs:sequence>
     <xs:attribute name="name" type="xs:QName" use="required"/>
     <xs:attribute name="requires-modules" type="ctl:ModuleListType" use="optional"/>
@@ -104,18 +98,25 @@
       <xs:element name="base" type="xs:QName"/>
       <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="starting-test" type="xs:QName"/>
-      <xs:element name="form" minOccurs="0">
-        <xs:complexType mixed="true">
-          <xs:sequence minOccurs="0" maxOccurs="unbounded">
-            <xs:any processContents="lax"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element name="form" minOccurs="0" type="ctl:formType" />
     </xs:sequence>
     <xs:attribute name="name" type="xs:QName" use="required"/>
     <xs:attribute name="requires-modules" type="ctl:ModuleListType" use="optional"/>
     <xs:attribute name="version" type="xs:string" use="optional"/>
   </xs:complexType>
+
+  <xs:complexType name="formType" mixed="true">
+    <xs:annotation>
+      <xs:documentation>The form may contain a combination of literal XHTML elements 
+      along with other CTL or XSL instructions</xs:documentation>
+    </xs:annotation>
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+      <xs:any processContents="lax"/>
+    </xs:sequence>
+    <xs:attribute name="height" type="xs:positiveInteger" />
+    <xs:attribute name="width" type="xs:positiveInteger" />
+  </xs:complexType>
+
   <xs:complexType name="paramType">
     <xs:simpleContent>
       <xs:extension base="xs:string">
