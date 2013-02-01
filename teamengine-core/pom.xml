@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.opengis.cite</groupId>
     <artifactId>teamengine</artifactId>
-    <version>4.0-beta1</version>
+    <version>4.0-beta1-SNAPSHOT</version>
   </parent>
   <groupId>org.opengis.cite.teamengine</groupId>
   <artifactId>teamengine-core</artifactId>
@@ -27,12 +27,12 @@
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon9-dom</artifactId>
-      <version>9.0.0.8</version>
+      <version>${saxon.version}</version>
     </dependency>
     <dependency>
       <groupId>net.sourceforge.saxon</groupId>
       <artifactId>saxon9-s9api</artifactId>
-      <version>9.0.0.8</version>
+      <version>${saxon.version}</version>
     </dependency>
     <dependency>
       <groupId>joda-time</groupId>

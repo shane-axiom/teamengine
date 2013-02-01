@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.opengis.cite</groupId>
     <artifactId>teamengine</artifactId>
-    <version>4.0-beta1</version>
+    <version>4.0-beta1-SNAPSHOT</version>
   </parent>
   <groupId>org.opengis.cite.teamengine</groupId>
   <artifactId>teamengine-spi</artifactId>
@@ -64,6 +64,10 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.12.4</version>
         <configuration>
@@ -75,14 +79,6 @@
             <include>**/*Tests.java</include>
             <include>**/*Test.java</include>
           </includes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9</version>
-        <configuration>
-          <docfilessubdirs>true</docfilessubdirs>
         </configuration>
       </plugin>
     </plugins>
