@@ -231,6 +231,8 @@ public class TestServlet extends HttpServlet {
                 LOGR.info("Creating test session in "
                         + logdir.getAbsolutePath());
                 String mode = params.get("mode");
+                LOGR.info("Mode is  "
+                        + mode);
                 RuntimeOptions opts = new RuntimeOptions();
                 opts.setWorkDir(setupOpts.getWorkDir());
                 opts.setLogDir(logdir);
@@ -288,7 +290,9 @@ public class TestServlet extends HttpServlet {
                     String sources = params.get("sources");
                     s.setSourcesName(sources);
                     SuiteEntry suite = conf.getSuites().get(sources);
-                    s.setSuiteName(suite.getId());
+                    LOGR.finest("parameters :"+params);
+                    LOGR.finest("suites :"+conf.getSuites());
+                    s.setSuiteName (suite.getId()); 
                     String description = params.get("description");
                     s.setDescription(description);
                     opts.setSessionId(sessionid);

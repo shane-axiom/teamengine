@@ -12,26 +12,14 @@
   <custom>
     <fluidoSkin>
       <sideBarEnabled>true</sideBarEnabled>
+      <topBarEnabled>false</topBarEnabled>
     </fluidoSkin>
   </custom>
 
-  <bannerLeft>
-    <name>${project.name}</name>
-    <src>./images/te-logo-small.png</src>
-    <href>http://www.sourceforge.net/projects/teamengine/</href>
-  </bannerLeft>
-  <bannerRight>
-    <name>OSGeo Incubator</name>
-    <src>./images/OSGeo_incubation.png</src>
-    <href>http://www.osgeo.org/incubator</href>
-  </bannerRight>
+  
 
   <body>
-    <links>
-      <item name="Wiki" href="http://www.sourceforge.net/p/teamengine/wiki/Home/"/>
-      <item name="Tickets" href="http://www.sourceforge.net/p/teamengine/_list/tickets"/>
-    </links>
-
+  
     <menu name="Getting Started">
       <item href="index.html" name="Overview" />
       <item href="installation.html" name="Installation" />
