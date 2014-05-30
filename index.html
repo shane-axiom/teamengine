@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TEAM Engine</title>
+    <style type="text/css" media="screen,print">
+    body {
+      color: black;
+      background: white;
+    }
+    h1, h2 {
+      font-family: sans-serif;
+      color: #000099;
+      text-align: left;
+    }
+    h1 { font-size: 1.75em; }
+    h2 { font-size: 1.50em; }
+    </style>
+  </head>
+  <body>
+    <h1>TEAM Engine</h1>
+
+    <h2>Overview</h2>
+    <p>TEAM Engine (Test, Evaluation, And Measurement Engine) is a Java-based test 
+    harness for testing web services and other resources. It executes test scripts 
+    written in the OGC Compliance Test Language (CTL), TestNG, and other languages. 
+    It is lightweight and easy to run as a command-line or web application. TEAM 
+    Engine is the official test harness used by the Open Geospatial Consortium's 
+    (OGC) <a href="http://cite.opengeospatial.org/" target="_blank">compliance 
+    program</a>.</p>
+
+    <h2>How to build</h2>
+    <p>Apache Maven 3.0 or higher is required to build the teamengine code base, 
+    which consists of the following modules:</p>
+    <ul>
+      <li>teamengine-core: Main CTL script processor</li>
+      <li>teamengine-console: Console (CLI) application</li>
+      <li>teamengine-web: Web application</li>
+      <li>teamengine-resources: Shared resources (stylesheets, schemas, etc.)</li>
+      <li>teamengine-realm: Custom Tomcat user realm</li>
+      <li>teamengine-spi: Extensibility framework and REST-like API</li>
+    </ul>
+
+    <p>Simply run <code>mvn package</code> in the root project directory to generate 
+    all build artifacts (using JDK 7 or later). Execute the <code>mvn site</code> phase 
+    with the top-level POM to generate project documentation; this will also create an 
+    aggregate PDF document in the target/pdf directory.</p>
+
+  </body>
+</html>
