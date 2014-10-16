@@ -50,18 +50,8 @@
   </fileSets>
   <files>
     <file>
-      <source>${project.basedir}/src/main/assembly/README.txt</source>
+      <source>${project.basedir}/src/assembly/README.txt</source>
       <outputDirectory>/</outputDirectory>
-    </file>
-    <file>
-      <source>${project.basedir}/src/main/config/ctl-suites-dev.csv</source>
-      <outputDirectory>bin/windows</outputDirectory>
-      <lineEnding>dos</lineEnding>
-    </file>
-    <file>
-      <source>${project.basedir}/src/main/config/ctl-suites-dev.csv</source>
-      <outputDirectory>bin/unix</outputDirectory>
-      <lineEnding>unix</lineEnding>
     </file>
   </files>
 </assembly>

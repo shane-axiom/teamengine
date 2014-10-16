@@ -6,7 +6,6 @@
   <id>base</id>
   <formats>
     <format>zip</format>
-    <format>tar.gz</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
@@ -21,11 +20,6 @@
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/src/main/config</directory>
-      <outputDirectory>users</outputDirectory>
-      <excludes><exclude>*</exclude></excludes>
-    </fileSet>
-    <fileSet>
-      <directory>${project.basedir}/src/main/config</directory>
       <outputDirectory>resources/lib</outputDirectory>
       <excludes><exclude>*</exclude></excludes>
     </fileSet>
@@ -33,10 +27,14 @@
       <directory>${project.basedir}/src/main/resources/site</directory>
       <outputDirectory>resources/site</outputDirectory>
     </fileSet>
+    <fileSet>
+      <directory>${project.basedir}/src/main/resources/users</directory>
+      <outputDirectory>users</outputDirectory>
+    </fileSet>
   </fileSets>
   <files>
     <file>
-      <source>${project.basedir}/src/main/assembly/README.txt</source>
+      <source>${project.basedir}/src/assembly/README.txt</source>
       <outputDirectory>/</outputDirectory>
     </file>
     <file>
@@ -44,7 +42,7 @@
       <outputDirectory>/</outputDirectory>
     </file>
     <file>
-      <source>${project.basedir}/src/main/assembly/index.html</source>
+      <source>${project.basedir}/src/assembly/index.html</source>
       <outputDirectory>resources/docs</outputDirectory>
     </file>
   </files>
