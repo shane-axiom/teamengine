@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 import com.occamlab.te.spi.jaxrs.resources.ImageResource;
+import com.occamlab.te.spi.jaxrs.resources.TempRunResources;
 import com.occamlab.te.spi.jaxrs.resources.TestRunResource;
 import com.occamlab.te.spi.jaxrs.resources.TestSuiteOverviewResource;
 import com.occamlab.te.spi.jaxrs.resources.TestSuiteSetResource;
@@ -28,6 +29,7 @@ public class ApplicationComponents extends Application {
         appClasses.add(TestSuiteOverviewResource.class);
         appClasses.add(TestRunResource.class);
         appClasses.add(ImageResource.class);
+        appClasses.add(TempRunResources.class);
         return appClasses;
     }
 }
