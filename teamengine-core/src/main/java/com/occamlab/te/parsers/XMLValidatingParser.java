@@ -48,6 +48,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.apache.xerces.dom.DocumentImpl;
+import org.apache.xerces.dom.NodeImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -332,6 +334,16 @@ public class XMLValidatingParser {
         validateAgainstDTDList(doc, dtds, err);
         errorStrings = err.toNodeList();
         return errorStrings;
+    }
+
+    public Document validateSingleResult(Document doc, Document instruction)
+            throws Exception {
+        NodeList nodeList = validate(doc, instruction);
+        Document resultDoc = new DocumentImpl();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            resultDoc.appendChild(nodeList.item(i));
+        }
+        return resultDoc;
     }
 
     /**
