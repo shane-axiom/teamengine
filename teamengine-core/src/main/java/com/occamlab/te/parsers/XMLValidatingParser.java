@@ -339,7 +339,7 @@ public class XMLValidatingParser {
     public Document validateSingleResult(Document doc, Document instruction)
             throws Exception {
         NodeList nodeList = validate(doc, instruction);
-        Document resultDoc = new DocumentImpl();
+        Document resultDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         for (int i = 0; i < nodeList.getLength(); i++) {
             resultDoc.importNode(nodeList.item(i), true);
         }
