@@ -341,7 +341,7 @@ public class XMLValidatingParser {
         NodeList nodeList = validate(doc, instruction);
         Document resultDoc = new DocumentImpl();
         for (int i = 0; i < nodeList.getLength(); i++) {
-            resultDoc.adoptNode(nodeList.item(i));
+            resultDoc.importNode(nodeList.item(i), true);
         }
         return resultDoc;
     }
