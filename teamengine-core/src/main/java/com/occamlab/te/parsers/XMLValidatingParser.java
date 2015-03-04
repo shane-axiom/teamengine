@@ -48,8 +48,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.xerces.dom.DocumentImpl;
-import org.apache.xerces.dom.NodeImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -317,7 +315,7 @@ public class XMLValidatingParser {
         return (parsedDoc != null);
     }
 
-    public NodeList validate(Document doc, Document instruction)
+    private XmlErrorHandler processValidation(Document doc, Document instruction)
             throws Exception {
         if (doc == null || doc.getDocumentElement() == null) {
             throw new NullPointerException("Input document is null.");
@@ -328,22 +326,20 @@ public class XMLValidatingParser {
         dtds.addAll(dtdList);
         loadSchemaLists(instruction, schemas, dtds);
 
-        NodeList errorStrings = null;
         XmlErrorHandler err = new XmlErrorHandler();
         validateAgainstXMLSchemaList(doc, schemas, err);
         validateAgainstDTDList(doc, dtds, err);
-        errorStrings = err.toNodeList();
-        return errorStrings;
+        return err;
+    }
+    
+    public NodeList validate(Document doc, Document instruction)
+            throws Exception {
+        return processValidation(doc, instruction).toNodeList();
     }
 
-    public Document validateSingleResult(Document doc, Document instruction)
+    public Element validateSingleResult(Document doc, Document instruction)
             throws Exception {
-        NodeList nodeList = validate(doc, instruction);
-        Document resultDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            resultDoc.importNode(nodeList.item(i), true);
-        }
-        return resultDoc;
+        return processValidation(doc, instruction).toRootElement();
     }
 
     /**
