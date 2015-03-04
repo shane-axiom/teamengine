@@ -734,6 +734,19 @@
       select="tec:callFunction($te:core, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params)" />
   </xsl:template>
 
+  <!-- Calls parse-qname, make-params-var -->
+  <!-- Wrapper around call-function to allow return of NodeLists -->
+  <xsl:template name="call-list-function" match="ctl:call-list-function">
+    <xsl:variable name="qname">
+      <xsl:call-template name="parse-qname" />
+    </xsl:variable>
+
+    <xsl:call-template name="make-params-var" />
+
+    <txsl:copy-of
+      select="tec:callListFunction($te:core, '{$qname/local-name}', '{$qname/namespace-uri}', $te:params)" />
+  </xsl:template>
+
   <xsl:template match="ctl:allocate-monitor-url">
     <txsl:variable name="te:url">
       <xsl:apply-templates select="*|text()" />

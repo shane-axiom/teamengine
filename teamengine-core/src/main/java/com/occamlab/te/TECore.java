@@ -23,6 +23,7 @@ package com.occamlab.te;
 
 
 import com.occamlab.te.util.Constants;
+
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,6 +82,7 @@ import net.sf.saxon.s9api.XdmSequenceIterator;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.trans.XPathException;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
@@ -105,9 +107,10 @@ import com.occamlab.te.util.Misc;
 import com.occamlab.te.util.StringUtils;
 import com.occamlab.te.util.SoapUtils;
 import com.occamlab.te.util.URLConnectionUtils;
-import java.util.Calendar;
 
+import java.util.Calendar;
 import java.util.Date;
+
 import org.w3c.dom.Comment;
 
 /**
@@ -1150,6 +1153,15 @@ public class TECore implements Runnable {
     }
     throw new Exception("No function {" + namespaceURI + "}" + localName
             + " with a compatible signature.");
+  }
+
+  public NodeList callListFunction(XPathContext context, String localName,
+          String namespaceURI, NodeInfo params) throws Exception {
+      Object result = callFunction(context, localName, namespaceURI, params);
+      if (!(result instanceof NodeList)) {
+          throw new Exception("Function result is not a NodeList!");
+      }
+      return (NodeList) result;
   }
 
   public void _continue() {
